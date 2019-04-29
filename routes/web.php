@@ -17,4 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resources([
+	'auctions'		=> 'AuctionController',
+	'homes'			=> 'HomeController',
+	'hotsales'		=> 'HotsaleController',
+	'reservations'	=> 'ReservationController',
+	'users'			=> 'UserController',
+	'admins'		=> 'AdminController',
+]);
+
+Route::get('/home', 'PageController@index')->name('home');
