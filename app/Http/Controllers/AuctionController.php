@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Auction;
 
 class AuctionController extends Controller
 {
@@ -13,7 +14,8 @@ class AuctionController extends Controller
      */
     public function index()
     {
-        //
+        $auctions = Auction::all();
+        return $auctions;
     }
 
     /**
