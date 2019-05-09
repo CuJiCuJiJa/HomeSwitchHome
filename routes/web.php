@@ -11,11 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// RUTA DE EJEMPLO DE LARAVEL
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Auth::routes();
+Route::get('/home', 'HomeController@index');
 
 Route::resources([
 	'auctions'		=> 'AuctionController',
@@ -26,4 +27,4 @@ Route::resources([
 	'admins'		=> 'AdminController',
 ]);
 
-Route::get('/home', 'PageController@index')->name('home');
+Auth::routes();

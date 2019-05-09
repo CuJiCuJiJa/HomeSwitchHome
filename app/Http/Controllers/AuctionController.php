@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace homeSwitchHome\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Auction;
+use homeSwitchHome\Auction;
 
 class AuctionController extends Controller
 {

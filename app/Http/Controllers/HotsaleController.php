@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace homeSwitchHome\Http\Controllers;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class HotsaleController extends Controller
      */
     public function index()
     {
-        //
+        return view('/home');
     }
 
     /**
