@@ -17,6 +17,7 @@ class CreateHomesTable extends Migration
             $table->increments('id');
             $table->string('location');
             $table->timestamps();
+            $table->deleted_at();
         });
     }
 

@@ -14,7 +14,7 @@ class AuctionController extends Controller
      */
     public function index()
     {
-        $auctions = Auction::all();
+        $auctions = Auction::all()->withTrashed();
         return $auctions;
     }
 
@@ -25,7 +25,7 @@ class AuctionController extends Controller
      */
     public function create()
     {
-        //
+        return view('auction.create');
     }
 
     /**
@@ -36,7 +36,19 @@ class AuctionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $auction = new Auction;
+
+        $auction->startingDate = $request->startingDate;
+        $auction->week         = $request->week;
+        $auction->year         = $request->year;
+        $auction->base_price   = $request->base_price;
+        $auction->home_id      = $request->home_id;
+
+        $auction->save();
+
+        return redirect()->route('show', ['id' => $auction->id])->with('success', 'Subasta creada');
     }
 
     /**
@@ -47,7 +59,7 @@ class AuctionController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('auction.show');
     }
 
     /**
@@ -58,7 +70,7 @@ class AuctionController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('auction.edit');
     }
 
     /**
@@ -70,7 +82,19 @@ class AuctionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $auction = Auction::find($id);
+
+        $auction->startingDate = $request->startingDate;
+        $auction->week         = $request->week;
+        $auction->year         = $request->year;
+        $auction->base_price   = $request->base_price;
+        $auction->home_id      = $request->home_id;
+
+        $auction->save();
+
+        return redirect()->route('show', ['id' => $auction->id])->with('success', 'Subasta modificada');
     }
 
     /**
@@ -81,6 +105,9 @@ class AuctionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $auction = Auction::find($id);
+        $auction->delete();
+
+        return redirect()->route('index')->with('success', 'Subasta eliminada');
     }
 }

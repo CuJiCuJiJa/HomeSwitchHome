@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('available_weeks')->default(2);
             $table->rememberToken();
             $table->timestamps();
+            $table->deleted_at();
         });
     }
 
