@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Auction;
-
 class AuctionController extends Controller
 {
     /**
@@ -14,10 +11,9 @@ class AuctionController extends Controller
      */
     public function index()
     {
-        $auctions = Auction::all();
+        $auctions = Auction::all()->withTrashed();
         return $auctions;
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -25,9 +21,8 @@ class AuctionController extends Controller
      */
     public function create()
     {
-        //
+        return view('auction.create');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -36,9 +31,16 @@ class AuctionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $auction = new Auction;
+        $auction->startingDate = $request->startingDate;
+        $auction->week         = $request->week;
+        $auction->year         = $request->year;
+        $auction->base_price   = $request->base_price;
+        $auction->home_id      = $request->home_id;
+        $auction->save();
+        return redirect()->route('show', ['id' => $auction->id])->with('success', 'Subasta creada');
     }
-
     /**
      * Display the specified resource.
      *
@@ -47,9 +49,8 @@ class AuctionController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('auction.show');
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -58,9 +59,8 @@ class AuctionController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('auction.edit');
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -70,9 +70,16 @@ class AuctionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $auction = Auction::find($id);
+        $auction->startingDate = $request->startingDate;
+        $auction->week         = $request->week;
+        $auction->year         = $request->year;
+        $auction->base_price   = $request->base_price;
+        $auction->home_id      = $request->home_id;
+        $auction->save();
+        return redirect()->route('show', ['id' => $auction->id])->with('success', 'Subasta modificada');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -81,6 +88,8 @@ class AuctionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $auction = Auction::find($id);
+        $auction->delete();
+        return redirect()->route('index')->with('success', 'Subasta eliminada');
     }
 }

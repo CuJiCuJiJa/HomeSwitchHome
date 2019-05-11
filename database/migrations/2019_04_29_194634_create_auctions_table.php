@@ -18,10 +18,12 @@ class CreateAuctionsTable extends Migration
             $table->integer('home_id')->unsigned();
             $table->foreign('home_id')->references('id')->on('homes');
             $table->boolean('active')->default(true);
+            $table->date('starting_date');
             $table->integer('week');
             $table->integer('year');
             $table->integer('base_price');
             $table->timestamps();
+            $table->deleted_at();
         });
     }
 

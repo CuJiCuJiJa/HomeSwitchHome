@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateUsersTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations
      *
      * @return void
      */
@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('available_weeks')->default(2);
             $table->rememberToken();
             $table->timestamps();
+            $table->deleted_at();
         });
     }
 
