@@ -13,7 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    sjkdbfkjsdbfjskd
+                    @for ($auction in {{ $auctions }})
+                        {{ $auction.base_price }}
                 </div>
             </div>
         </div>

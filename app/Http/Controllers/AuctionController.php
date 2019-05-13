@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Auction;
+
 class AuctionController extends Controller
 {
     /**
@@ -11,8 +12,8 @@ class AuctionController extends Controller
      */
     public function index()
     {
-        $auctions = Auction::all()->withTrashed();
-        return $auctions;
+        $auctions = Auction::all();
+        return view('auctions.index', 'auctions');
     }
     /**
      * Show the form for creating a new resource.
@@ -21,7 +22,7 @@ class AuctionController extends Controller
      */
     public function create()
     {
-        return view('auction.create');
+        return view('auctions.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -49,7 +50,7 @@ class AuctionController extends Controller
      */
     public function show($id)
     {
-        return view('auction.show');
+        return view('auctions.show');
     }
     /**
      * Show the form for editing the specified resource.
@@ -59,7 +60,7 @@ class AuctionController extends Controller
      */
     public function edit($id)
     {
-        return view('auction.edit');
+        return view('auctions.edit');
     }
     /**
      * Update the specified resource in storage.
