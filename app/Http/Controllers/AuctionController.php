@@ -12,8 +12,8 @@ class AuctionController extends Controller
      */
     public function index()
     {
-        $auctions = Auction::all();
-        return view('auctions.index', 'auctions');
+        $auctions = Auction::all()->withTrashed();
+        return view('auction.index', 'auctions');
     }
     /**
      * Show the form for creating a new resource.
@@ -22,7 +22,7 @@ class AuctionController extends Controller
      */
     public function create()
     {
-        return view('auctions.create');
+        return view('auction.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -50,7 +50,7 @@ class AuctionController extends Controller
      */
     public function show($id)
     {
-        return view('auctions.show');
+        return view('auction.show');
     }
     /**
      * Show the form for editing the specified resource.
@@ -60,7 +60,7 @@ class AuctionController extends Controller
      */
     public function edit($id)
     {
-        return view('auctions.edit');
+        return view('auction.edit');
     }
     /**
      * Update the specified resource in storage.
