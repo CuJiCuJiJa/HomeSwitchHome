@@ -23,7 +23,7 @@ class CreateAuctionsTable extends Migration
             $table->integer('year');
             $table->integer('base_price');
             $table->timestamps();
-            $table->deleted_at();
+            $table->softDeletes();
         });
     }
 

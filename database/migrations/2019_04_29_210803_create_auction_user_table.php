@@ -21,7 +21,7 @@ class CreateAuctionUserTable extends Migration
             $table->foreign('auction_id')->references('id')->on('auctions');
             $table->boolean('best_bid')->default(true);
             $table->timestamps();
-            $table->deleted_at();
+            $table->softDeletes();
         });
     }
 
