@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHomeUserTable extends Migration
+class CreateHomeUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateHomeUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('home_user', function (Blueprint $table) {
+        Schema::create('home_users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('home_id')->unsigned();
             $table->foreign('home_id')->references('id')->on('homes');

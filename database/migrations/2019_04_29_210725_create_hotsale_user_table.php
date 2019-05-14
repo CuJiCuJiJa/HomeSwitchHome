@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHotsaleUserTable extends Migration
+class CreateHotsaleUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateHotsaleUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('hotsale_user', function (Blueprint $table) {
+        Schema::create('hotsale_users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('hotsale_id')->unsigned();
             $table->foreign('hotsale_id')->references('id')->on('hotsales');

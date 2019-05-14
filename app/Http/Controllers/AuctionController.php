@@ -103,8 +103,4 @@ class AuctionController extends Controller
         return redirect()->route('index')->with('success', 'Subasta eliminada');
     }
 
-    public function pujar($id)
-    {
-        
-    }
 }
