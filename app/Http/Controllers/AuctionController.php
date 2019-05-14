@@ -12,8 +12,8 @@ class AuctionController extends Controller
      */
     public function index()
     {
-        $auctions = Auction::all()->withTrashed();
-        return view('auction.index', 'auctions');
+        $auctions = Auction::all();
+        return view('auction.index', compact('auctions'));
     }
     /**
      * Show the form for creating a new resource.
@@ -32,13 +32,14 @@ class AuctionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $auction = new Auction;
-        $auction->startingDate = $request->startingDate;
-        $auction->week         = $request->week;
-        $auction->year         = $request->year;
-        $auction->base_price   = $request->base_price;
-        $auction->home_id      = $request->home_id;
+        $data                   = $request->all();
+        $auction                = new Auction;
+        $auction->starting_date = $request->starting_date;
+        $auction->week          = $request->week;
+        $auction->year          = $request->year;
+        $auction->base_price    = $request->base_price;
+        $auction->home_id       = 1;//$request->home_id; esta hardcodeado 1 porque es el id de la unica residencia que tenia cargada.
+        //dd($auction);
         $auction->save();
         return redirect()->route('show', ['id' => $auction->id])->with('success', 'Subasta creada');
     }
@@ -50,7 +51,8 @@ class AuctionController extends Controller
      */
     public function show($id)
     {
-        return view('auction.show');
+        $auction = Auction::find($id);
+        return view('auction.show', compact('auction'));
     }
     /**
      * Show the form for editing the specified resource.

@@ -18,12 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::resources([
-	'auctions'		=> 'AuctionController',
-	'homes'			=> 'HomeController',
-	'hotsales'		=> 'HotsaleController',
-	'reservations'	=> 'ReservationController',
-	'users'			=> 'UserController',
-	'admins'		=> 'AdminController',
+	'auction'		=> 'AuctionController',
+	'home'			=> 'HomeController',
+	'hotsale'		=> 'HotsaleController',
+	'reservation'	=> 'ReservationController',
+	'user'			=> 'UserController',
+	'admin'		=> 'AdminController',
 ]);
 
 Route::get('/home', 'PageController@index')->name('home');
