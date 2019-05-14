@@ -1,4 +1,4 @@
-<?php
+	<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -17,13 +17,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resources([
+
+
+Route::group(['middleware' => 'auth'], function() {
+  Route::resources([
 	'auction'		=> 'AuctionController',
 	'home'			=> 'HomeController',
 	'hotsale'		=> 'HotsaleController',
 	'reservation'	=> 'ReservationController',
 	'user'			=> 'UserController',
 	'admin'		=> 'AdminController',
-]);
+]);	
+});
 
 Route::get('/home', 'PageController@index')->name('home');
