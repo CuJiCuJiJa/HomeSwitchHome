@@ -10,6 +10,7 @@ class AuctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         $auctions = Auction::all();
@@ -20,6 +21,7 @@ class AuctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function create()
     {
         return view('auction.create');
@@ -30,6 +32,7 @@ class AuctionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
         $data                   = $request->all();
@@ -49,6 +52,7 @@ class AuctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     public function show($id)
     {
         $auction = Auction::find($id);
@@ -60,6 +64,7 @@ class AuctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     public function edit($id)
     {
         return view('auction.edit');
@@ -71,6 +76,7 @@ class AuctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     public function update(Request $request, $id)
     {
         $data = $request->all();
@@ -89,10 +95,16 @@ class AuctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     public function destroy($id)
     {
         $auction = Auction::find($id);
         $auction->delete();
         return redirect()->route('index')->with('success', 'Subasta eliminada');
+    }
+
+    public function pujar($id)
+    {
+        
     }
 }

@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Reservation extends Model
+class Home_user extends Model
 {
     use SoftDeletes;
 }

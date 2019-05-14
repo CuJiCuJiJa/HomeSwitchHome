@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'], function() {
 	'reservation'	=> 'ReservationController',
 	'user'			=> 'UserController',
 	'admin'		=> 'AdminController',
-]);	
+]);
 });
 
 Route::get('/home', 'PageController@index')->name('home');
