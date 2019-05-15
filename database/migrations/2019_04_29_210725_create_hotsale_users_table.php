@@ -31,6 +31,6 @@ class CreateHotsaleUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hotsale_user');
+        Schema::dropIfExists('hotsale_users');
     }
 }

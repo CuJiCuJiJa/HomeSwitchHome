@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class HomeUser extends Model
 {
-    protected $table = 'home_user';
+    protected $table = 'home_users';
 
     use SoftDeletes;
 }
