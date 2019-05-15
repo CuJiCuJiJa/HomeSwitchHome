@@ -13,7 +13,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //
+        $homes = Homes::all();
+        return view('home.index', compact($homes));
     }
 
     /**
@@ -23,7 +24,7 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //
+        return view('home.create');
     }
 
     /**
