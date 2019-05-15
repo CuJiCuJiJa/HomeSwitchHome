@@ -5,7 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Home_user extends Model
+class HomeUser extends Model
 {
+    protected $table = 'home_user';
+
     use SoftDeletes;
 }

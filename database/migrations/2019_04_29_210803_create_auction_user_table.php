@@ -20,6 +20,7 @@ class CreateAuctionUsersTable extends Migration
             $table->integer('auction_id')->unsigned();
             $table->foreign('auction_id')->references('id')->on('auctions');
             $table->boolean('best_bid')->default(true);
+            $table->real('value');
             $table->timestamps();
             $table->softDeletes();
         });

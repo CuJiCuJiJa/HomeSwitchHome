@@ -4,7 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Auction_user extends Model
+class AuctionUser extends Model
 {
-    //
+    protected $table = 'auction_user';
+
+    use SoftDeletes;
+}
 }

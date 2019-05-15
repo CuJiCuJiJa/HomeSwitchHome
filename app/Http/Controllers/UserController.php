@@ -83,4 +83,40 @@ class UserController extends Controller
     {
         //
     }
+
+    public function pujar(Request $request, $auctionId)
+    {
+        //--------------------------------------
+        //EL USUARIO NO PODRÁ PUJAR SI:
+        //  SU NÚMERO DE TARJETA NO ESTÁ CONFIRMADO -> VALIDADO POR MIDDLEWARE
+        //  EL VALOR DE LA PUJA ES MENOR A LA PUJA PREVIA
+        //  LA PUJA PREVIA PERTENECE AL USUARIO
+        $previousBid = AuctionUser::where('id', $auctionId)->where('best_bid', true);
+
+        if ($request->value <= $previousBid->value) {
+            return redirect()->back()->with('error', 'El valor de la puja debe ser mayor al valor de la puja vigente.');        
+        }
+        if ($request->user_id == Auth::user()->id) {
+            return redirect()->back()->with('error', 'Ustéd ya tiene una puja ganadora en la subasta.');        
+        }
+        //--------------------------------------
+
+        $bid = new AuctionUser;
+
+        $bid->user_id = Auth::user()->id;
+        $bid->auction_id = $auctionId;
+        $bid->value = $request->value;
+
+        $bid->save();
+
+        //Ya que esta va a ser la nueva puja más alta debemos buscar la anterior puja y poner el campo 'best_bid' en false
+
+        $previousBid->best_bid = false;
+        $previousBid->save();
+
+        return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada');
+
+
+    }
+
 }

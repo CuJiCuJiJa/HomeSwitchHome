@@ -17,8 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
-
 Route::group(['middleware' => 'auth'], function() {
   Route::resources([
 	'auction'		=> 'AuctionController',
@@ -26,8 +24,11 @@ Route::group(['middleware' => 'auth'], function() {
 	'hotsale'		=> 'HotsaleController',
 	'reservation'	=> 'ReservationController',
 	'user'			=> 'UserController',
-	'admin'		=> 'AdminController',
+	'admin'			=> 'AdminController',
 ]);
 });
+
+//PUJA SUBASTA CON VERIFYCARD MIDDLEWARE
+Route::post('/bid', 'UserController@pujar')->middleware('verifyCard');
 
 Route::get('/home', 'PageController@index')->name('home');

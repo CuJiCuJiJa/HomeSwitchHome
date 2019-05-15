@@ -9,5 +9,5 @@ class Auction extends Model
 {
     use SoftDeletes;
 
-    //protected $fillable = [ 'starting_date', 'week', 'year', 'base_price' ];
+    protected $fillable = [ 'starting_date', 'week', 'year', 'base_price' ];
 }

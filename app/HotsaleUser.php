@@ -4,7 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hotsale_user extends Model
+class HotsaleUser extends Model
 {
-    //
+    protected $table = 'hotsale_user';
+
+    use SoftDeletes;
+}
 }
