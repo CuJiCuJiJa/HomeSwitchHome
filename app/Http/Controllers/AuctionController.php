@@ -35,7 +35,7 @@ class AuctionController extends Controller
     
     public function store(Request $request)
     {
-        $data                   = $request->all();
+       
         $auction                = new Auction;
         $auction->starting_date = $request->starting_date;
         $auction->week          = $request->week;
@@ -44,7 +44,7 @@ class AuctionController extends Controller
         $auction->home_id       = 1;//$request->home_id; esta hardcodeado 1 porque es el id de la unica residencia que tenia cargada.
         //dd($auction);
         $auction->save();
-        return redirect()->route('show', ['id' => $auction->id])->with('success', 'Subasta creada');
+        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', 'Subasta creada!');
     }
     /**
      * Display the specified resource.
