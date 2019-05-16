@@ -56,7 +56,7 @@ class AuctionController extends Controller
     public function show($id)
     {
         $auction = Auction::find($id);
-        return view('auction.show', compact('auction'));
+        return view('auction.show')->with('auction', $auction);
     }
     /**
      * Show the form for editing the specified resource.
