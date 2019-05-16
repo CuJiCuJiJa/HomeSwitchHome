@@ -18,6 +18,11 @@
                     El año de la subasta es: {{ $auction->year }}
                 </div>
             </div>
+            <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+                <button type="submit" class="btn btn-primary">Eliminar</button>
+            </form>
         </div>
     </div>
 </div>

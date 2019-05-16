@@ -21,6 +21,7 @@
                         </div>
                     @endforeach
             </div>
+            <a href="{{ route('home.create') }}">Agregar Residencia</a>
         </div>
     </div>
 </div>

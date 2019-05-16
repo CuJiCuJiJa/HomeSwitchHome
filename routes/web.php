@@ -11,9 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
@@ -31,4 +28,4 @@ Route::group(['middleware' => 'auth'], function() {
 //PUJA SUBASTA CON VERIFYCARD MIDDLEWARE
 Route::post('/bid', 'UserController@pujar')->middleware('verifyCard');
 
-Route::get('/page', 'PageController@index');
+Route::get('/', 'PageController@index');

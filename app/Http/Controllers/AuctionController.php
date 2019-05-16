@@ -95,8 +95,9 @@ class AuctionController extends Controller
     
     public function destroy(Auction $auction)
     {
-        $auction->delete();
-        return redirect()->route('index')->with('success', 'Subasta eliminada!');
+       /* $auction->delete();
+        return redirect()->route('index')->with('success', 'Subasta eliminada!');*/
+        dd("Entro a la ruta");
     }
 
 }
