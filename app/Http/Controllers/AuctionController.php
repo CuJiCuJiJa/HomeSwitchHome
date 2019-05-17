@@ -35,7 +35,7 @@ class AuctionController extends Controller
     
     public function store(Request $request)
     {
-        $data                   = $request->all();
+       
         $auction                = new Auction;
         $auction->starting_date = $request->starting_date;
         $auction->week          = $request->week;
@@ -44,7 +44,7 @@ class AuctionController extends Controller
         $auction->home_id       = 1;//$request->home_id; esta hardcodeado 1 porque es el id de la unica residencia que tenia cargada.
         //dd($auction);
         $auction->save();
-        return redirect()->route('show', ['id' => $auction->id])->with('success', 'Subasta creada');
+        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', 'Subasta creada!');
     }
     /**
      * Display the specified resource.
@@ -53,9 +53,8 @@ class AuctionController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function show($id)
+    public function show(Auction $auction)
     {
-        $auction = Auction::find($id);
         return view('auction.show')->with('auction', $auction);
     }
     /**
@@ -65,7 +64,7 @@ class AuctionController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function edit($id)
+    public function edit(Auction $auction)
     {
         return view('auction.edit');
     }
@@ -77,17 +76,15 @@ class AuctionController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function update(Request $request, $id)
+    public function update(Request $request, Auction $auction)
     {
-        $data = $request->all();
-        $auction = Auction::find($id);
         $auction->startingDate = $request->startingDate;
         $auction->week         = $request->week;
         $auction->year         = $request->year;
         $auction->base_price   = $request->base_price;
         $auction->home_id      = $request->home_id;
         $auction->save();
-        return redirect()->route('show', ['id' => $auction->id])->with('success', 'Subasta modificada');
+        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', 'Subasta modificada!');
     }
     /**
      * Remove the specified resource from storage.
@@ -96,11 +93,11 @@ class AuctionController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function destroy($id)
+    public function destroy(Auction $auction)
     {
-        $auction = Auction::find($id);
-        $auction->delete();
-        return redirect()->route('index')->with('success', 'Subasta eliminada');
+       /* $auction->delete();
+        return redirect()->route('index')->with('success', 'Subasta eliminada!');*/
+        dd("Entro a la ruta");
     }
 
 }

@@ -7,26 +7,23 @@
             <div class="card">
                 <div class="card-header">Cargar Residencia</div>
                 <div class="card-body">
-                    <form action="{{ route('home.store') }}" method="POST">
-                      {{ csrf_field() }}
-                      <div class="form-group">
-                        <label for="location">Ubicación:</label>
-                        <input type="text" class="form-control" id="location" name="location" placeholder="Ingresar ubicación">
-                      </div>
-                      <div class="form-group">
-                        <label for="starting_date">Descripción</label>
-                        <input type="date" class="form-control" id="starting_date" name='starting_date' placeholder="Fecha de inicio">
-                      </div>
-                      <div class="form-group">
-                        <label for="year">Año</label>
-                        <input type="number" class="form-control" id="year" name="year" placeholder="Año de la subasta">
-                      </div>
-                      <div class="form-group">
-                        <label for="base_price">Monto inicial</label>
-                        <input type="real" class="form-control" id="base_price" name="base_price" placeholder="Monto inicial">
-                      </div>
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                  @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                  @endif
+                  <form action="{{ route('home.store') }}" method="POST">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                      <label for="location">Ubicación:</label>
+                      <input type="text" class="form-control" id="location" name="location" placeholder="Ingresar ubicación">
+                    </div>
+                    <div class="form-group">
+                      <label for="starting_date">Descripción</label>
+                      <input type="text" class="form-control" id="descrip" name='descrip' placeholder="Ingresar una descripción">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
                 </div>
             </div>
         </div>

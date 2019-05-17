@@ -23,6 +23,7 @@
                         </div>
                     @endforeach
             </div>
+            <a href="{{ route('auction.create') }}">Agregar Subasta</a>
         </div>
     </div>
 </div>

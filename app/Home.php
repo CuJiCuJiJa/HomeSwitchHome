@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Home extends Model
 {
     use SoftDeletes;
+    
+    protected $fillable = ['location', 'descrip'];
+
 }

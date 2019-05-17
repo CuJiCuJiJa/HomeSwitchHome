@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Home;
 
 class HomeController extends Controller
 {
@@ -13,8 +14,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $homes = Homes::all();
-        return view('home.index', compact($homes));
+        $homes = Home::all();
+        return view('home.index', compact('homes'));
     }
 
     /**
@@ -35,7 +36,12 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $home           = new Home;
+        $home->location = $request->location;
+        $home->descrip  = $request->descrip;
+        $home->save();
+        return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia creada!');
     }
 
     /**
@@ -44,9 +50,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Home $home)
     {
-        //
+        return view('home.show', compact('home'));
     }
 
     /**
@@ -55,9 +61,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Home $home)
     {
-        //
+        return view('home.edit', compact('home'));
     }
 
     /**
@@ -67,9 +73,12 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, Home $home)
+    {   
+        $home->location = $request->location;
+        $home->descrip  = $request->descrip;
+        $home->save();
+        return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia actualizada!');
     }
 
     /**
@@ -78,8 +87,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Home $home)
     {
-        //
+        $home->delete();
+        return redirect('home')->with('success', 'La residencia ha sido eliminada!');
     }
 }
