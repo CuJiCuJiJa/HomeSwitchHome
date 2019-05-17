@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 
 
-class RedirectIfAuthenticated
+class VerifyCard
 {
     /**
      * Handle an incoming request.
