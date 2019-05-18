@@ -26,6 +26,6 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 //PUJA SUBASTA CON VERIFYCARD MIDDLEWARE
-Route::post('/bid', 'UserController@pujar')->middleware('verifyCard');
+Route::post('/bid', 'UserController@pujar'); //->middleware('verifyCard'); comentado para el demo1
 
 Route::get('/', 'PageController@index');

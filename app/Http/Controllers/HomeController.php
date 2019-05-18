@@ -14,8 +14,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $homes = Home::all();
-        return view('home.index', compact('homes'));
+        $activeHomes = Home::all();
+        $trashedHome = Home::withTrashed();
+
+        return view('home.index')->with('trashedHome', $trashedHome)->with('activeHomes', $activeHomes);
     }
 
     /**
@@ -36,12 +38,11 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-        
         $home           = new Home;
         $home->location = $request->location;
         $home->descrip  = $request->descrip;
         $home->save();
-        return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia creada!');
+        return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia creada.');
     }
 
     /**
@@ -89,6 +90,9 @@ class HomeController extends Controller
      */
     public function destroy(Home $home)
     {
+        if ($home->hasActiveHotsales()) {
+            return redirect()->back()->with('error', 'No es posible eliminar la residencia, por que hay hotsales activos');
+        }
         $home->delete();
         return redirect('home')->with('success', 'La residencia ha sido eliminada!');
     }

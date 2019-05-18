@@ -92,11 +92,12 @@ class UserController extends Controller
         //  EL VALOR DE LA PUJA ES MENOR A LA PUJA PREVIA
         //  LA PUJA PREVIA PERTENECE AL USUARIO
         $previousBid = AuctionUser::where('id', $auctionId)->where('best_bid', true);
+        $auction = Auction::find($id);
 
-        if ($request->value <= $previousBid->value) {
+        if ($request->value <= $auctions->best_bid_value) {
             return redirect()->back()->with('error', 'El valor de la puja debe ser mayor al valor de la puja vigente.');        
         }
-        if ($request->user_id == Auth::user()->id) {
+        if ($previousBid->user_id == Auth::user()->id) {
             return redirect()->back()->with('error', 'Ustéd ya tiene una puja ganadora en la subasta.');        
         }
         //--------------------------------------
@@ -106,7 +107,10 @@ class UserController extends Controller
         $bid->user_id = Auth::user()->id;
         $bid->auction_id = $auctionId;
         $bid->value = $request->value;
+        
+        $auction->best_bid_value = $request->value;
 
+        $auction->save();
         $bid->save();
 
         //Ya que esta va a ser la nueva puja más alta debemos buscar la anterior puja y poner el campo 'best_bid' en false
@@ -115,8 +119,6 @@ class UserController extends Controller
         $previousBid->save();
 
         return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada');
-
-
     }
 
 }
