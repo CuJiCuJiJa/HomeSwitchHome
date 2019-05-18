@@ -11,12 +11,11 @@
 |
 */
 
-<<<<<<< HEAD
+
 /*Route::get('/', function () {
     return view('welcome');
 });*/
-=======
->>>>>>> 05e74dda27bd30a8134deff9082418980b7ee9c8
+
 
 Auth::routes();
 
@@ -34,8 +33,7 @@ Route::group(['middleware' => 'auth'], function() {
 //PUJA SUBASTA CON VERIFYCARD MIDDLEWARE
 Route::post('/bid', 'UserController@pujar'); //->middleware('verifyCard'); comentado para el demo1
 
-<<<<<<< HEAD
+
 Route::get('/', 'PageController@index')->name('home');
-=======
+
 Route::get('/', 'PageController@index');
->>>>>>> 05e74dda27bd30a8134deff9082418980b7ee9c8
