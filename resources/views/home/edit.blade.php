@@ -24,6 +24,7 @@
                             <input type="text" class="form-control" id="descrip" name='descrip' placeholder="Ingresar una descripción" value="{{ $home->descrip }}">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="{{ URL::previous() }}">Cancelar</a>
                     </form>
                 </div>
             </div>

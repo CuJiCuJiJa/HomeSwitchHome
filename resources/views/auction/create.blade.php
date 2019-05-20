@@ -26,6 +26,7 @@
                         <input type="real" class="form-control" id="base_price" name="base_price" placeholder="Monto inicial">
                       </div>
                       <button type="submit" class="btn btn-primary">Submit</button>
+                      <a href="{{ URL::previous() }}">Cancelar</a>
                     </form>
                 </div>
             </div>

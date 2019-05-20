@@ -19,6 +19,7 @@
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
                         <button type="submit" class="btn btn-primary">Eliminar</button>
+                        <a href="{{ URL::previous() }}">Volver</a>
                     </form>
                 </div>
             </div>
