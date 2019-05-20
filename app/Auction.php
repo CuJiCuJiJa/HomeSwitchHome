@@ -12,7 +12,7 @@ class Auction extends Model
 
     public function home()
     {
-    	return $this->hasOne('App\Home');
+    	return $this->belongsTo('App\Home');
     }
 
     public function bids()
