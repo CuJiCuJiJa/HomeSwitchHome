@@ -84,9 +84,17 @@ class HomeController extends Controller
      */
     public function update(Request $request, Home $home)
     {   
+        //Validación
+        $request->validate([
+            'location' => 'required|max:100',
+        ]);
+
+        //Almacenamiento
         $home->location = $request->location;
         $home->descrip  = $request->descrip;
         $home->save();
+
+        //Redirección
         return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia actualizada!');
     }
 
@@ -98,10 +106,10 @@ class HomeController extends Controller
      */
     public function destroy(Home $home)
     {
-        if ($home->hasActiveHotsales()) {
+        /*if ($home->hasActiveHotsales()) {
             return redirect()->back()->with('error', 'No es posible eliminar la residencia, por que hay hotsales activos');
-        }
+        }*/
         $home->delete();
-        return redirect('home')->with('success', 'La residencia ha sido eliminada!');
+        return redirect('home')->with('success', 'La residencia ha sido anulada!');
     }
 }

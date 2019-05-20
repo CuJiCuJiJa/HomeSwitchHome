@@ -11,7 +11,7 @@ class Home extends Model
     
     protected $fillable = ['location', 'descrip'];
 
-    public function hotsales()
+    /*public function hotsales()
     {
     	return $this->hasMany('App\Hotsales');
     }
@@ -19,6 +19,6 @@ class Home extends Model
     public function scopeHasActiveHotsales()
     {
     	return $query($this->hotsales())->where('active', true);
-    }
+    }*/
 
 }

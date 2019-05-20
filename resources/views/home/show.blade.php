@@ -4,8 +4,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            @if(session('success'))
+                {{ session('success') }}
+            @endif
             <div class="card">
-                <div class="card-header">Residencia numero {{ $home->id }}</div>
+                <div class="card-header">Residencia número {{ $home->id }}</div>
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
@@ -18,8 +21,8 @@
                     <form action="{{ route('home.destroy', $home->id) }}" method="POST">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
-                        <button type="submit" class="btn btn-primary">Eliminar</button>
-                        <a href="{{ URL::previous() }}">Volver</a>
+                        <button type="submit" class="btn btn-primary">Anular</button>
+                        <a href="{{ route('home.index') }}">Listado de Residencias</a>
                     </form>
                 </div>
             </div>

@@ -4,6 +4,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            @if(session('success'))
+                {{ session('success') }}
+            @endif
             <div class="card">
                 <div class="card-header">Residencia numero {{ $home->id }}</div>
                 <div class="card-body">
@@ -16,8 +19,13 @@
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
                         <div class="form-group">
-                            <label for="location">Ubicación:</label>
+                            <label for="location">Ubicación</label>
                             <input type="text" class="form-control" id="location" name="location" placeholder="Ingresar ubicación" value="{{ $home->location }}">
+                            <span>
+                                @if($errors->has('location'))
+                                  {{ $errors->first('location') }}
+                                @endif
+                            </span>
                         </div>
                         <div class="form-group">
                             <label for="starting_date">Descripción</label>

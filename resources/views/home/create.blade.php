@@ -16,7 +16,7 @@
                     {{ csrf_field() }}
                     <div class="form-group">
                       <label for="location">Ubicación</label>
-                      <input type="text" class="form-control" id="location" name="location" placeholder="Ingresar ubicación">
+                      <input type="text" class="form-control" id="location" name="location" placeholder="Ingresar ubicación" value="{{ old('location') }}">
                       <span>
                         @if($errors->has('location'))
                           {{ $errors->first('location') }}
@@ -25,10 +25,10 @@
                     </div>
                     <div class="form-group">
                       <label for="starting_date">Descripción</label>
-                      <input type="text" class="form-control" id="descrip" name='descrip' placeholder="Ingresar una descripción">
+                      <input type="text" class="form-control" id="descrip" name='descrip' placeholder="Ingresar una descripción" value="{{ old('descrip') }}">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{ URL::previous() }}">Cancelar</a>
+                    <a href="{{ route('home.index') }}">Cancelar</a>
                   </form>
                 </div>
             </div>
