@@ -11,7 +11,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @foreach ($homes as $home)
+                    @foreach ($activeHomes as $home)
                         <div class="card-body">
                             <a href="{{ route('home.show', $home->id) }}">Ver más</a>
                             Descripción: {{ $home->descrip }}

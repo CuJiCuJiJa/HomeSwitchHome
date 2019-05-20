@@ -16,6 +16,7 @@
     return view('welcome');
 });*/
 
+Route::get('/', 'PageController@index');
 
 Auth::routes();
 
@@ -34,6 +35,4 @@ Route::group(['middleware' => 'auth'], function() {
 Route::post('/bid', 'UserController@pujar'); //->middleware('verifyCard'); comentado para el demo1
 
 
-Route::get('/', 'PageController@index')->name('home');
 
-Route::get('/', 'PageController@index');

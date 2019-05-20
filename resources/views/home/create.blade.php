@@ -15,8 +15,13 @@
                   <form action="{{ route('home.store') }}" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group">
-                      <label for="location">Ubicación:</label>
+                      <label for="location">Ubicación</label>
                       <input type="text" class="form-control" id="location" name="location" placeholder="Ingresar ubicación">
+                      <span>
+                        @if($errors->has('location'))
+                          {{ $errors->first('location') }}
+                        @endif
+                      </span>
                     </div>
                     <div class="form-group">
                       <label for="starting_date">Descripción</label>

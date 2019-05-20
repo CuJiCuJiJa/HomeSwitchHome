@@ -14,10 +14,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $activeHomes = Home::all();
-        $trashedHome = Home::withTrashed();
+        $activeHomes  = Home::all();
+        $trashedHomes = Home::withTrashed();
 
-        return view('home.index')->with('trashedHome', $trashedHome)->with('activeHomes', $activeHomes);
+        return view('home.index')->with('trashedHomes', $trashedHomes)->with('activeHomes', $activeHomes);
     }
 
     /**
@@ -38,11 +38,19 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
+        //Validación
+        $request->validate([
+            'location' => 'required|max:100',
+        ]);
+
+        //Almacenamiento
         $home           = new Home;
         $home->location = $request->location;
         $home->descrip  = $request->descrip;
         $home->save();
-        return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia creada.');
+
+        //Redirección
+        return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia creada!');
     }
 
     /**
