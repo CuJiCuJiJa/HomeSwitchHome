@@ -21,14 +21,14 @@ Route::get('/', 'PageController@index');
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
-  Route::resources([
-	'auction'		=> 'AuctionController',
-	'home'			=> 'HomeController',
-	'hotsale'		=> 'HotsaleController',
-	'reservation'	=> 'ReservationController',
-	'user'			=> 'UserController',
-	'admin'			=> 'AdminController',
-]);
+	Route::resources([
+		'auction'		=> 'AuctionController',
+		'home'			=> 'HomeController',
+		'hotsale'		=> 'HotsaleController',
+		'reservation'	=> 'ReservationController',
+		'user'			=> 'UserController',
+		'admin'			=> 'AdminController',
+	]);
 });
 
 //PUJA SUBASTA CON VERIFYCARD MIDDLEWARE

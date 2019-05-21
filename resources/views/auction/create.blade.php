@@ -10,21 +10,35 @@
                     <form action="{{ route('auction.store') }}" method="POST">
                       {{ csrf_field() }}
                       <div class="form-group">
-                        <label for="week">Semana:</label>
-                        <input type="number" class="form-control" id="week" name="week" placeholder="Ingresar semana">
-                      </div>
-                      <div class="form-group">
                         <label for="starting_date">Fecha de inicio</label>
-                        <input type="date" class="form-control" id="starting_date" name='starting_date' placeholder="Fecha de inicio">
+                        <input type="date" class="form-control" id="starting_date" name='starting_date' value="{{ old('starting_date') }}">
+                        @if($errors->has('starting_date'))
+                          {{ $errors->first('starting_date') }}
+                      @endif
                       </div>
                       <div class="form-group">
-                        <label for="year">Año</label>
-                        <input type="number" class="form-control" id="year" name="year" placeholder="Año de la subasta">
+                        <label for="home_id">Residencia</label>
+                        <select class="form-control" id="home_id" name="home_id">
+                          <option value="">Seleccione una residencia</option>
+                          @foreach($activeHomes as $activeHome)
+                            <option value="{{ $activeHome->id }}">{{ $activeHome->location }}</option>
+                          @endforeach
+                        </select>
+                        @if($errors->has('home_id'))
+                          {{ $errors->first('home_id') }}
+                        @endif
+                        @if(session('sameAuction'))
+                          {{ session('sameAuction') }}
+                        @endif
                       </div>
                       <div class="form-group">
-                        <label for="base_price">Monto inicial</label>
-                        <input type="real" class="form-control" id="base_price" name="base_price" placeholder="Monto inicial">
+                        <label for="base_price">Monto base</label>
+                        <input type="real" class="form-control" id="base_price" name="base_price" placeholder="Ingrese el monto base en $" value="{{ old('base_price') }}">
+                        @if($errors->has('base_price'))
+                          {{ $errors->first('base_price') }}
+                        @endif
                       </div>
+                      <br>
                       <button type="submit" class="btn btn-primary">Submit</button>
                       <a href="{{ URL::previous() }}">Cancelar</a>
                     </form>

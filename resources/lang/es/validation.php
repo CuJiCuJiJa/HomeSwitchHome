@@ -138,6 +138,9 @@ return [
     |
     */
     'attributes' => [
-        'location' => 'ubicación',
+        'location'      => 'ubicación',
+        'starting_date' => 'fecha de inicio',
+        'base_price'    => 'monto base',
+        'home_id'       => 'residencia',
     ],
 ];

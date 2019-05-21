@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Auction;
 use App\Home;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Input;
 
 class AuctionController extends Controller
 {
@@ -34,8 +35,9 @@ class AuctionController extends Controller
      */
     
     public function create()
-    {
-        return view('auction.create');
+    {   
+        $activeHomes = Home::all();
+        return view('auction.create')->with('activeHomes', $activeHomes);
     }
     /**
      * Store a newly created resource in storage.
@@ -45,25 +47,45 @@ class AuctionController extends Controller
      */
     
     public function store(Request $request)
-    {
+    {   
+        //Validación
+        $rules = [
+            'starting_date' => 'required|date|after:today',
+            'base_price'    => 'required|numeric',
+            'home_id'       => 'required|numeric'
+        ];
+
+        $customMessages = [
+            'starting_date.required' => 'Debe ingresar una :attribute para la subasta',
+            'starting_date.after'    => 'La :attribute debe ser mayor a la fecha actual',
+            'base_price.required'    => 'Debe ingresar un :attribute',
+            'base_price.numeric'     => 'El :attibute debe ser un número',  
+            'home_id.required'       => 'Debe seleccionar la :attribute a ocupar'
+        ];
+
+        $this->validate($request, $rules, $customMessages);
+
         //La residencia debe estar disponible para la semana de reserva elegida.
         //La semana de reserva será 6 meses después del fin de la subasta.
         //No puede existir más de una subasta para la misma residencia en la misma semana.
         $home = Auction::where('home_id', $request->home_id)->where('starting_date', $request->starting_date);
 
         if ($home->count() > 0){
-            return redirect()->back()->with('error', 'La residencia seleccionada no está disponible para la semana elegida');
+            Input::flash();
+            return redirect()->back()->with('sameAuction', 'La residencia seleccionada no está disponible para la semana elegida');
         }
-        //calculo la semana para la cual la residencia será ocupada
-        $week = Carbon::parse($request->starting_date);
-        $week->addMonths(6);
 
-        $auction = new Auction;
+        //Calculo la semana para la cual la residencia será ocupada
+        $week = Carbon::parse($request->starting_date);
+        $week->addDays(3);      //Se le suman 3 días a la fecha de inicio para obtener la fecha de fin
+        $week->addMonths(6);    //Se le suman 6 meses a la fecha de fin para obtener la semana a ocupar
+        $week->startOfWeek();   //Se obtiene el lunes de esa semana para obtener el día que comienza la semana
+
+        $auction                = new Auction;
         $auction->starting_date = $request->starting_date;
-        $auction->week = $week;
-        $auction->year = $request->year;
-        $auction->base_price = $request->base_price;
-        $auction->home_id = 1;//$request->home_id; esta hardcodeado 1 porque es el id de la unica residencia que tenia cargada.
+        $auction->week          = $week;
+        $auction->base_price    = $request->base_price;
+        $auction->home_id       = $request->home_id;
     
         $auction->save();
         return redirect()->route('auction.show', ['id' => $auction->id])->with('success', 'Subasta creada!');
@@ -91,7 +113,7 @@ class AuctionController extends Controller
         //Si la subasta ya ha iniciado no se puede modificar
         $now = Carbon::now();
         if ($auction->startingDate > $now) {
-            return redirect()->back()->with('error', 'La subasta ya ha iniciado y no esposible modificarla');
+            return redirect()->back()->with('error', 'La subasta ya ha iniciado y no es posible modificarla');
         }
 
         return view('auction.edit');

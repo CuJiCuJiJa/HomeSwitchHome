@@ -15,15 +15,17 @@
                     </div>
                 @endif
                 <div class="card-body">
-                    Descripción: {{ $home->descrip }}
                     Ubicación: {{ $home->location }}
+                    <br>
+                    Descripción: {{ $home->descrip }}
+                    <br><br>
                     <a href="{{ route('home.edit', $home->id) }}">Editar</a>
                     <form action="{{ route('home.destroy', $home->id) }}" method="POST">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
                         <button type="submit" class="btn btn-primary">Anular</button>
-                        <a href="{{ route('home.index') }}">Listado de Residencias</a>
                     </form>
+                    <a href="{{ route('home.index') }}">Listado de Residencias</a>
                 </div>
             </div>
         </div>
