@@ -17,12 +17,13 @@
                 <div class="card-body">
                     Comienza el {{ $auction->starting_date }}
                     <br>
-                    La semana a ocupar empieza el {{ $auction->week }}
+                    La semana de ocupación comienza el {{ $auction->week }}
                     <br>
                     Ubicación de la residencia: <a href="{{ route('home.show', $auction->home->id) }}">{{ $auction->home->location }}</a>
                 </div>
             </div>
             <br>
+            <a href="{{ route('auction.edit', $auction) }}">Editar</a>
             <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
                 {{ csrf_field() }}
                 {{ method_field('DELETE') }}

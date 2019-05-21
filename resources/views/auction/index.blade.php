@@ -4,25 +4,31 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Subastas</div>
-                    
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    @foreach ($activeAuctions as $activeAuction)
-                        <div class="card-body">
-                            <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
-                            Empieza el:{{ $activeAuction->starting_date }}
-                            El precio base es: {{ $activeAuction->base_price }} (En realidad este valor no se deberia mostrar)
-                            El numero de la semana del año es: {{ $activeAuction->week }}
-                            El año de la subasta es: {{ $activeAuction->year }}
-                            <hr>
-                        </div>
-                    @endforeach
-            </div>
+            @if(session('success'))
+                {{ session('success') }}
+            @endif
+            @if($cantAuctions == 0)
+                <h2>Oops! No existen subastas actualmente</h2>
+            @else
+                <div class="card">
+                    <div class="card-header">Subastas</div>
+                        
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        @foreach ($activeAuctions as $activeAuction)
+                            <div class="card-body">
+                                <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
+                                Empieza el:{{ $activeAuction->starting_date }}
+                                La semana de ocupación comienza el {{ $activeAuction->week }}
+                                Ubicación de la residencia: <a href="{{ route('home.show', $activeAuction->home->id) }}">{{ $activeAuction->home->location }}</a>
+                                <hr>
+                            </div>
+                        @endforeach
+                </div>
+            @endif
             <a href="{{ route('auction.create') }}">Agregar Subasta</a>
         </div>
     </div>
