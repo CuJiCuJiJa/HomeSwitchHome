@@ -12,6 +12,30 @@
                 <div class="card-body">
                     <form action="{{ route('auction.store') }}" method="POST">
                       {{ csrf_field() }}
+
+                    <div class='form-group'>
+                          
+                          <label for="weekPicker">Semana subastada</label>
+                          <br>
+                          <input type="text" name="weekPicker" id="weekPicker">
+                          
+                          <script>
+                            $( "#weekPicker" ).weekpicker().on('change.weekpicker', function(a){
+                              var picker = $(a.target).data('weekpicker');
+
+                            })                              
+                          </script>
+
+                          <script>
+                            function getDateOfWeek(w, y) {
+                              var d = (1 + (w - 1) * 7); // 1st of January + 7 days for each week
+                              return new Date(y, 0, d);
+                            }
+                          </script>
+                      </div>
+<script>
+  $('input[name=product]').val(product);
+</script>
                       <div class="form-group">
                         <label for="starting_date">Fecha de inicio</label>
                         <input type="date" class="form-control" id="starting_date" name='starting_date' value="{{ old('starting_date') }}">
@@ -20,15 +44,7 @@
                       @endif
                       </div>
                       
-                      <div class='form-group'>
-                          
-                          <input type="text" name="weekPicker" id="weekPicker">
-                          <script>
-                            $( "#weekPicker" ).weekpicker();
-                          </script>
-                      
-                      </div>
-                      
+
                       <div class="form-group">
                         <label for="home_id">Residencia</label>
                         <select class="form-control" id="home_id" name="home_id">
