@@ -20,7 +20,6 @@ class CreateAuctionsTable extends Migration
             $table->boolean('active')->default(true);
             $table->date('starting_date');
             $table->date('week');
-            //$table->integer('year');
             $table->integer('base_price');
             $table->integer('best_bid_value')->nullable();
             $table->timestamps();

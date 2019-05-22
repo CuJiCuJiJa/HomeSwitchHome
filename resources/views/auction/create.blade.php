@@ -15,12 +15,12 @@
 
                     <div class='form-group'>
                           
-                          <label for="weekPicker">Semana subastada</label>
+                          <label for="week">Semana subastada</label>
                           <br>
-                          <input type="text" name="weekPicker" id="weekPicker">
+                          <input type="text" name="week" id="week">
                           
                           <script>
-                            $( "#weekPicker" ).weekpicker().on('change.weekpicker', function(a){
+                            $( "#week" ).weekpicker().on('change.weekpicker', function(a){
                               var picker = $(a.target).data('weekpicker');
 
                             })                              
@@ -50,7 +50,7 @@
                         <select class="form-control" id="home_id" name="home_id">
                           <option value="">Seleccione una residencia</option>
                           @foreach($activeHomes as $activeHome)
-                            <option value="{{ $activeHome->id }}">{{ $activeHome->location }}</option>
+                            <option value="{{ $activeHome->id }}">Residencia: {{ $activeHome->id }}, de: {{ $activeHome->location }}</option>
                           @endforeach
                         </select>
                         @if($errors->has('home_id'))

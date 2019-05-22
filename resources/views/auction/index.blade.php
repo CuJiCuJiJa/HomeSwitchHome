@@ -30,6 +30,7 @@
                 </div>
             @endif
             <a href="{{ route('auction.create') }}">Agregar Subasta</a>
+            <a href="{{ route('getSearch.auction') }}">Buscar Subasta</a>
         </div>
     </div>
 </div>

@@ -18,7 +18,6 @@
                             Empieza el:{{ $auction->starting_date }}
                             El precio base es: {{ $auction->base_price }} (En realidad este valor no se deberia mostrar)
                             El numero de la semana del año es: {{ $auction->week }}
-                            El año de la subasta es: {{ $auction->year }}
                             <hr>
                         </div>
                     @endforeach

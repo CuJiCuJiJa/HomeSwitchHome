@@ -166,7 +166,7 @@ class AuctionController extends Controller
 
         //Actualización
         $auction->starting_date = $request->starting_date;
-        $auction->week          = $week;
+        //$auction->week          = $week;
         $auction->base_price    = $request->base_price;
         $auction->home_id       = $request->home_id;
         $auction->save();
