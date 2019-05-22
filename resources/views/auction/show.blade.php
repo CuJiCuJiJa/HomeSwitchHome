@@ -19,7 +19,7 @@
                     <br>
                     La semana de ocupación comienza el {{ $auction->week }}
                     <br>
-                    Ubicación de la residencia: <a href="{{ route('home.show', $auction->home->id) }}">{{ $auction->home->location }}</a>
+                    Ubicación de la residencia: {{ $auction->home->location }}
                 </div>
             </div>
             <br>

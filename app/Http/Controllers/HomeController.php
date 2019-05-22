@@ -16,8 +16,9 @@ class HomeController extends Controller
     {
         $activeHomes  = Home::all();
         $trashedHomes = Home::withTrashed();
+        $cantHomes    = $activeHomes->count();
 
-        return view('home.index')->with('trashedHomes', $trashedHomes)->with('activeHomes', $activeHomes);
+        return view('home.index')->with('trashedHomes', $trashedHomes)->with('activeHomes', $activeHomes)->with('cantHomes', $cantHomes);
     }
 
     /**
@@ -39,9 +40,11 @@ class HomeController extends Controller
     public function store(Request $request)
     {
         //Validación
-        $request->validate([
-            'location' => 'required|max:100',
-        ]);
+        $rules = [ 'location' => 'required|max:100' ];
+
+        $customMessages = [ 'location.required' => 'Debe ingresar la ubicación de la residencia' ];
+
+        $this->validate($request, $rules, $customMessages);
 
         //Almacenamiento
         $home           = new Home;
@@ -85,9 +88,11 @@ class HomeController extends Controller
     public function update(Request $request, Home $home)
     {   
         //Validación
-        $request->validate([
-            'location' => 'required|max:100',
-        ]);
+        $rules = [ 'location' => 'required|max:100' ];
+
+        $customMessages = [ 'location.required' => 'Debe ingresar la ubicación de la residencia' ];
+
+        $this->validate($request, $rules, $customMessages);
 
         //Almacenamiento
         $home->location = $request->location;

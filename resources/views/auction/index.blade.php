@@ -8,7 +8,7 @@
                 {{ session('success') }}
             @endif
             @if($cantAuctions == 0)
-                <h2>Oops! No existen subastas actualmente</h2>
+                <h2>Oops! No existen subastas actualmente...</h2>
             @else
                 <div class="card">
                     <div class="card-header">Subastas</div>
@@ -23,7 +23,7 @@
                                 <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
                                 Empieza el:{{ $activeAuction->starting_date }}
                                 La semana de ocupación comienza el {{ $activeAuction->week }}
-                                Ubicación de la residencia: <a href="{{ route('home.show', $activeAuction->home->id) }}">{{ $activeAuction->home->location }}</a>
+                                Ubicación de la residencia: {{ $activeAuction->home->location }}
                                 <hr>
                             </div>
                         @endforeach
