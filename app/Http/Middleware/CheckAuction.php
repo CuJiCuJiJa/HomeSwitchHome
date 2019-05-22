@@ -3,9 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Auction;
+use Carbon\Carbon;
 
-
-class VerifyCard
+class CheckAuction extends Middleware
 {
     /**
      * Handle an incoming request.
@@ -17,13 +18,15 @@ class VerifyCard
      */
     public function handle($request, Closure $next)
     {
-        $id = Auth::user()->id;
-        $user = User::find($id);
+        $auctionId = $request->route()->parameter('auction');
+        $auction = Auction::find($auctionId);
+        $now = Carbon::now();
 
-        if ($user->card_verification == false) {
-            return redirect()->back()-with('error', 'Número de tarjeta no validado, intente más tarde');
+        if ($auction->endDate > $now) {
+            $auction->active = false;
+            $auction->save();
         }
-
+        
         return $next($request);
     }
 }

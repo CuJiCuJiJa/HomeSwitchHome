@@ -11,7 +11,7 @@
                       {{ csrf_field() }}
                       <div class="form-group">
                         <label for="week">Semana:</label>
-                        <input type="number" class="form-control" id="week" name="week" placeholder="Ingresar semana">
+                        <input type="date" class="form-control" id="week" name="week" placeholder="Ingresar semana">
                       </div>
                       <div class="form-group">
                         <label for="location">Lugar</label>

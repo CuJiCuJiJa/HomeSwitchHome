@@ -35,7 +35,7 @@
                   var month = parseInt($(this).val().substring(5, 7));
                   var year = parseInt($(this).val().substring(0, 4));
                   if (month > 6 ){
-                    month = parseStr(month - 6);
+                    month = toString(month - 6);
                   } else {
                     month = toString(month + 6);
                     year = toString(year - 1);
