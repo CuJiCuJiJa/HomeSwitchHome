@@ -46,6 +46,11 @@ html, body {
     text-transform: uppercase;
 }
 
+.links > a:hover{
+    text-decoration: none;
+    color: grey !important;
+}
+
 .m-b-md {
     margin-bottom: 30px;
 }
