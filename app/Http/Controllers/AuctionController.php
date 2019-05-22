@@ -5,6 +5,7 @@ use App\Auction;
 use App\Home;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
+use Auth;
 
 class AuctionController extends Controller
 {
@@ -81,10 +82,11 @@ class AuctionController extends Controller
             Input::flash();
             return redirect()->back()->with('sameAuction', 'La residencia seleccionada no está disponible para la semana elegida');
         }
-
+        
         //Almacenamiento
         $auction                = new Auction;
-        $auction->starting_date = $request->starting_date;
+        $auction->starting_date = Carbon::parse($request->starting_date);
+        $auction->end_date      = Carbon::parse($request->starting_date)->addHours(72);
         $auction->week          = $week;
         $auction->base_price    = $request->base_price;
         $auction->home_id       = $request->home_id;
@@ -165,8 +167,8 @@ class AuctionController extends Controller
         }
 
         //Actualización
-        $auction->starting_date = $request->starting_date;
-        //$auction->week          = $week;
+        $auction->starting_date = Carbon::parse($request->starting_date);
+        $auction->end_date      = Carbon::parse($request->starting_date)->addHours(72);
         $auction->base_price    = $request->base_price;
         $auction->home_id       = $request->home_id;
         $auction->save();

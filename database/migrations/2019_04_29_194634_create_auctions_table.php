@@ -19,6 +19,7 @@ class CreateAuctionsTable extends Migration
             $table->foreign('home_id')->references('id')->on('homes');
             $table->boolean('active')->default(true);
             $table->date('starting_date');
+            $table->date('end_date');
             $table->date('week');
             $table->integer('base_price');
             $table->integer('best_bid_value')->nullable();
