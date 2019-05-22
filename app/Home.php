@@ -21,4 +21,4 @@ class Home extends Model
     	return $query($this->hotsales())->where('active', true);
     }*/
 
-}
+} 
