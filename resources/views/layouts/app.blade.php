@@ -21,6 +21,11 @@
 
     @yield('head')
 
+    <link rel="stylesheet" href="{{asset('js/jquery-ui.min.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+    <script src="{{asset('js/jquery.weekpicker.js')}}"></script>
+
 </head>
 
 <!--?php
@@ -113,4 +118,9 @@
     @yield('footer')
 
 </footer>
+        <main class="py-4">
+            @yield('content')
+        </main>
+ 
+</body>
 </html>
