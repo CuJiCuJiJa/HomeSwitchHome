@@ -67,3 +67,7 @@ html, body {
    min-height: 500px
 
 }
+
+.mask-white{
+    background: rgba(255, 255, 255, 0.7);
+}
