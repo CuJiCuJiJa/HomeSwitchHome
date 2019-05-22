@@ -19,6 +19,16 @@
                           {{ $errors->first('starting_date') }}
                       @endif
                       </div>
+                      
+                      <div class='form-group'>
+                          
+                          <input type="text" name="weekPicker" id="weekPicker">
+                          <script>
+                            $( "#weekPicker" ).weekpicker();
+                          </script>
+                      
+                      </div>
+                      
                       <div class="form-group">
                         <label for="home_id">Residencia</label>
                         <select class="form-control" id="home_id" name="home_id">

@@ -24,6 +24,12 @@
     <link href="{{ asset('css/stylehsh.css') }}" rel="stylesheet"> 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+
+    <link rel="stylesheet" href="{{asset('js/jquery-ui.min.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+    <script src="{{asset('js/jquery.weekpicker.js')}}"></script>
+
 </head>
 
 <body>
@@ -105,6 +111,6 @@
         <main class="py-4">
             @yield('content')
         </main>
-    
+ 
 </body>
 </html>
