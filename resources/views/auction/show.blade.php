@@ -28,7 +28,7 @@
                 @endif
                 <form action="{{ route('user.bid', $auction->id) }}" method="POST">
                     {{ csrf_field() }}
-                    {{ method_field('POST') }}
+                    
                     <input type="real" class="form-control" id="bid_value" name="bid_value" placeholder="Ingrese el monto a pujar">
                     @if($errors->has('bid_value'))
                           {{ $errors->first('bid_value') }}

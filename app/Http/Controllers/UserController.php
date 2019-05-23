@@ -95,11 +95,14 @@ class UserController extends Controller
         //  EL VALOR DE LA PUJA ES MENOR A LA PUJA PREVIA
         //  LA PUJA PREVIA PERTENECE AL USUARIO
         $rules = [
-            'value'    => 'required|numeric',
+            'bid_value' => 'required|numeric'
         ];
+
         $customMessages = [
-            'value.required' => 'Debe ingresar un valor',
-        ];  
+            'bid_value.required' => 'El valor de la puja es requerido',
+            'bid_value.numeric'  => 'El valor debe ser numerico',
+        ];
+
         $this->validate($request, $rules, $customMessages);
 
         $bids = AuctionUser::where('auction_id', $auctionId);
@@ -108,7 +111,7 @@ class UserController extends Controller
             $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->get()->first();
 
             if ($previousBid->user_id == Auth::user()->id) {
-                return redirect()->back()->with('error', 'Usted ya tiene la última puja, no puede pujar dos veces consecutivas.');        
+                return redirect()->back()->with('error', 'Usted ya tiene la puja ganadora en la subasta.');        
             }
 
             if ($request->bid_value <= $auction->best_bid_value) {
@@ -133,7 +136,7 @@ class UserController extends Controller
         $auction->update();
 
         $bid->save();
-        dd('212');
+
         return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada!');
     }
 
