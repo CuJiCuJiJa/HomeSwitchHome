@@ -1,7 +1,7 @@
-	@if(Session::has('success'))
-        <div class="alert alert-success">
-            <a class="close" data-dismiss="alert">×</a>
-            {!!Session::get('success')!!}
+@if(Session::has('success'))
+    <div class="alert alert-success">
+        <a class="close" data-dismiss="alert">×</a>
+             {!!Session::get('success')!!}
         </div>
   @endif
 

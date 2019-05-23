@@ -16,37 +16,40 @@
               <div class='form-group'>
                 <label for="weekAuctioned">Semana subastada</label>
                 <br>
-                <input type="date" name="weekAuctioned" id="weekAuctioned">
+                <input type="date" data-date="" data-date-format="DD MMMM YYYY" name="weekAuctioned" id="weekAuctioned">
               </div>
 
               <div class='form-group'>
                 <label for="starting_date">Fecha de inicio</label>
                 <br>
-                <input type="date"  class="form-control" name="starting_date" id="starting_date" readonly/>
+                <input type="text"  class="form-control" name="starting_date" id="starting_date" readonly/>
                 @if($errors->has('starting_date'))
                   {{ $errors->first('starting_date') }}
                 @endif
               </div>
 
               <script>
-                
-
+               
                 $('#weekAuctioned').change(function() {
                   var month = parseInt($(this).val().substring(5, 7));
                   var year = parseInt($(this).val().substring(0, 4));
                   if (month > 6 ){
-                    month = toString(month - 6);
+                    month = (month - 6);
+                    month = '0' + month;
                   } else {
-                    month = toString(month + 6);
-                    year = toString(year - 1);
-                  }                  
-                  var auctionDate = $(this).val().substring(8, 10) + month + year;
+                    if (month < 4 ){
+                      month = '0' + (month + 6);                      
+                    } else {
+                      month = (month + 6);                                          
+                    }
+                    year = (year - 1);
+                  }   
+
+                  var auctionDate = month + '/' + $(this).val().substring(8, 10) +'/' + year;
                   console.log(auctionDate);
-                  $('#starting_date').val($(this).val());
+                  $('#starting_date').val(auctionDate);
                   });
-
-
-                 
+                
               </script>
 
               <div class="form-group">
@@ -77,7 +80,7 @@
 
               <br>
               
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">Crear</button>
               
               <a href="{{ URL::previous() }}">Cancelar</a>
             </form>
