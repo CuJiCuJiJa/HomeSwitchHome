@@ -82,6 +82,7 @@ html, body {
 
 .descripcion{
     font-size: x-large;
+    text-align: left;
 }
 .exito{
     background: #05863b85;

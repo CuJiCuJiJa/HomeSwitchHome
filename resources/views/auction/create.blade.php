@@ -6,9 +6,11 @@
 <div class="container mask-white">
   <div class="row">
     <div class="col-12">
+
       <div class="card">
         <div class="card-header">Crear Subasta</div>
           <div class="card-body">
+
             <form action="{{ route('auction.store') }}" method="POST">
               {{ csrf_field() }}
               
@@ -25,7 +27,9 @@
                 <br>
                 <input type="date" name="weekAuctioned" id="weekAuctioned" min="{{$date}}"> <br>
                 @if($errors->has('weekAuctioned'))
-                  {{ $errors->first('weekAuctioned') }}
+                  <div class="fallo horizontal-list">  
+                    {{ $errors->first('weekAuctioned') }}
+                  </div>
                 @endif
               </div>
 
@@ -34,7 +38,9 @@
                 <br>
                 <input type="text"  class="form-control" name="starting_date" id="starting_date" readonly/>
                 @if($errors->has('starting_date'))
-                  {{ $errors->first('starting_date') }}
+                  <div class="fallo horizontal-list">  
+                    {{ $errors->first('starting_date') }}
+                  </div>
                 @endif
               </div>
 
@@ -75,7 +81,9 @@
                     @endforeach
                 </select>
                 @if($errors->has('home_id'))
-                  {{ $errors->first('home_id') }}
+                  <div class="fallo horizontal-list">  
+                    {{ $errors->first('home_id') }}
+                </div>  
                 @endif
                 
                 @if(session('sameAuction'))
@@ -88,7 +96,9 @@
                 <label for="base_price">Monto base</label>
                 <input type="real" class="form-control" id="base_price" name="base_price" placeholder="Ingrese el monto base en $" value="{{ old('base_price') }}">
                 @if($errors->has('base_price'))
-                  {{ $errors->first('base_price') }}
+                  <div class="fallo horizontal-list">  
+                    {{ $errors->first('base_price') }}
+                  </div>
                 @endif
               </div>
 
@@ -101,9 +111,11 @@
               </div>
 
             </form>
+
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
