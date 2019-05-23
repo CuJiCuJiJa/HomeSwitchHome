@@ -8,7 +8,7 @@
                 {{ session('success') }}
             @endif
             <div class="card">
-                <div class="card-header">Subasta numero {{ $auction->id }}</div>
+                <div class="card-header">Subasta al {{ $auction->week }}</div>
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
@@ -39,7 +39,7 @@
                 {{ csrf_field() }}
                 {{ method_field('DELETE') }}
                 <button type="submit" class="btn btn-primary">Eliminar</button>
-                <a href="{{ URL::previous() }}">Volver</a>
+                <a href="{{ route('auction.index') }}">Volver</a>
             </form>
         </div>
     </div>

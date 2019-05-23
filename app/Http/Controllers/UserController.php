@@ -102,7 +102,7 @@ class UserController extends Controller
             $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->get()->first();
 
             if ($previousBid->user_id == Auth::user()->id) {
-                return redirect()->back()->with('error', 'Usted ya tiene la puja ganadora en la subasta.');        
+                return redirect()->back()->with('error', 'Usted ya tiene la última puja, no puede pujar dos veces consecutivas.');        
             }
 
             if ($request->bid_value <= $auction->best_bid_value) {

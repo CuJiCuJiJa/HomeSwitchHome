@@ -17,6 +17,7 @@ class CreateHomesTable extends Migration
             $table->increments('id');
             $table->string('location');
             $table->string('descrip')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

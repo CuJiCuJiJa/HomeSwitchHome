@@ -9,7 +9,7 @@ class Home extends Model
 {	
     use SoftDeletes;
     
-    protected $fillable = ['location', 'descrip'];
+    protected $fillable = ['location', 'descrip', 'active'];
 
     /*public function hotsales()
     {

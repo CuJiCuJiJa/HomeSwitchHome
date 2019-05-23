@@ -20,9 +20,9 @@
                     Descripción: {{ $home->descrip }}
                     <br><br>
                     <a href="{{ route('home.edit', $home->id) }}">Editar</a>
-                    <form action="{{ route('home.destroy', $home->id) }}" method="POST">
+                    <form action="{{ route('home.anular', $home->id) }}" method="POST">
                         {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
+                        {{ method_field('POST') }}
                         <button type="submit" class="btn btn-primary">Anular</button>
                     </form>
                     <a href="{{ route('home.index') }}">Listado de Residencias</a>

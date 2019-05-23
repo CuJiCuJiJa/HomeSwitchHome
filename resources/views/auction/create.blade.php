@@ -14,7 +14,7 @@
               
 
               <div class='form-group'>
-                <label for="weekAuctioned">Semana subastada</label>
+                <label for="weekAuctioned">Semana a subastar</label>
                 <br>
                 <input type="date" data-date="" data-date-format="DD MMMM YYYY" name="weekAuctioned" id="weekAuctioned">
               </div>

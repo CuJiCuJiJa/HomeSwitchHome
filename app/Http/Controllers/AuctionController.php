@@ -38,7 +38,7 @@ class AuctionController extends Controller
     
     public function create()
     {   
-        $activeHomes = Home::all();
+        $activeHomes = Home::where('active', true)->get();
         return view('auction.create')->with('activeHomes', $activeHomes);
         
     }
@@ -50,7 +50,7 @@ class AuctionController extends Controller
      */
     
     public function store(Request $request)
-    {  dd($request);
+    {  
         //Validación
         $rules = [
             'starting_date' => 'required|date|after:today',
@@ -121,7 +121,7 @@ class AuctionController extends Controller
         if ($auction->startingDate > $now) {
             return redirect()->back()->with('error', 'La subasta ya ha iniciado y no es posible modificarla');
         }
-        $activeHomes = Home::all();
+        $activeHomes = Home::where('active', true)->get();
         return view('auction.edit')->with('auction', $auction)->with('activeHomes', $activeHomes);
     }
     /**
