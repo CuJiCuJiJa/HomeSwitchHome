@@ -58,9 +58,13 @@
               <div class="form-group">
                 <label for="home_id">Residencia</label>
                 <select class="form-control" id="home_id" name="home_id">
-                  <option selected="true" value="{{ old('home_id') }}">Seleccione una residencia</option>
+                  <option value="">Seleccione una residencia</option>
                     @foreach($activeHomes as $activeHome)
+                      @if($activeHome->id == old('home_id'))
+                        <option value="{{ $activeHome->id }}" selected>{{ $activeHome->location }}</option>
+                      @else
                       <option value="{{ $activeHome->id }}">{{ $activeHome->location }}</option>
+                      @endif
                     @endforeach
                 </select>
                 @if($errors->has('home_id'))
