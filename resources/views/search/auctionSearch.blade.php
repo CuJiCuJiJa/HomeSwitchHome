@@ -13,17 +13,18 @@
                     <form action="{{ route('postSearch.auction') }}" method="POST">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <label for="week">Semana:</label>
+                            <label for="week">Semana: </label>
                             <input type="date" class="form-control" id="week" name="week" placeholder="Ingresar semana">
                         </div>
                         <div class="form-group">
-                            <label for="location">Lugar:</label>
+                            <label for="location">Lugar: </label>
                             <input type="text" class="form-control" id="location" name='location' placeholder="locación">
                         </div>
                         <div class="links horizontal-list">
                             <button type="submit" class="btn btn-primary">Buscar</button>  
                         </div>
                     </form>
+
                     <div class="links horizontal-list">
                         <a href="{{ URL::previous() }}">Cancelar</a>  
                     </div>

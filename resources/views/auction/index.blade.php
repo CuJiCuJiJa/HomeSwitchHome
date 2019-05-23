@@ -5,7 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-12 text-md-center full-height">
             @if(session('success'))
-                {{ session('success') }}
+                <div class="exito horizontal-list">
+                    {{ session('success') }}
+                </div>
             @endif
             @if($cantAuctions == 0)
                 <h2>¡Oops! No existen subastas actualmente...</h2>
@@ -23,9 +25,9 @@
 
                             <div class="card-body">
                                 <div class="descripcion">
-                                    Empieza el:{{ $activeAuction->starting_date }}
+                                    La subasta abrira el {{ $activeAuction->starting_date }} y cerrara 72hs mas tarde.
                                     <br>
-                                    La semana de ocupación comienza el {{ $activeAuction->week }}
+                                    La semana subastada comienza el lunes {{ $activeAuction->week }}
                                     <br>
                                     Ubicación de la residencia: {{ $activeAuction->home->location }}
                                 </div>
