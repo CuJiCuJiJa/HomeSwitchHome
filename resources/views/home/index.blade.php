@@ -2,11 +2,15 @@
 
 @section('content')
 <div class="container mask-white">
+
     <div class="row justify-content-center">
-        <div class="col-md-8">
+
+        <div class="col-12">
 
             @if(session('success'))
-                {{ session('success') }}
+                <div class="exito horizontal-list">   
+                    {{ session('success') }}
+                </div>
             @endif
 
             @if($cantHomes == 0)
@@ -22,16 +26,24 @@
                     
                     @foreach ($activeHomes as $home)
                         <div class="card-body">
-                            <a href="{{ route('home.show', $home->id) }}">Ver más</a>
+                           <div class="descripcion">
                                 Descripción: {{ $home->descrip }}
+                                <br>
                                 Ubicación: {{ $home->location }}
-                            <a href="{{ route('home.edit', $home->id) }}">Editar</a>
+                            </div>
+
+                            <div class="links horizontal-list">    
+                                <a href="{{ route('home.show', $home->id) }}">Ver más</a>
+                                <a href="{{ route('home.edit', $home->id) }}">Editar</a>
+                            </div>
                             <hr>
                         </div>
                     @endforeach
                 </div>
             @endif
-            <a class="link" href="{{ route('home.create') }}">Agregar Residencia</a>
+            <div class="links horizontal-list"> 
+                <a class="link" href="{{ route('home.create') }}">Agregar Residencia</a>
+            </div>
         </div>
     </div>
 </div>

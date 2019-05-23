@@ -18,9 +18,11 @@ class AuctionController extends Controller
     public function index()
     {
         $now = Carbon::now();
-        $activeAuctions  = Auction::all();          //Recupero subastas activas
+        $activeAuctions = Auction::all();          //Recupero subastas activas
         $trashedAuctions = Auction::withTrashed();  //Recupero subastas eliminadas
-        $cantAuctions    = $activeAuctions->count();
+        $cantAuctions = $activeAuctions->count();
+
+
 
         return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions);
     }

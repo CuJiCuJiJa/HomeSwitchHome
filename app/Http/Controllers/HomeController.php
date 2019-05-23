@@ -53,7 +53,7 @@ class HomeController extends Controller
         $home->save();
 
         //Redirección
-        return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia creada!');
+        return redirect()->route('home.show', ['id' => $home->id])->with('success', '¡Residencia creada con éxito!');
     }
 
     /**
@@ -100,7 +100,7 @@ class HomeController extends Controller
         $home->save();
 
         //Redirección
-        return redirect()->route('home.show', ['id' => $home->id])->with('success', 'Residencia actualizada!');
+        return redirect()->route('home.show', ['id' => $home->id])->with('success', '¡Residencia ha sido actualizada!');
     }
 
     /**
@@ -115,7 +115,7 @@ class HomeController extends Controller
             return redirect()->back()->with('error', 'No es posible eliminar la residencia, por que hay hotsales activos');
         }*/
         $home->delete();
-        return redirect('home')->with('success', 'La residencia ha sido anulada!');
+        return redirect('home')->with('success', '¡La residencia ha sido borrada!');
     }
     public function anular($homeId)
     {
@@ -123,6 +123,6 @@ class HomeController extends Controller
         $home->active = false;
         //dd($home);
         $home->update();
-        return redirect()->route('home.index')->with('success', 'La residencia ha sido anulada!');
+        return redirect()->route('home.index')->with('success', '¡La residencia ha sido borrada!');
     }
 }

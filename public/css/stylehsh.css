@@ -36,17 +36,17 @@ html, body {
     font-size: 84px;
 }
 
-.links > a, .links > form {
+.links > a, .links > form  {
     color: #1a1a1a !important;
     padding: 0 40px;
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 300;
     letter-spacing: .1rem;
     text-decoration: none;
     text-transform: uppercase;
 }
 
-.horizontal-list > a, .horizontal-list > form {
+.horizontal-list > a, .horizontal-list > form, .horizontal-list > button {
     float:right;
 }
 
@@ -79,3 +79,20 @@ html, body {
 .mask-white{
     background: rgba(255, 255, 255, 0.7);
 }
+
+.descripcion{
+    font-size: x-large;
+}
+.exito{
+    background: #05863b85;
+    width: max-content;
+    padding: 1em;
+    font-size: large;
+} 
+
+.fallo{
+    background: #86090585;
+    padding: 0.5em;
+    color: white;
+    font-size: large;
+} 
