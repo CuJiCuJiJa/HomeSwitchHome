@@ -21,7 +21,7 @@ class CreateAuctionsTable extends Migration
             $table->date('starting_date');
             $table->date('end_date');
             $table->date('week');
-            $table->integer('base_price');
+            $table->('base_price'); //revisar
             $table->integer('best_bid_value')->nullable();
             $table->timestamps();
             $table->softDeletes();
