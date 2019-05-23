@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container mask-white">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -37,7 +37,7 @@
                       </div>
                       <div class="form-group">
                         <label for="base_price">Monto base</label>
-                        <input type="real" class="form-control" id="base_price" name="base_price" placeholder="Ingrese el monto base en $" value="{{ $auction->base_price }}">
+                        <input type="integer" class="form-control" id="base_price" name="base_price" placeholder="Ingrese el monto base en $" value="{{ $auction->base_price }}">
                         @if($errors->has('base_price'))
                           {{ $errors->first('base_price') }}
                         @endif

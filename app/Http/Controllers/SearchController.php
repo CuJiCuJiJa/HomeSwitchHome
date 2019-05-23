@@ -10,29 +10,38 @@ class SearchController extends Controller
 {
     public function getSearchAuction()
     {
-    	return view('auction.search');
+    	return view('search.auctionSearch');
     }
 
-    public function postSearchAuction(Request $request, Auction $auction)
+    public function postSearchAuction(Request $request)
     {
     	//LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
-    	$auction = $auction->newQuery();
-
+    	$auctions = Auction::with('home')->get();
+        $results = collect();
     	//el campo 'home' dentro del whereHas llama la funcion home del modelo auction que me trae el home relacionado a la subasta, utilizo $q para acceder al campo location del modelo home relacionado
+
 		if ($request->has('location')) {
-    		$auction->whereHas('home', function($q) use ($request)
-    			{
-    				$q->where('location', $request->input('location'));
-    			});
+    		foreach ($auctions as $auction) {
+                if ($auction->home->location == $request->location) {
+                    $results->push($auction);
+                }
+            }
 		}
 
 		if ($request->has('week')) {
-		    $auction->where('week', $request->input('week'));
+		    foreach ($auctions as $auction) {
+                if ($auction->week == $request->week) {
+                    $results->push($auction);
+                }
+            }
 		}
 
-		$auction->get();
-		   
-		return view('auction.searchResults')->with('auctions', $auction);
+		if (!$results->count() > 0) {
+            return view('search.auctionResults')->with('error', 'No hay resultados.');
+        }
+        
+		
+		return view('search.auctionResults')->with('auctions', $results);
     }
 
 }

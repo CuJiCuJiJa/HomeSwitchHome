@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mask-white">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">{{ __('Iniciar sesión') }}</div>
 
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="form-group row mb-0 ">
-                            <div class="col-md-8 offset-md-4">
+                            <div class="col-md-6 offset-md-4 text-md-right">
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link " href="{{ route('password.request') }}">
                                         {{ __('¿Olvidaste tu contraseña?') }}
