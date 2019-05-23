@@ -5,7 +5,7 @@
 
     <div class="row justify-content-center">
 
-        <div class="col-12">
+        <div class="col-12 text-md-center full-height">
 
             @if(session('success'))
                 <div class="exito horizontal-list">   

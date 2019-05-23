@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mask-white">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">Subastas</div>
                     
@@ -15,12 +15,14 @@
 
                     @if (isset($auctions))
                         @foreach ($auctions as $auction)
-                            <div class="card-body">
-                                <a href="{{ route('auction.show', $auction->id) }}">Ver más</a>
+                            <div class="card-body description">
                                 Empieza el:{{ $auction->starting_date }}
                                 La semana de ocupación comienza el {{ $auction->week }}
                                 Ubicación de la residencia: {{ $auction->home->location }}
                                 <hr>
+                                <div class="links horizontal-list">
+                                    <a href="{{ route('auction.show', $auction->id) }}">Ver más</a>
+                                </div>
                             <hr>
                             </div>
                         @endforeach
@@ -33,8 +35,13 @@
                         </div>
                     @endif
             </div>
-            <a href="{{ route('auction.create') }}">Agregar Subasta</a>
-            <a href="{{ route('getSearch.auction') }}">Buscar Subasta</a>
+            <div class="links horizontal-list">
+                <a href="{{ URL::previous() }}">Volver</a> 
+                <a href="{{ route('auction.create') }}">Agregar Subasta</a>
+                <a href="{{ route('getSearch.auction') }}">Buscar Subasta</a>
+                <br>
+                <br>
+            </div>
         </div>
     </div>
 </div>

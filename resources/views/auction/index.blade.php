@@ -20,19 +20,31 @@
                         @endif
                         
                         @foreach ($activeAuctions as $activeAuction)
+
                             <div class="card-body">
-                                <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
-                                Empieza el:{{ $activeAuction->starting_date }}
-                                La semana de ocupación comienza el {{ $activeAuction->week }}
-                               
+                                <div class="descripcion">
+                                    Empieza el:{{ $activeAuction->starting_date }}
+                                    <br>
+                                    La semana de ocupación comienza el {{ $activeAuction->week }}
+                                    <br>
+                                    Ubicación de la residencia: {{ $activeAuction->home->location }}
+                                </div>
+                                <div class="links horizontal-list">    
+                                    <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
+                                    <a href="{{ route('auction.edit', [$activeAuction->id]) }}">Editar</a>
+                                </div>
                                 <hr>
                             </div>
                         @endforeach
                 </div>
             @endif
-            <a href="{{ route('auction.create') }}">Agregar Subasta</a>
-            <a href="{{ route('getSearch.auction') }}">Buscar Subasta</a>
+            <div class="links horizontal-list"> 
+                <a href="{{ route('auction.create') }}">Agregar Subasta</a>
+                <a href="{{ route('getSearch.auction') }}">Buscar Subasta</a>
+            </div>
         </div>
     </div>
 </div>
 @endsection
+
+ 

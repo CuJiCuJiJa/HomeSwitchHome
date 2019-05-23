@@ -94,7 +94,7 @@ class AuctionController extends Controller
         $auction->save();
 
         //Redirección
-        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', 'Subasta creada!');
+        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', '¡Subasta creada con exito!');
     }
     /**
      * Display the specified resource.
@@ -142,8 +142,8 @@ class AuctionController extends Controller
     {
         //Validación
         $rules = [
-            'base_price'    => 'required|numeric',
-            'home_id'       => 'required|numeric',
+            'base_price'    => 'required|numeric|digits_between:1,8',
+            
             
         ];
 
@@ -151,7 +151,9 @@ class AuctionController extends Controller
             'weekAuctioned.required' => 'Debe ingresar una semana',
             'base_price.required'    => 'Debe ingresar un :attribute',
             'base_price.numeric'     => 'El :attribute debe ser un número',  
+            'base_price.digitis_between'         => 'El :attribute debe tener menos de 8 digitos',
             'home_id.required'       => 'Debe seleccionar la :attribute a ocupar'
+
         ];
 
         $this->validate($request, $rules, $customMessages);
@@ -168,15 +170,11 @@ class AuctionController extends Controller
         }
 
         //Actualización
-        $auction->starting_date = Carbon::parse($request->starting_date);
-        $auction->end_date      = Carbon::parse($request->starting_date)->addHours(72);
-        $auction->week          = $weekAuctioned;
         $auction->base_price    = $request->base_price;
-        $auction->home_id       = $request->home_id;
         $auction->save();
 
         //Redirección
-        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', 'Subasta modificada!');
+        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', '¡Subasta modificada con exito!');
     }
     /**
      * Remove the specified resource from storage.
@@ -191,7 +189,7 @@ class AuctionController extends Controller
             return redirect()->back()->with('error', 'La subasta posee pujas, por lo tanto no es posible eliminarla');
         }*/
         $auction->delete();
-        return redirect()->route('auction.index')->with('success', 'Subasta eliminada!');
+        return redirect()->route('auction.index')->with('success', '¡Subasta eliminada correctamente!');
     }
 
 }
