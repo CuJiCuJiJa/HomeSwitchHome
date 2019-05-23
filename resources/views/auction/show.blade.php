@@ -55,6 +55,7 @@
                             <button type="submit" class="btn btn-primary">Pujar!</button>
                         </div>
 
+
                     </form>
                 @endif
 
@@ -64,14 +65,17 @@
                     </div>
                 @endif
 
-                @if ($auction->end_date < \Carbon\Carbon::now() && $winner == null)
+                @if ($auction->end_date < \Carbon\Carbon::now() && $winner == null && $auction->best_bid_value >= $auction->base_price)
                     <form action="{{ route('admin.adjudicar', $auction->id) }}" method="POST">
                         {{ csrf_field() }}
                                         
                         <button type="submit" class="btn btn-primary">Adjudicar a ganador</button>
                     </form>
                 @endif
-           
+
+                @if ($auction->end_date < \Carbon\Carbon::now())
+                    <h2>Subasta finalizada</h2>
+                @endif
             </div>
 
             <br>
