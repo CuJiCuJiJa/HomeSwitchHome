@@ -40,6 +40,7 @@ class AuctionController extends Controller
     {   
         $activeHomes = Home::all();
         return view('auction.create')->with('activeHomes', $activeHomes);
+        
     }
     /**
      * Store a newly created resource in storage.
@@ -49,7 +50,7 @@ class AuctionController extends Controller
      */
     
     public function store(Request $request)
-    {   
+    {  dd($request);
         //Validación
         $rules = [
             'starting_date' => 'required|date|after:today',
