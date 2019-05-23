@@ -58,7 +58,7 @@
               <div class="form-group">
                 <label for="home_id">Residencia</label>
                 <select class="form-control" id="home_id" name="home_id">
-                  <option value="">Seleccione una residencia</option>
+                  <option selected="true" value="{{ old('home_id') }}">Seleccione una residencia</option>
                     @foreach($activeHomes as $activeHome)
                       <option value="{{ $activeHome->id }}">{{ $activeHome->location }}</option>
                     @endforeach
