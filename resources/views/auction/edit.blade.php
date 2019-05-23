@@ -12,7 +12,7 @@
                       {{ method_field('PUT') }}
                       <div class="form-group">
                         <label for="starting_date">Fecha de inicio</label>
-                        <input type="date" class="form-control" id="starting_date" name='starting_date' value="{{ $auction->starting_date }}">
+                        <input type="date" class="form-control" required id="starting_date" name='starting_date' value="{{ $auction->starting_date }}">
                         @if($errors->has('starting_date'))
                           {{ $errors->first('starting_date') }}
                         @endif
