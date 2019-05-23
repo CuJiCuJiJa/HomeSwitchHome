@@ -23,6 +23,7 @@ class CreateAuctionsTable extends Migration
             $table->date('week');
             $table->integer('base_price');
             $table->integer('best_bid_value')->default(0);
+            $table->integer('winner_id')->nullable()
             $table->timestamps();
             $table->softDeletes();
         });

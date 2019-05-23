@@ -28,6 +28,7 @@
                 @endif
                     
                 @if ($auction->starting_date < \Carbon\Carbon::now() && $auction->end_date > \Carbon\Carbon::now())
+                    
                     <form action="{{ route('user.bid', $auction->id) }}" method="POST">
                         {{ csrf_field() }}
                     
@@ -39,6 +40,20 @@
                     </form>
                 @endif
 
+                @if ($winner != null)
+                    <div class="card-body">
+                        Usuario ganador: {{ $winner->name, $winner->email }}
+                    </div>
+                @endif
+
+                @if ($auction->end_date < \Carbon\Carbon::now() && $winner == null)
+                    <form action="{{ route('admin.adjudicar', $auction->id) }}" method="POST">
+                        {{ csrf_field() }}
+                                        
+                        <button type="submit" class="btn btn-primary">Adjudicar a ganador</button>
+                    </form>
+                @endif
+           
             </div>
             <br>
             <a href="{{ route('auction.edit', $auction) }}">Editar</a>

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Auction;
+use Carbon\Carbon;
+use App\AuctionUser;
+use App\User;
 
 class AdminController extends Controller
 {
@@ -81,5 +85,24 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function adjudicar(Request $request)
+    {
+        //SOLO SE PUEDE ADJUDICAR SI LA SUBASTA YA SOBREPASÓ EL END_DATE
+        $auctionId = $request->route()->parameter('id');
+        $auction = Auction::find($auctionId);
+        $now = Carbon::now();
+        
+        if (!($now > $auction->end_date)) {
+            return redirect()->back()->with('error', 'La subasta todavia no ha finalizado');
+        }
+
+        $bestBid = AuctionUser::where('auction_id', $auctionId)->where('best_bid', true)->first();
+
+        $auction->winner_id = $bestBid->user_id;
+        $auction->save();
+
+        return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Subasta adjudicada.');
     }
 }

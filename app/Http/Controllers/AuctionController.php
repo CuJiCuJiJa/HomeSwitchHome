@@ -6,6 +6,7 @@ use App\Home;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
 use Auth;
+use App\User;
 
 class AuctionController extends Controller
 {
@@ -102,7 +103,13 @@ class AuctionController extends Controller
     
     public function show(Auction $auction)
     {
-        return view('auction.show')->with('auction', $auction);
+        if ($auction->winner_id != null) {
+            $winner = User::find($auction->winner_id);
+        }
+        else{
+            $winner = null;
+        }
+        return view('auction.show')->with('auction', $auction)->with('winner', $winner);
     }
     /**
      * Show the form for editing the specified resource.

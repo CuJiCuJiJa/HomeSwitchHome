@@ -38,3 +38,5 @@ Route::get('/getSearchAuction', 'SearchController@getSearchAuction')->name('getS
 Route::post('/postSearchAuction', 'SearchController@postSearchAuction')->name('postSearch.auction');
 Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
 
+Route::post('/adjudicate/{id}', 'AdminController@adjudicar')->name('admin.adjudicar');
+
