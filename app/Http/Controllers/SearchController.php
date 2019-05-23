@@ -36,7 +36,10 @@ class SearchController extends Controller
             }
 		}
 
-		
+		if (!$results->count() > 0) {
+            return view('search.auctionResults')->with('error', 'No hay resultados.');
+        }
+        
 		
 		return view('search.auctionResults')->with('auctions', $results);
     }
