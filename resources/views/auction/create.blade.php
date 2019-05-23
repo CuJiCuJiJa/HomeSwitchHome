@@ -16,7 +16,10 @@
               <div class='form-group'>
                 <label for="weekAuctioned">Semana a subastar</label>
                 <br>
-                <input type="date" data-date="" data-date-format="DD MMMM YYYY" name="weekAuctioned" id="weekAuctioned">
+                <input type="date" data-date="" data-date-format="DD MMMM YYYY" name="weekAuctioned" id="weekAuctioned"> <br>
+                @if($errors->has('weekAuctioned'))
+                  {{ $errors->first('weekAuctioned') }}
+                @endif
               </div>
 
               <div class='form-group'>

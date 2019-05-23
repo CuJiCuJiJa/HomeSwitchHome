@@ -50,36 +50,30 @@ class AuctionController extends Controller
      */
     
     public function store(Request $request)
-    {  
+    {
         //Validación
         $rules = [
-            'starting_date' => 'required|date|after:today',
             'base_price'    => 'required|numeric',
-            'home_id'       => 'required|numeric'
+            'home_id'       => 'required|numeric',
+            'weekAuctioned' => 'required'
         ];
 
         $customMessages = [
-            'starting_date.required' => 'Debe ingresar una :attribute para la subasta',
-            'starting_date.after'    => 'La :attribute debe ser mayor a la fecha actual',
+            'weekAuctioned.required' => 'Debe ingresar una semana',
             'base_price.required'    => 'Debe ingresar un :attribute',
             'base_price.numeric'     => 'El :attribute debe ser un número',  
             'home_id.required'       => 'Debe seleccionar la :attribute a ocupar'
         ];
 
         $this->validate($request, $rules, $customMessages);
-
-        //Calculo la semana para la cual la residencia será ocupada
-        $week = Carbon::parse($request->starting_date);
-        $week->addDays(3);      //Se le suman 3 días a la fecha de inicio para obtener la fecha de fin
-        $week->addMonths(6);    //Se le suman 6 meses a la fecha de fin para obtener la semana a ocupar
-        $week->startOfWeek();   //Se obtiene el lunes en el que comienza la semana de ocupación.
-
+        $weekAuctioned = Carbon::parse($request->weekAuctioned)->startOfWeek();;
         //La residencia debe estar disponible para la semana de reserva elegida.
-        //La semana de reserva será 6 meses después del fin de la subasta.
+        //La semana de reserva será 6 meses después del inicio de la subasta.
         //No puede existir más de una subasta para la misma residencia en la misma semana.
-        $home = Auction::where('home_id', $request->home_id)->where('week', $week);
+        $home = Auction::where('home_id', $request->home_id)->where('week', $weekAuctioned);
+        //FALTA VALIDAR SI ESTÁ RESERVADA POR UN USUARIO
 
-        if ($home->count() > 0){
+        if ($home->count() == 1){
             Input::flash();
             return redirect()->back()->with('sameAuction', 'La residencia seleccionada no está disponible para la semana elegida');
         }
@@ -88,7 +82,7 @@ class AuctionController extends Controller
         $auction                = new Auction;
         $auction->starting_date = Carbon::parse($request->starting_date);
         $auction->end_date      = Carbon::parse($request->starting_date)->addHours(72);
-        $auction->week          = $week;
+        $auction->week          = $weekAuctioned;
         $auction->base_price    = $request->base_price;
         $auction->home_id       = $request->home_id;
         $auction->save();
@@ -136,31 +130,25 @@ class AuctionController extends Controller
     {
         //Validación
         $rules = [
-            'starting_date' => 'required|date|after:today',
             'base_price'    => 'required|numeric',
-            'home_id'       => 'required|numeric'
+            'home_id'       => 'required|numeric',
+            'weekAuctioned' => 'required'
         ];
 
         $customMessages = [
-            'starting_date.required' => 'Debe ingresar una :attribute para la subasta',
-            'starting_date.after'    => 'La :attribute debe ser mayor a la fecha actual',
+            'weekAuctioned.required' => 'Debe ingresar una semana',
             'base_price.required'    => 'Debe ingresar un :attribute',
             'base_price.numeric'     => 'El :attribute debe ser un número',  
             'home_id.required'       => 'Debe seleccionar la :attribute a ocupar'
         ];
 
         $this->validate($request, $rules, $customMessages);
-
-        //Calculo la semana para la cual la residencia será ocupada
-        $week = Carbon::parse($request->starting_date);
-        $week->addDays(3);      //Se le suman 3 días a la fecha de inicio para obtener la fecha de fin
-        $week->addMonths(6);    //Se le suman 6 meses a la fecha de fin para obtener la semana a ocupar
-        $week->startOfWeek();   //Se obtiene el lunes en el que comienza la semana de ocupación.
-
+        $weekAuctioned = Carbon::parse($request->weekAuctioned)->startOfWeek();
+        
         //La residencia debe estar disponible para la semana de reserva elegida.
         //La semana de reserva será 6 meses después del fin de la subasta.
         //No puede existir más de una subasta para la misma residencia en la misma semana.
-        $home = Auction::where('home_id', $request->home_id)->where('week', $week);
+        $home = Auction::where('home_id', $request->home_id)->where('week', $weekAuctioned);
 
         if ($home->count() > 0){
             Input::flash();
@@ -170,6 +158,7 @@ class AuctionController extends Controller
         //Actualización
         $auction->starting_date = Carbon::parse($request->starting_date);
         $auction->end_date      = Carbon::parse($request->starting_date)->addHours(72);
+        $auction->week          = $weekAuctioned;
         $auction->base_price    = $request->base_price;
         $auction->home_id       = $request->home_id;
         $auction->save();
