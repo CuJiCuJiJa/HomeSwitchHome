@@ -18,12 +18,13 @@
                                 {{ session('status') }}
                             </div>
                         @endif
+                        
                         @foreach ($activeAuctions as $activeAuction)
                             <div class="card-body">
                                 <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
                                 Empieza el:{{ $activeAuction->starting_date }}
                                 La semana de ocupación comienza el {{ $activeAuction->week }}
-                                Ubicación de la residencia: {{ $activeAuction->home->location }}
+                               
                                 <hr>
                             </div>
                         @endforeach

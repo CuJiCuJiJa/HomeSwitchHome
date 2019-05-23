@@ -94,9 +94,12 @@
 
               <br>
               
-              <button type="submit" class="btn btn-primary">Crear</button>
+              <div class="links horizontal-list">
+                 <button type="submit" class="btn btn-primary">Crear</button>
               
-              <a href="{{ URL::previous() }}">Cancelar</a>
+                 <a href="{{ URL::previous() }}">Cancelar</a>
+              </div>
+
             </form>
           </div>
         </div>

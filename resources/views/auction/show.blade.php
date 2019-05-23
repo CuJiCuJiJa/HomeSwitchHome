@@ -56,6 +56,7 @@
            
             </div>
             <br>
+
             <a href="{{ route('auction.edit', $auction) }}">Editar</a>
             <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
                 {{ csrf_field() }}
@@ -63,6 +64,7 @@
                 <button type="submit" class="btn btn-primary">Eliminar</button>
                 <a href="{{ route('auction.index') }}">Volver</a>
             </form>
+            
         </div>
     </div>
 </div>

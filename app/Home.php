@@ -21,4 +21,9 @@ class Home extends Model
     	return $query($this->hotsales())->where('active', true);
     }*/
 
+    public function auction()
+    {
+        return $this->hasMany('App\Auction');
+    }
+
 } 
