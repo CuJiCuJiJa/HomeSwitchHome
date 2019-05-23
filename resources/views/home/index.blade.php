@@ -1,34 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container mask-white">
     <div class="row justify-content-center">
         <div class="col-md-8">
+
             @if(session('success'))
                 {{ session('success') }}
             @endif
+
             @if($cantHomes == 0)
                 <h2>Oops! Aún no se ha cargado ninguna residencia.</h2>
             @else
                 <div class="card">
-                    <div class="card-header">Residencias</div>
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        @foreach ($activeHomes as $home)
-                            <div class="card-body">
-                                <a href="{{ route('home.show', $home->id) }}">Ver más</a>
+                    <div class="card-header"> Residencias </div>
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    
+                    @foreach ($activeHomes as $home)
+                        <div class="card-body">
+                            <a href="{{ route('home.show', $home->id) }}">Ver más</a>
                                 Descripción: {{ $home->descrip }}
                                 Ubicación: {{ $home->location }}
-                                <a href="{{ route('home.edit', $home->id) }}">Editar</a>
-                                <hr>
-                            </div>
-                        @endforeach
+                            <a href="{{ route('home.edit', $home->id) }}">Editar</a>
+                            <hr>
+                        </div>
+                    @endforeach
                 </div>
             @endif
-            <a href="{{ route('home.create') }}">Agregar Residencia</a>
+            <a class="link" href="{{ route('home.create') }}">Agregar Residencia</a>
         </div>
     </div>
 </div>

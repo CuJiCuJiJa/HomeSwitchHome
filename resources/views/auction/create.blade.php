@@ -12,11 +12,18 @@
             <form action="{{ route('auction.store') }}" method="POST">
               {{ csrf_field() }}
               
+              <?php         
+                $date = \Carbon\Carbon::now()->addMonths(6);
+                if (!$date->isMonday()){
+                  $date = $date->addWeek()->startOfWeek();
+                }                               
+                $date = $date->format('Y-m-d');
+              ?>
 
               <div class='form-group'>
                 <label for="weekAuctioned">Semana subastada</label>
                 <br>
-                <input type="date" data-date="" data-date-format="DD MMMM YYYY" name="weekAuctioned" id="weekAuctioned"> <br>
+                <input type="date" name="weekAuctioned" id="weekAuctioned" min="{{$date}}"> <br>
                 @if($errors->has('weekAuctioned'))
                   {{ $errors->first('weekAuctioned') }}
                 @endif

@@ -36,7 +36,7 @@ html, body {
     font-size: 84px;
 }
 
-.links > a {
+.links > a, .links > form {
     color: #1a1a1a !important;
     padding: 0 40px;
     font-size: 20px;
@@ -44,6 +44,10 @@ html, body {
     letter-spacing: .1rem;
     text-decoration: none;
     text-transform: uppercase;
+}
+
+.horizontal-list > a, .horizontal-list > form {
+    float:right;
 }
 
 .links > a:hover{
@@ -64,9 +68,13 @@ html, body {
 }
 
 .home{
-   min-height: 500px
-
+   min-height: 500px;
 }
+
+.home{
+    min-height: 500px
+ 
+ }
 
 .mask-white{
     background: rgba(255, 255, 255, 0.7);
