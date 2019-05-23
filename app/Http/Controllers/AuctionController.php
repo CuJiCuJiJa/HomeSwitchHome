@@ -17,6 +17,7 @@ class AuctionController extends Controller
     
     public function index()
     {
+        $now = Carbon::now();
         $activeAuctions  = Auction::all();          //Recupero subastas activas
         $trashedAuctions = Auction::withTrashed();  //Recupero subastas eliminadas
         $cantAuctions    = $activeAuctions->count();
@@ -38,7 +39,7 @@ class AuctionController extends Controller
     
     public function create()
     {   
-        $activeHomes = Home::where('active', true)->get();
+        $activeHomes = Home::where('active', TRUE)->get();
         return view('auction.create')->with('activeHomes', $activeHomes);
         
     }

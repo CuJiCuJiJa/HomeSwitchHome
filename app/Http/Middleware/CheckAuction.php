@@ -22,7 +22,7 @@ class CheckAuction extends Middleware
         $auction = Auction::find($auctionId);
         $now = Carbon::now();
 
-        if ($auction->endDate < $now) {
+        if ($auction->endDate < $now) { //SI LA SUBASTA YA CUMPLIÓ SU CICLO LA DESACTIVO
             $auction->active = false;
             $auction->save();
         }

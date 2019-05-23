@@ -105,16 +105,17 @@ class UserController extends Controller
 
         $this->validate($request, $rules, $customMessages);
 
+        //ME TRAIGO TODAS LAS PUJAS DE LA SUBASTA
         $bids = AuctionUser::where('auction_id', $auctionId);
         $auction = Auction::find($auctionId);
-        if($bids->count() > 0){
+        if($bids->count() > 0){ //ME TRAIGO LA MEJOR PUJA
             $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->get()->first();
 
-            if ($previousBid->user_id == Auth::user()->id) {
+            if ($previousBid->user_id == Auth::user()->id) {//SI LA MEJOR PUJA ES DEL USUARIO NO LO DEJO PUJAR
                 return redirect()->back()->with('error', 'Usted ya tiene la puja ganadora en la subasta.');        
             }
 
-            if ($request->bid_value <= $auction->best_bid_value) {
+            if ($request->bid_value <= $auction->best_bid_value) {//SI EL VALOR DE LA PUJA ES MENOR AL DE LA GANADORA NO LO DEJO PUJAR
                 return redirect()->back()->with('error', 'El valor de la puja debe ser mayor al valor de la puja vigente.');        
             }
 
