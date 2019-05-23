@@ -94,7 +94,13 @@ class UserController extends Controller
         //  SU NÚMERO DE TARJETA NO ESTÁ CONFIRMADO -> VALIDADO POR MIDDLEWARE
         //  EL VALOR DE LA PUJA ES MENOR A LA PUJA PREVIA
         //  LA PUJA PREVIA PERTENECE AL USUARIO
-
+        $rules = [
+            'value'    => 'required|numeric',
+        ];
+        $customMessages = [
+            'value.required' => 'Debe ingresar un valor',
+        ];  
+        $this->validate($request, $rules, $customMessages);
 
         $bids = AuctionUser::where('auction_id', $auctionId);
         $auction = Auction::find($auctionId);
@@ -127,7 +133,7 @@ class UserController extends Controller
         $auction->update();
 
         $bid->save();
-
+        dd('212');
         return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada!');
     }
 
