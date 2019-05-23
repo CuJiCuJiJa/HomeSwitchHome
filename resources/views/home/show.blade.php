@@ -20,7 +20,7 @@
                 @endif
 
                 <div class="card-body">
-<<<<<<< HEAD
+
                     <div class="descripcion">
                         Ubicación: {{ $home->location }}
                         <br>
@@ -37,19 +37,7 @@
                         <a href="{{ route('home.edit', $home->id) }}">Editar</a>
                         <a class="link" href="{{ route('home.index') }}">Listado de Residencias</a>
                     </div>
-=======
-                    Ubicación: {{ $home->location }}
-                    <br>
-                    Descripción: {{ $home->descrip }}
-                    <br><br>
-                    <a href="{{ route('home.edit', $home->id) }}">Editar</a>
-                    <form action="{{ route('home.anular', $home->id) }}" method="POST">
-                        {{ csrf_field() }}
-                        {{ method_field('POST') }}
-                        <button type="submit" class="btn btn-primary">Anular</button>
-                    </form>
-                    <a href="{{ route('home.index') }}">Listado de Residencias</a>
->>>>>>> a6ffeae0dca92f09c88f185f1c5756ae41aaec5a
+
                 </div>
 
             </div>

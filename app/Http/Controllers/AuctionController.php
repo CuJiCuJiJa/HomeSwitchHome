@@ -21,7 +21,7 @@ class AuctionController extends Controller
         $activeAuctions  = Auction::all();          //Recupero subastas activas
         $trashedAuctions = Auction::withTrashed();  //Recupero subastas eliminadas
         $cantAuctions    = $activeAuctions->count();
-
+        
         return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions);
     }
 
@@ -135,7 +135,7 @@ class AuctionController extends Controller
         $rules = [
             'base_price'    => 'required|numeric',
             'home_id'       => 'required|numeric',
-            'weekAuctioned' => 'required'
+            
         ];
 
         $customMessages = [
@@ -151,7 +151,7 @@ class AuctionController extends Controller
         //La residencia debe estar disponible para la semana de reserva elegida.
         //La semana de reserva será 6 meses después del fin de la subasta.
         //No puede existir más de una subasta para la misma residencia en la misma semana.
-        $home = Auction::where('home_id', $request->home_id)->where('week', $weekAuctioned);
+        $home = Auction::where('home_id', $request->home_id)->where('id', '!=', $auction->id)->where('week', $weekAuctioned);
 
         if ($home->count() > 0){
             Input::flash();
