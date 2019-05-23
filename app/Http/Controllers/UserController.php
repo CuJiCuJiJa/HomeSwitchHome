@@ -94,7 +94,16 @@ class UserController extends Controller
         //  SU NÚMERO DE TARJETA NO ESTÁ CONFIRMADO -> VALIDADO POR MIDDLEWARE
         //  EL VALOR DE LA PUJA ES MENOR A LA PUJA PREVIA
         //  LA PUJA PREVIA PERTENECE AL USUARIO
+        $rules = [
+            'bid_value' => 'required|numeric'
+        ];
 
+        $customMessages = [
+            'bid_value.required' => 'El valor de la puja es requerido',
+            'bid_value.numeric'  => 'El valor debe ser numerico',
+        ];
+
+        $this->validate($request, $rules, $customMessages);
 
         $bids = AuctionUser::where('auction_id', $auctionId);
         $auction = Auction::find($auctionId);

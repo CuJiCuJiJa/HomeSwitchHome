@@ -36,5 +36,5 @@ Route::post('/bid/{id}', 'UserController@pujar')->name('user.bid'); //->middlewa
 
 Route::get('/getSearchAuction', 'SearchController@getSearchAuction')->name('getSearch.auction');	
 Route::post('/postSearchAuction', 'SearchController@postSearchAuction')->name('postSearch.auction');
-
+Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
 

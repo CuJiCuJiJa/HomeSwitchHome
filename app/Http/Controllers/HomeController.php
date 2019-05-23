@@ -14,11 +14,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $activeHomes  = Home::all();
-        $trashedHomes = Home::withTrashed();
+        //$trashedHomes = Home::withTrashed();
+        $activeHomes  = Home::where('active', true)->get();
         $cantHomes    = $activeHomes->count();
 
-        return view('home.index')->with('trashedHomes', $trashedHomes)->with('activeHomes', $activeHomes)->with('cantHomes', $cantHomes);
+        return view('home.index')->with('activeHomes', $activeHomes)->with('cantHomes', $cantHomes);
     }
 
     /**
@@ -116,5 +116,13 @@ class HomeController extends Controller
         }*/
         $home->delete();
         return redirect('home')->with('success', 'La residencia ha sido anulada!');
+    }
+    public function anular($homeId)
+    {
+        $home = Home::find($homeId);
+        $home->active = false;
+        //dd($home);
+        $home->update();
+        return redirect()->route('home.index')->with('success', 'La residencia ha sido anulada!');
     }
 }

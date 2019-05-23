@@ -38,7 +38,7 @@ class AuctionController extends Controller
     
     public function create()
     {   
-        $activeHomes = Home::all();
+        $activeHomes = Home::where('active', true)->get();
         return view('auction.create')->with('activeHomes', $activeHomes);
         
     }
@@ -50,16 +50,18 @@ class AuctionController extends Controller
      */
     
     public function store(Request $request)
-    { 
+    {
         //Validación
+        $now = Carbon::now();
         $rules = [
             'base_price'    => 'required|numeric',
             'home_id'       => 'required|numeric',
-            'weekAuctioned' => 'required'
+            'weekAuctioned' => 'required|after:today'
         ];
 
         $customMessages = [
             'weekAuctioned.required' => 'Debe ingresar una semana',
+            'weekAuctioned.after'    => 'La fecha debe ser posterior a la actual',
             'base_price.required'    => 'Debe ingresar un :attribute',
             'base_price.numeric'     => 'El :attribute debe ser un número',  
             'home_id.required'       => 'Debe seleccionar la :attribute a ocupar'
@@ -115,7 +117,7 @@ class AuctionController extends Controller
         if ($auction->startingDate > $now) {
             return redirect()->back()->with('error', 'La subasta ya ha iniciado y no es posible modificarla');
         }
-        $activeHomes = Home::all();
+        $activeHomes = Home::where('active', true)->get();
         return view('auction.edit')->with('auction', $auction)->with('activeHomes', $activeHomes);
     }
     /**

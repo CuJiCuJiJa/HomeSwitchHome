@@ -16,10 +16,11 @@
                     @if (isset($auctions))
                         @foreach ($auctions as $auction)
                             <div class="card-body">
-                                <a href="{{ route('auction.show', [$auction->id]) }}">Ver más</a>
+                                <a href="{{ route('auction.show', $auction->id) }}">Ver más</a>
                                 Empieza el:{{ $auction->starting_date }}
-                                El precio base es: {{ $auction->base_price }} (En realidad este valor no se deberia mostrar)
-                                El numero de la semana del año es: {{ $auction->week }}
+                                La semana de ocupación comienza el {{ $auction->week }}
+                                Ubicación de la residencia: {{ $auction->home->location }}
+                                <hr>
                             <hr>
                             </div>
                         @endforeach
@@ -33,6 +34,7 @@
                     @endif
             </div>
             <a href="{{ route('auction.create') }}">Agregar Subasta</a>
+            <a href="{{ route('getSearch.auction') }}">Buscar Subasta</a>
         </div>
     </div>
 </div>
