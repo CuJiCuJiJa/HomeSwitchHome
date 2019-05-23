@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\AuctionUser;
+use App\Auction;
 use App\User;
+use Auth;
 
 class UserController extends Controller
 {
@@ -91,34 +94,41 @@ class UserController extends Controller
         //  SU NÚMERO DE TARJETA NO ESTÁ CONFIRMADO -> VALIDADO POR MIDDLEWARE
         //  EL VALOR DE LA PUJA ES MENOR A LA PUJA PREVIA
         //  LA PUJA PREVIA PERTENECE AL USUARIO
-        $previousBid = AuctionUser::where('id', $auctionId)->where('best_bid', true);
-        $auction = Auction::find($id);
 
-        if ($request->value <= $auctions->best_bid_value) {
-            return redirect()->back()->with('error', 'El valor de la puja debe ser mayor al valor de la puja vigente.');        
-        }
-        if ($previousBid->user_id == Auth::user()->id) {
-            return redirect()->back()->with('error', 'Ustéd ya tiene una puja ganadora en la subasta.');        
-        }
-        //--------------------------------------
 
+        $bids = AuctionUser::where('auction_id', $auctionId);
+        $auction = Auction::find($auctionId);
+        if($bids->count() > 0){
+            $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->get()->first();
+
+            if ($previousBid->user_id == Auth::user()->id) {
+                return redirect()->back()->with('error', 'Usted ya tiene la puja ganadora en la subasta.');        
+            }
+
+            if ($request->bid_value <= $auction->best_bid_value) {
+                return redirect()->back()->with('error', 'El valor de la puja debe ser mayor al valor de la puja vigente.');        
+            }
+
+            //Si pasó todas las validaciones significa que la puja se va a guardar, entonces a la puja anterior se le pone el campo 'best_bid' en false
+            $previousBid->best_bid = false;
+            $previousBid->save();
+
+        }
+
+        //Esta es la nueva puja
         $bid = new AuctionUser;
 
         $bid->user_id = Auth::user()->id;
-        $bid->auction_id = $auctionId;
-        $bid->value = $request->value;
-        
-        $auction->best_bid_value = $request->value;
+        $bid->auction_id = $auction->id;
+        $bid->value = $request->bid_value;
+    
+        //Se actualiza el valor de la mayor puja de la subasta
+        $auction->best_bid_value = $request->bid_value;
+        $auction->update();
 
-        $auction->save();
         $bid->save();
 
-        //Ya que esta va a ser la nueva puja más alta debemos buscar la anterior puja y poner el campo 'best_bid' en false
-
-        $previousBid->best_bid = false;
-        $previousBid->save();
-
-        return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada');
+        return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada!');
     }
 
 }

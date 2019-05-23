@@ -3,12 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AuctionUser extends Model
 {
-    protected $table = 'auction_users';
-
     use SoftDeletes;
+
+    protected $fillable = [ 'value' ];
 
     public function auction()
     {

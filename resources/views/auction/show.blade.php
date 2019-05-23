@@ -20,7 +20,18 @@
                     La semana de ocupación comienza el {{ $auction->week }}
                     <br>
                     Ubicación de la residencia: {{ $auction->home->location }}
+                    <br>
+                    Mayor puja hasta el momento: ${{ $auction->best_bid_value }}
                 </div>
+                @if(session('error'))
+                    {{ session('error') }}
+                @endif
+                <form action="{{ route('user.bid', $auction->id) }}" method="POST">
+                    {{ csrf_field() }}
+                    {{ method_field('POST') }}
+                    <input type="real" class="form-control" id="bid_value" name="bid_value" placeholder="Ingrese el monto a pujar">
+                    <button type="submit" class="btn btn-primary">Pujar!</button>
+                </form>
             </div>
             <br>
             <a href="{{ route('auction.edit', $auction) }}">Editar</a>
