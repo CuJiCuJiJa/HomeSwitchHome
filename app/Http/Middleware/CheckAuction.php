@@ -6,7 +6,7 @@ use Closure;
 use App\Auction;
 use Carbon\Carbon;
 
-class CheckAuction extends Middleware
+class CheckAuction
 {
     /**
      * Handle an incoming request.
@@ -18,15 +18,16 @@ class CheckAuction extends Middleware
      */
     public function handle($request, Closure $next)
     {
-        $auctionId = $request->route()->parameter('auction');
+        $auctionId = $request->route()->parameter('auction')->id;
         $auction = Auction::find($auctionId);
+
         $now = Carbon::now();
 
         if ($auction->endDate < $now) { //SI LA SUBASTA YA CUMPLIÓ SU CICLO LA DESACTIVO
             $auction->active = false;
             $auction->save();
         }
-        
+
         return $next($request);
     }
 }

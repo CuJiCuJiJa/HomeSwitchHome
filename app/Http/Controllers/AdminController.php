@@ -87,13 +87,37 @@ class AdminController extends Controller
         //
     }
 
+    public function markAsAdmin(User $user)
+    {
+        $user->role_id = 1;
+        $user->save();
+
+        return redirect()->route('user.show', $user)->with('success', 'Usuario administrador creado');
+    }
+
+    public function markAsPremium()
+    {
+        $user->role_id = 2;
+        $user->save();
+
+        return redirect()->route('user.show', $user)->with('success', 'Usuario marcado como premiun');
+    }
+
+    public function markAsLowcost()
+    {
+        $user->role_id = 3;
+        $user->save();
+
+        return redirect()->route('user.show', $user)->with('success', 'Usuario marcado como lowcost');
+    }
+
     public function adjudicar(Request $request)
     {
         //SOLO SE PUEDE ADJUDICAR SI LA SUBASTA YA SOBREPASÓ EL END_DATE
         $auctionId = $request->route()->parameter('id');
         $auction = Auction::find($auctionId);
         $now = Carbon::now();
-        
+
         if (!($now > $auction->end_date)) {
             return redirect()->back()->with('error', 'La subasta todavia no ha finalizado');
         }

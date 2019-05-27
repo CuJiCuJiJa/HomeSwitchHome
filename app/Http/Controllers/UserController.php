@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all(); 
+        $user = User::all();
         return $user;
     }
 
@@ -48,9 +48,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return view('user.show')->with('user', $user);
     }
 
     /**
@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         //
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -112,11 +112,11 @@ class UserController extends Controller
             $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->get()->first();
 
             if ($previousBid->user_id == Auth::user()->id) {//SI LA MEJOR PUJA ES DEL USUARIO NO LO DEJO PUJAR
-                return redirect()->back()->with('error', 'Usted ya tiene la puja ganadora en la subasta.');        
+                return redirect()->back()->with('error', 'Usted ya tiene la puja ganadora en la subasta.');
             }
 
             if ($request->bid_value <= $auction->best_bid_value) {//SI EL VALOR DE LA PUJA ES MENOR AL DE LA GANADORA NO LO DEJO PUJAR
-                return redirect()->back()->with('error', 'El valor de la puja debe ser mayor al valor de la puja vigente.');        
+                return redirect()->back()->with('error', 'El valor de la puja debe ser mayor al valor de la puja vigente.');
             }
 
             //Si pasó todas las validaciones significa que la puja se va a guardar, entonces a la puja anterior se le pone el campo 'best_bid' en false
@@ -131,7 +131,7 @@ class UserController extends Controller
         $bid->user_id = Auth::user()->id;
         $bid->auction_id = $auction->id;
         $bid->value = $request->bid_value;
-    
+
         //Se actualiza el valor de la mayor puja de la subasta
         $auction->best_bid_value = $request->bid_value;
         $auction->update();

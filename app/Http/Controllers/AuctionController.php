@@ -15,8 +15,12 @@ class AuctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
-    public function index()
+    public function __construct()
+    {
+        $this->middleware('checkAuction')->only('show');
+    }
+
+     public function index()
     {
         $now = Carbon::now();
         $activeAuctions = Auction::all();          //Recupero subastas activas
@@ -39,12 +43,12 @@ class AuctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function create()
-    {   
+    {
         $activeHomes = Home::where('active', TRUE)->get();
         return view('auction.create')->with('activeHomes', $activeHomes);
-        
+
     }
     /**
      * Store a newly created resource in storage.
@@ -52,7 +56,7 @@ class AuctionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
+
     public function store(Request $request)
     {
         //Validación
@@ -67,7 +71,7 @@ class AuctionController extends Controller
             'weekAuctioned.required' => 'Debe ingresar una semana',
             'weekAuctioned.after'    => 'La fecha debe ser posterior a la actual',
             'base_price.required'    => 'Debe ingresar un :attribute',
-            'base_price.numeric'     => 'El :attribute debe ser un número',  
+            'base_price.numeric'     => 'El :attribute debe ser un número',
             'home_id.required'       => 'Debe seleccionar la :attribute a ocupar'
         ];
 
@@ -83,7 +87,7 @@ class AuctionController extends Controller
             Input::flash();
             return redirect()->back()->with('sameAuction', 'La residencia seleccionada no está disponible para la semana elegida');
         }
-        
+
         //Almacenamiento
         $auction                = new Auction;
         $auction->starting_date = Carbon::parse($request->starting_date);
@@ -102,7 +106,7 @@ class AuctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
+
     public function show(Auction $auction)
     {
         if ($auction->winner_id != null) {
@@ -119,7 +123,7 @@ class AuctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
+
     public function edit(Auction $auction)
     {
         //Si la subasta ya ha iniciado no se puede modificar
@@ -137,20 +141,20 @@ class AuctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
+
     public function update(Request $request, Auction $auction)
     {
         //Validación
         $rules = [
             'base_price'    => 'required|numeric|digits_between:1,8',
-            
-            
+
+
         ];
 
         $customMessages = [
             'weekAuctioned.required' => 'Debe ingresar una semana',
             'base_price.required'    => 'Debe ingresar un :attribute',
-            'base_price.numeric'     => 'El :attribute debe ser un número',  
+            'base_price.numeric'     => 'El :attribute debe ser un número',
             'base_price.digitis_between'         => 'El :attribute debe tener menos de 8 digitos',
             'home_id.required'       => 'Debe seleccionar la :attribute a ocupar'
 
@@ -158,7 +162,7 @@ class AuctionController extends Controller
 
         $this->validate($request, $rules, $customMessages);
         $weekAuctioned = Carbon::parse($request->weekAuctioned)->startOfWeek();
-        
+
         //La residencia debe estar disponible para la semana de reserva elegida.
         //La semana de reserva será 6 meses después del fin de la subasta.
         //No puede existir más de una subasta para la misma residencia en la misma semana.
@@ -182,7 +186,7 @@ class AuctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    
+
     public function destroy(Auction $auction)
     {
         /*if ($auction->bids) {

@@ -13,7 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {  
+        Schema::create('users', function (Blueprint $table) {
             //FALTARIA IMPLEMENTAR EL MULTIAUTH
             $table->increments('id');
             $table->string('name');
@@ -21,8 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('card_number')->unique()->nullable();
             $table->boolean('card_verification')->default(false);
-            $table->boolean('premium')->default(false);
             $table->integer('available_weeks')->default(2);
+            $table->integer('role_id')->unsigned();
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

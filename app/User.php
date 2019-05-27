@@ -38,4 +38,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeHasFreeWeek()
+    {
+        return $query->where('available_weeks', '>', 0);
+    }
+
+    public function scopeIsAdmin()
+    {
+        return $query->role()->where('name', 'admin');
+    }
+
+    public function scopeIsPremium()
+    {
+        return $query->role()->where('name', 'premium');
+    }
+
+    public function scopeIsLowcost()
+    {
+        return $query->role()->where('name', 'lowcost');
+    }
+
+    public function role()
+    {
+        return $query->belongsTo('App\roles');
+    }
 }

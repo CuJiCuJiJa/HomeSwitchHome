@@ -16,9 +16,9 @@ class SearchController extends Controller
 
     public function postSearchAuction(Request $request)
     {
-    	//LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
+        //LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
     	$now = Carbon::now();
-        
+
         $auctions = Auction::with('home')->where('active', TRUE)->where('starting_date', '<' ,$now)->get();
         $results = collect();
 
@@ -41,8 +41,8 @@ class SearchController extends Controller
 		if (!$results->count() > 0) {
             return view('search.auctionResults')->with('error', 'No hay resultados.');
         }
-        
-		
+
+
 		return view('search.auctionResults')->with('auctions', $results);
     }
 
