@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use HomeUser;
+use User;
+use Carbon\Carbon;
 
 class ReservationController extends Controller
 {
@@ -11,9 +15,20 @@ class ReservationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function reservar()
     {
-        //
+        $user = Auth::user();
+        if ($user->isAdmin() && $user->hasAvailableWeeks()){
+
+        }
+        return redirect()->route();
+    }
+
+     public function index()
+    {
+        $reservations = HomeUser::all();
+        return view('reservation.index')->with('reservations', $reservations);
     }
 
     /**
@@ -23,7 +38,7 @@ class ReservationController extends Controller
      */
     public function create()
     {
-        //
+        return view('reservation.create');
     }
 
     /**
@@ -32,9 +47,31 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $home_id)
     {
-        //
+        $user = Auth::user();
+        if ($user->isPremium() && $user->hasAvailableWeeks()) {
+
+            $reservation = new HomeUser;
+
+            $carbonWeek = Carbon::parse($request->week);
+            $reservation->home_id = $home_id;
+            $reservation->user_id = $user->id;
+            $reservation->week = $carbonWeek;
+
+            $reservation->save();
+
+            $user->availaible_weeks = $user->availaible_weeks + 1;
+
+            return redirect()->route('home.show')->with('reservation', $reservation);
+
+        }
+        if (!$user->hasAvailableWeeks()) {
+            return redirect()->back()->with('error', 'Ustéd ya há utilizado sus semanas de reserva.');
+        }
+        if (!$user->isPremium()) {
+            return redirect()->back()->with('error', 'Ustéd no es un usuario premium, considere asociarse.');
+        }
     }
 
     /**
@@ -77,8 +114,22 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Home $home)
     {
-        //
+        $reservation = HomeUser::where('home_id', $home->id)->firstOrFail();
+        $user = Auth::user();
+
+        if (Carbon::now() < $reservation->week->subMonths(2)) {
+
+            $user->available_weeks = $user->available_weeks + 1;
+
+            if ($user->available_weeks > 2) {
+                $user->available_weeks = 2;
+            }
+        }
+        $reservation->delete();
+
+        return redirect()->route('home.show')->with('success','Reserva cancelada');
+
     }
 }

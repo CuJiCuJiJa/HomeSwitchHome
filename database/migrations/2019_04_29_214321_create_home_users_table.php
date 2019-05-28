@@ -17,9 +17,7 @@ class CreateHomeUsersTable extends Migration
             $table->increments('id');
             $table->integer('home_id')->unsigned();
             $table->foreign('home_id')->references('id')->on('homes');
-            $table->boolean('active')->default(true);
             $table->integer('week');
-            $table->integer('year');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

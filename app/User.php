@@ -39,7 +39,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function scopeHasFreeWeek()
+    public function scopeHasAvailableWeek()
     {
         return $query->where('available_weeks', '>', 0);
     }

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Hotsale;
+use App\User;
+use App\HotsaleUser;
+use Auth;
+use Carbon\Carbon;
 
 class HotsaleController extends Controller
 {
@@ -13,7 +18,8 @@ class HotsaleController extends Controller
      */
     public function index()
     {
-        //
+        $hotsales = Hotsale::all();
+        return view('hotsale.show')->with('hotsales', $hotsales);
     }
 
     /**
@@ -23,7 +29,7 @@ class HotsaleController extends Controller
      */
     public function create()
     {
-        //
+        return view('hotsale.create');
     }
 
     /**
