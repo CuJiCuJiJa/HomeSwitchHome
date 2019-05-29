@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('card_number')->unique()->nullable();
             $table->boolean('card_verification')->default(false);
             $table->integer('available_weeks')->default(2);
-            $table->integer('role_id')->unsigned();
+            $table->integer('role_id')->unsigned()->default(3);
             $table->foreign('role_id')->references('id')->on('roles');
             $table->rememberToken();
             $table->timestamps();
