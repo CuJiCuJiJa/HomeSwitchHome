@@ -10,4 +10,9 @@ class HomeUser extends Model
     protected $table = 'home_users';
 
     use SoftDeletes;
+
+    public function home()
+    {
+        return $this->belongsTo('App\Home');
+    }
 }
