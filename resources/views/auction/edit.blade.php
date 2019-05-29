@@ -21,7 +21,7 @@
 
             <div class="form-group">
               <label for="home_id">Residencia</label>
-              <input type="text" class="form-control" required id="home" name='home' value="{{$auction->home->id}}" placeholder="{{$auction->home->location}}" readonly>
+              <input type="text" class="form-control" required id="home" name='home' value="{{$auction->home->location}}" placeholder="{{$auction->home->location}}" readonly>
              
               @if(session('sameAuction'))
                 {{ session('sameAuction') }}

@@ -25,7 +25,7 @@
               <div class='form-group'>
                 <label for="weekAuctioned">Semana a subastar</label>
                 <br>
-                <input type="date" name="weekAuctioned" id="weekAuctioned" min="{{$date}}"> <br>
+                <input type="date" name="weekAuctioned" id="weekAuctioned" min="{{$date}}" value="{{ old('weekAuctioned') }}"> <br>
                 @if($errors->has('weekAuctioned'))
                   <div class="fallo horizontal-list">  
                     {{ $errors->first('weekAuctioned') }}
@@ -36,7 +36,7 @@
               <div class='form-group'>
                 <label for="starting_date">Fecha de inicio</label>
                 <br>
-                <input type="text"  class="form-control" name="starting_date" id="starting_date" readonly/>
+                <input type="text"  class="form-control" name="starting_date" id="starting_date" value="{{ old('starting_date') }}" readonly/>
                 @if($errors->has('starting_date'))
                   <div class="fallo horizontal-list">  
                     {{ $errors->first('starting_date') }}
@@ -85,9 +85,10 @@
                     {{ $errors->first('home_id') }}
                 </div>  
                 @endif
-                
                 @if(session('sameAuction'))
-                  {{ session('sameAuction') }}
+                  <div class="fallo horizontal-list">
+                    {{ session('sameAuction') }}
+                  </div>
                 @endif
               </div>
               
@@ -107,7 +108,7 @@
               <div class="links horizontal-list">
                  <button type="submit" class="btn btn-primary">Crear</button>
               
-                 <a href="{{ URL::previous() }}">Cancelar</a>
+                 <a href="{{ route('auction.index') }}">Cancelar</a>
               </div>
 
             </form>
