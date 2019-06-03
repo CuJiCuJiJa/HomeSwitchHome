@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Hotsale extends Model
 {
     use SoftDeletes;
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
 }

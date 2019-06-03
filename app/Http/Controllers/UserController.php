@@ -50,7 +50,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.show')->with('user', $user);
+        return view('user.show')->with('user', $user)->with('hotsales', $user->hotsales())->with('auctions', $user->auctions())->with('reservations', $user->reservations());
     }
 
     /**
@@ -59,9 +59,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        $user = Auth::user();
+        return view('user.edit')->with('user', $user);
     }
 
     /**
@@ -82,9 +83,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('/');
     }
 
     public function pujar(Request $request, $auctionId)
@@ -177,8 +179,31 @@ class UserController extends Controller
         //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
     }
 
-    public function cancelReservation()
+    public function reserveHotsale(Hotsale $hotsale, $date)
     {
+        $user = Auth::user();
 
+        if (!$user->hasAvailableWeek()) {
+            return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
+        }
+        if (!$user->isPremium()) {
+            return redirect()->back()->with('error', 'Ustéd no es un usuario Premium');
+        }
+        if ($home->isOccupied($date)) {
+            return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+
+        $hotsale->user_id = $user->id;
+        $hotsale->save();
+
+        $user->available_weeks = $user->available_weeks - 1;
+
+        $user->save();
+
+        return redirect()->route('hotsale.show', $hotsale)->with('success', 'La reserva ha sido registrada');
+
+        //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
     }
+
+
 }
