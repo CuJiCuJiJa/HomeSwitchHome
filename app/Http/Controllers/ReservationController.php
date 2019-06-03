@@ -18,8 +18,9 @@ class ReservationController extends Controller
 
      public function index()
     {
-        $reservations = HomeUser::all();
-        return view('reservation.index')->with('reservations', $reservations);
+        $trashedReservations = HomeUser::withTrashed();
+        $activeReservations = HomeUser::all();
+        return view('reservation.index')->with('activeReservations', $reservations)->with('trashedReservations', $trashedReservations);
     }
 
     /**

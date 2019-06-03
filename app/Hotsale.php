@@ -14,4 +14,8 @@ class Hotsale extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function home()
+    {
+        return $this->belongsTo('App\Home');
+    }
 }

@@ -90,4 +90,39 @@ class SearchController extends Controller
 
 		return view('search.homeResults')->with('homes', $results);
     }
+
+    public function getSearchHotsale()
+    {
+        return view('search.hotsaleSearch');
+    }
+
+    public function postSearchHotsale()
+    {
+        $now = Carbon::now();
+        $hotsales = Hotsale::all();
+        $results = collect();
+
+		if ($request->has('location')) {
+    		foreach ($hotsalea as $i) {
+                if ($i->home->location == $request->location) {
+                    $results->push($i);
+                }
+            }
+		}
+
+		if ($request->has('week')) {
+		    foreach ($hotsalea as $i) {
+                if ($i->week == $request->week) {
+                    $results->push($i);
+                }
+            }
+		}
+
+		if (!$results->count() > 0) {
+            return view('search.hotsaleResults')->with('error', 'No hay resultados.');
+        }
+
+
+		return view('search.hotsaleResults')->with('hotsales', $results);
+    }
 }
