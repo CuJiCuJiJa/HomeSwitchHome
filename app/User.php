@@ -63,4 +63,11 @@ class User extends Authenticatable
     {
         return $query->belongsTo('App\roles');
     }
+
+    public function scopeHasValidCard()
+    {
+        return $this->card_verification;
+    }
+
 }
+

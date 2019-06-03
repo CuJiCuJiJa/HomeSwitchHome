@@ -147,8 +147,6 @@ class AuctionController extends Controller
         //Validación
         $rules = [
             'base_price'    => 'required|numeric|digits_between:1,8',
-
-
         ];
 
         $customMessages = [

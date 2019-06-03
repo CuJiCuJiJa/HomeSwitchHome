@@ -95,7 +95,7 @@ class AdminController extends Controller
         return redirect()->route('user.show', $user)->with('success', 'Usuario administrador creado');
     }
 
-    public function markAsPremium()
+    public function markAsPremium(User $user)
     {
         $user->role_id = 2;
         $user->save();
@@ -103,7 +103,7 @@ class AdminController extends Controller
         return redirect()->route('user.show', $user)->with('success', 'Usuario marcado como premiun');
     }
 
-    public function markAsLowcost()
+    public function markAsLowcost(User $user)
     {
         $user->role_id = 3;
         $user->save();
@@ -117,6 +117,11 @@ class AdminController extends Controller
         $auctionId = $request->route()->parameter('id');
         $auction = Auction::find($auctionId);
         $now = Carbon::now();
+        $user = User::find($auction->user_id);
+
+        if (!$user->hasAvailableWeek()) {
+            return redirect()->back()->with('error', 'El usuario no poseé creditos disponibles');
+        }
 
         if (!($now > $auction->end_date)) {
             return redirect()->back()->with('error', 'La subasta todavia no ha finalizado');

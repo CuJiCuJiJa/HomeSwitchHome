@@ -105,6 +105,11 @@ class UserController extends Controller
 
         $this->validate($request, $rules, $customMessages);
 
+        $user = Auth::user();
+        if (!$user->hasValidCard()) {
+            return redirect()->back()->with('error', 'Usted no poseé una numero de tarjeta validado');
+        }
+
         //ME TRAIGO TODAS LAS PUJAS DE LA SUBASTA
         $bids = AuctionUser::where('auction_id', $auctionId);
         $auction = Auction::find($auctionId);
@@ -128,7 +133,7 @@ class UserController extends Controller
         //Esta es la nueva puja
         $bid = new AuctionUser;
 
-        $bid->user_id = Auth::user()->id;
+        $bid->user_id = $user->id;
         $bid->auction_id = $auction->id;
         $bid->value = $request->bid_value;
 
@@ -141,4 +146,39 @@ class UserController extends Controller
         return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada!');
     }
 
+    public function reserveHome(Home $home, $date)
+    {
+        $user = Auth::user();
+
+        if (!$user->hasAvailableWeek()) {
+            return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
+        }
+        if (!$user->isPremium()) {
+            return redirect()->back()->with('error', 'Ustéd no es un usuario Premium');
+        }
+        if ($home->isOccupied($date)) {
+            return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+
+        $reservation = new HomeUser;
+
+        $reservation->user_id = $user->id;
+        $reservation->home_id = $home->id;
+        $reservation->week = $date;
+
+        $reservation->save();
+
+        $user->available_weeks = $user->available_weeks - 1;
+
+        $user->save();
+
+        return redirect()->route('show', $home)->with('success', 'La reserva ha sido registrada');
+
+        //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
+    }
+
+    public function cancelReservation()
+    {
+
+    }
 }

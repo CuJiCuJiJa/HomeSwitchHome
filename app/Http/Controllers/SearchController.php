@@ -46,4 +46,48 @@ class SearchController extends Controller
 		return view('search.auctionResults')->with('auctions', $results);
     }
 
+    public function getSearchHome()
+    {
+        return view('search.homeSearch');
+    }
+
+    public function postSearchHome(Request $request)
+    {
+        //LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
+    	$now = Carbon::now();
+        $homes = Home::all();
+        $activeHomes = collect();
+        $results = collect();
+
+        if ($home != null) {
+            foreach ($homes as $home) {
+                if ($home->isOcuppied($request->$week)) {
+                    $activeHomes->push();
+                }
+            }
+        }
+
+		if ($request->has('location')) {
+    		foreach ($activeHomes as $i) {
+                if ($i->home->location == $request->location) {
+                    $results->push($i);
+                }
+            }
+		}
+
+		if ($request->has('week')) {
+		    foreach ($activeHomes as $i) {
+                if ($i->week == $request->week) {
+                    $results->push($i);
+                }
+            }
+		}
+
+		if (!$results->count() > 0) {
+            return view('search.homeResults')->with('error', 'No hay resultados.');
+        }
+
+
+		return view('search.homeResults')->with('homes', $results);
+    }
 }
