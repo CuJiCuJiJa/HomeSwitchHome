@@ -97,3 +97,9 @@ html, body {
     color: white;
     font-size: large;
 } 
+
+.second{
+    top: 30% !important;
+    left: 100% !important;
+    margin-top: -1px !important;
+}

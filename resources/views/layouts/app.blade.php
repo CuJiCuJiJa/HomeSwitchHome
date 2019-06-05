@@ -25,7 +25,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery.weekpicker.js')}}"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 
 <!--?php
@@ -48,12 +48,13 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                
                     <!-- Menu a la izquierda -->
                     <ul class="navbar-nav mr-auto">
                     </ul>
 
                     <!-- Menu a la derecha-->
+                    <div class="col-4">
                     <ul class="navbar-nav ml-auto">
                         <!-- ¿hay iniciada una sesion? -->
                         @guest
@@ -67,45 +68,81 @@
                                 </li>
                             @endif
                         @else
-                            <!-- no hay iniciada una sesion -->
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="nav-item dropdown">
+    
+    <a class="nav-link dropdown-toggle dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+        {{ Auth::user()->name }}
+        </button>
+    </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    
-                                    <!--<a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                                        {{ __('Mis subastas') }}
-                                    </a>
-                                        
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                                        {{ __('Mis reservas') }}
-                                    </a> -->
-                                                                            
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                                        {{ __('Cerrar sesión') }}
-                                    </a>
+    <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+ 
+        <li class="dropdown-submenu ">
+            <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                Subastas 
+                
+            </a>
+            <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" tabindex="-1" href="#">2nd level dropdown</a></li>
+                <li><a class="dropdown-item" tabindex="-1" href="#">2nd level dropdown</a></li>
+                <li><a class="dropdown-item" tabindex="-1" href="#">Another dropdown </a>
+                </li>
+            </ul>
+        </li>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
+        <li class="dropdown-submenu ">
+            <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                Residencias 
+                
+            </a>
+            <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" tabindex="-1" href="#">reci</a></li>
+                <li><a class="dropdown-item" tabindex="-1" href="#">o resi</a></li>
+                <li><a class="dropdown-item" tabindex="-1" href="#">dencias</a>
+                </li>
+            </ul>
+        </li>
 
-                                </div>
-                            </li>
+
+
+        <a class="dropdown-item" href="{{ route('logout') }}"
+        onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();">
+            {{ __('Cerrar sesión') }}
+        </a>
+
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </ul>
+  </div>
+</div>
+</div>
+<script>
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    if (('.second').is(':visible')){
+      $('.second').hide();
+    }
+    else{
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+    }
+  });
+});
+</script>
+
+
                         @endguest
                     </ul>
+                    </div>
 
                 </div>
 
 
-            </div>
+            
         </nav>
     </header>
 
