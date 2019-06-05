@@ -59,8 +59,29 @@ class User extends Authenticatable
         return $query->role()->where('name', 'lowcost');
     }
 
+    public function scopeHasValidCard()
+    {
+        return $this->card_verification;
+    }
+
     public function role()
     {
-        return $query->belongsTo('App\roles');
+        return $this->belongsTo('App\roles');
+    }
+
+    public function hotsales()
+    {
+        return $this->hasMany('App\Hotsale');
+    }
+
+    public function auctions()
+    {
+        return $this->hasMany('App\Auction');
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany('App\HomeUser');
     }
 }
+

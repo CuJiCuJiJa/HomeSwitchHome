@@ -50,7 +50,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.show')->with('user', $user);
+        return view('user.show')->with('user', $user)->with('hotsales', $user->hotsales())->with('auctions', $user->auctions())->with('reservations', $user->reservations());
     }
 
     /**
@@ -59,9 +59,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        $user = Auth::user();
+        return view('user.edit')->with('user', $user);
     }
 
     /**
@@ -71,9 +72,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+
     }
 
     /**
@@ -82,9 +83,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('/');
     }
 
     public function pujar(Request $request, $auctionId)
@@ -104,6 +106,11 @@ class UserController extends Controller
         ];
 
         $this->validate($request, $rules, $customMessages);
+
+        $user = Auth::user();
+        if (!$user->hasValidCard()) {
+            return redirect()->back()->with('error', 'Usted no poseé una numero de tarjeta validado');
+        }
 
         //ME TRAIGO TODAS LAS PUJAS DE LA SUBASTA
         $bids = AuctionUser::where('auction_id', $auctionId);
@@ -128,7 +135,7 @@ class UserController extends Controller
         //Esta es la nueva puja
         $bid = new AuctionUser;
 
-        $bid->user_id = Auth::user()->id;
+        $bid->user_id = $user->id;
         $bid->auction_id = $auction->id;
         $bid->value = $request->bid_value;
 
@@ -140,5 +147,63 @@ class UserController extends Controller
 
         return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada!');
     }
+
+    public function reserveHome(Home $home, $date)
+    {
+        $user = Auth::user();
+
+        if (!$user->hasAvailableWeek()) {
+            return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
+        }
+        if (!$user->isPremium()) {
+            return redirect()->back()->with('error', 'Ustéd no es un usuario Premium');
+        }
+        if ($home->isOccupied($date)) {
+            return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+
+        $reservation = new HomeUser;
+
+        $reservation->user_id = $user->id;
+        $reservation->home_id = $home->id;
+        $reservation->week = $date;
+
+        $reservation->save();
+
+        $user->available_weeks = $user->available_weeks - 1;
+
+        $user->save();
+
+        return redirect()->route('show', $home)->with('success', 'La reserva ha sido registrada');
+
+        //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
+    }
+
+    public function reserveHotsale(Hotsale $hotsale, $date)
+    {
+        $user = Auth::user();
+
+        if (!$user->hasAvailableWeek()) {
+            return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
+        }
+        if (!$user->isPremium()) {
+            return redirect()->back()->with('error', 'Ustéd no es un usuario Premium');
+        }
+        if ($home->isOccupied($date)) {
+            return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+
+        $hotsale->user_id = $user->id;
+        $hotsale->save();
+
+        $user->available_weeks = $user->available_weeks - 1;
+
+        $user->save();
+
+        return redirect()->route('hotsale.show', $hotsale)->with('success', 'La reserva ha sido registrada');
+
+        //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
+    }
+
 
 }

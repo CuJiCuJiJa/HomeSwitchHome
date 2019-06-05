@@ -16,19 +16,11 @@ class ReservationController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function reservar()
-    {
-        $user = Auth::user();
-        if ($user->isAdmin() && $user->hasAvailableWeeks()){
-
-        }
-        return redirect()->route();
-    }
-
      public function index()
     {
-        $reservations = HomeUser::all();
-        return view('reservation.index')->with('reservations', $reservations);
+        $trashedReservations = HomeUser::withTrashed();
+        $activeReservations = HomeUser::all();
+        return view('reservation.index')->with('activeReservations', $reservations)->with('trashedReservations', $trashedReservations);
     }
 
     /**

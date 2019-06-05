@@ -14,17 +14,17 @@ class RolSeeder extends Seeder
     {
         DB::table('roles')->insert([
             'id' 	=> 1,
-            'name' 	=> 'ADMINISTRADOR'
+            'name' 	=> 'administrador'
         ]);
 
         DB::table('roles')->insert([
             'id' 	=> 2,
-            'name' 	=> 'PREMIUM'
+            'name' 	=> 'premium'
         ]);
 
         DB::table('roles')->insert([
             'id' 	=> 3,
-            'name' 	=> 'LOWCOST'
+            'name' 	=> 'lowcost'
         ]);
     }
 }
