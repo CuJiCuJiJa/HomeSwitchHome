@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use HomeUser;
-use User;
+use App\HomeUser;
+use App\User;
+use App\Home;
 use Carbon\Carbon;
 
 class ReservationController extends Controller

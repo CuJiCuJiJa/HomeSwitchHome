@@ -31,12 +31,14 @@ Route::group(['middleware' => 'auth'], function() {
 	]);
 });
 
-//PUJA SUBASTA CON VERIFYCARD MIDDLEWARE
+//PUJAR SUBASTA CON VERIFYCARD MIDDLEWARE
 Route::post('/bid/{id}', 'UserController@pujar')->name('user.bid'); //->middleware('verifyCard'); comentado para el demo1
-
-Route::get('/getSearchAuction', 'SearchController@getSearchAuction')->name('getSearch.auction');	
+//BUSCAR SUBASTA
+Route::get('/getSearchAuction', 'SearchController@getSearchAuction')->name('getSearch.auction');
 Route::post('/postSearchAuction', 'SearchController@postSearchAuction')->name('postSearch.auction');
+//ANULAR RESIDENCIA
 Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
-
+//ADJUDICAR
 Route::post('/adjudicate/{id}', 'AdminController@adjudicar')->name('admin.adjudicar');
-
+//TEST ROUTE
+Route::get('/test/{id}', 'ReservationController@show');

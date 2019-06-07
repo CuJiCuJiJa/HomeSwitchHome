@@ -205,5 +205,4 @@ class UserController extends Controller
         //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
     }
 
-
 }

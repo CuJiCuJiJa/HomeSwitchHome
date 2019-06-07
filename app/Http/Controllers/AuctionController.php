@@ -22,11 +22,19 @@ class AuctionController extends Controller
 
      public function index()
     {
+        $user = Auth::user();
         $now = Carbon::now();
         $activeAuctions = Auction::all();          //Recupero subastas activas
+
         $trashedAuctions = Auction::withTrashed();  //Recupero subastas eliminadas
         $cantAuctions = $activeAuctions->count();
 
+        $myBids = $user->auctions->unique(['auction_id']);
+        $myAuctions = collect();
+        foreach ($myAuctions as $i) {
+            $auction = Auction::find($i);
+            $myBids->push($auction);
+        }
 
 
         return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions);
@@ -193,5 +201,6 @@ class AuctionController extends Controller
         $auction->delete();
         return redirect()->route('auction.index')->with('success', '¡Subasta eliminada correctamente!');
     }
+
 
 }
