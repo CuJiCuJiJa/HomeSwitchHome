@@ -35,7 +35,7 @@ class AuctionController extends Controller
             $auction = Auction::find($i);
             $myBids->push($auction);
         }
-
+        dd($myBids);
 
         return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions);
     }
