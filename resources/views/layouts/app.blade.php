@@ -25,7 +25,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery.weekpicker.js')}}"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 
 <!--?php
@@ -68,87 +67,140 @@
                                 </li>
                             @endif
                         @else
+
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <div class="nav-item dropdown">
-    
-    <a class="nav-link dropdown-toggle dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-        {{ Auth::user()->name }}
-        </button>
-    </a>
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+                                <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                               
+                                @if ( Auth::user()->isAdmin == null)
+                                   <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                                            Subastas 
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="/getSearchAuction">Buscar subastas</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="">Mis subastas</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                                                     
 
-    <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
- 
-        <li class="dropdown-submenu ">
-            <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
-                Subastas 
-                
-            </a>
-            <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" tabindex="-1" href="#">2nd level dropdown</a></li>
-                <li><a class="dropdown-item" tabindex="-1" href="#">2nd level dropdown</a></li>
-                <li><a class="dropdown-item" tabindex="-1" href="#">Another dropdown </a>
-                </li>
-            </ul>
-        </li>
+                                    <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                                            Reservas
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Buscar</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Mis reservas</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    
+                                   
+                                    <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                                            Hotsales 
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Buscar hotsales</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Mis hotsales</a>
+                                            </li>
+                                        </ul>
+                                    </li>    
+                                                            
+                                @else
 
-        <li class="dropdown-submenu ">
-            <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
-                Residencias 
-                
-            </a>
-            <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" tabindex="-1" href="#">reci</a></li>
-                <li><a class="dropdown-item" tabindex="-1" href="#">o resi</a></li>
-                <li><a class="dropdown-item" tabindex="-1" href="#">dencias</a>
-                </li>
-            </ul>
-        </li>
+                                    <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                                            Subastas 
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Crear subasta</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Listar subasta</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    
+                                    <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                                            Residencias 
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Dar de alta residencia</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Listar residencias</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                                            Hotsales 
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Crear hotsale</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="#">Listar hotsales</a>
+                                            </li>
+                                        </ul>
+                                    </li>    
 
 
-
-        <a class="dropdown-item" href="{{ route('logout') }}"
-        onclick="event.preventDefault();
-        document.getElementById('logout-form').submit();">
-            {{ __('Cerrar sesión') }}
-        </a>
-
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-    </ul>
-  </div>
-</div>
-</div>
-<script>
-$(document).ready(function(){
-  $('.dropdown-submenu a.test').on("click", function(e){
-    if (('.second').is(':visible')){
-      $('.second').hide();
-    }
-    else{
-    $(this).next('ul').toggle();
-    e.stopPropagation();
-    e.preventDefault();
-    }
-  });
-});
-</script>
+                                @endif
 
 
-                        @endguest
-                    </ul>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                        {{ __('Cerrar sesión') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+                    <script>
 
-                </div>
 
+                        $(document).ready(function(){
+                            $('.dropdown-submenu a.test').on("click", function(e){
+                                $(this).next('.second').slideToggle('slow');
+                                e.stopPropagation();
+                                e.preventDefault();
+                            });
+                        });
+                    </script>
+                    @endguest
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
-            
-        </nav>
-    </header>
-
-    <main class="py-4">
-        @yield('content')
-    </main>
+<main class="py-4">
+    @yield('content')
+</main>
 </body>
 <footer>
 
