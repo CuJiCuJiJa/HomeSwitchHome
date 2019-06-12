@@ -44,7 +44,7 @@ class User extends Authenticatable
         return $query->where('available_weeks', '>', 0);
     }
 
-    public function scopeIsAdmin()
+    public function scopeIsAdmin($query)
     {
         return $query->role()->where('name', 'admin');
     }
@@ -76,7 +76,7 @@ class User extends Authenticatable
 
     public function auctions()
     {
-        return $this->hasMany('App\Auction');
+        return $this->hasMany('App\AuctionUser');
     }
 
     public function reservations()

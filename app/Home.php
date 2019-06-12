@@ -12,9 +12,9 @@ class Home extends Model
     protected $fillable = ['location', 'descrip', 'active'];
 
 
-    public function scopeHasActiveHotsales()
+    public function hasActiveHotsales()
     {
-    	return $query->hotsales()->where('active', true);
+    	return $this->hotsales()->where('active', true);
     }
 
     public function auctions()
@@ -32,18 +32,18 @@ class Home extends Model
         return $this->hasMany('App\Hotsale');
     }
 
-    public function scopeIsOccupied($date)
+    public function scopeIsOccupied($query, $date)
     {
         //EN CASO DE QUE EXISTAN DEVUELVE RESERVA, HOTSALE O SUBASTa PARA UNA SEMANA DADA
-        return $query->whereHas('reservations', function($q) use ($date)
+        return $query->whereHas('reservations', function($query) use ($date)
             {
-                $q->where('week', $date);
-            })->orWhereHas('auctions', function($q) use ($date)
+                $query->where('week', $date);
+            })->orWhereHas('auctions', function($query) use ($date)
             {
-                $q->where('winner_id', '!=', null)->where('week', $date);
-            })->orWhereHas('hotsales', function($q) use ($date)
+                $query->where('winner_id', '=', null)->where('week', $date);
+            })->orWhereHas('hotsales', function($query) use ($date)
             {
-                $q->where('week', $date);
+                $query->where('week', $date);
             });
     }
 
