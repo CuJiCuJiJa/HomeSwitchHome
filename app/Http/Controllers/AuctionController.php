@@ -61,6 +61,9 @@ class AuctionController extends Controller
 
     public function create()
     {
+        if (!Auth::user()->idAdmin) {
+            return redirect()->back();
+        }
         $activeHomes = Home::where('active', TRUE)->get();
         return view('auction.create')->with('activeHomes', $activeHomes);
 
