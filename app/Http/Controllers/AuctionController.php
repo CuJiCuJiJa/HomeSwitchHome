@@ -25,19 +25,26 @@ class AuctionController extends Controller
         $user = Auth::user();
         $now = Carbon::now();
         $activeAuctions = Auction::all();          //Recupero subastas activas
-
-        $trashedAuctions = Auction::withTrashed();  //Recupero subastas eliminadas
+        $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
         $cantAuctions = $activeAuctions->count();
+        
+        if (($user->isAdmin)) {        //Si el usuario NO es administrador no quiero todas las activas o eliminadas sino esas en las que participe
 
-        $myBids = $user->auctions->unique(['auction_id']);
-        $myAuctions = collect();
-        foreach ($myAuctions as $i) {
-            $auction = Auction::find($i);
-            $myBids->push($auction);
-        }
-        dd($myBids);
+            $myBids = $user->auctions->unique(['auction_id']); //Recupero los id de las subastas en las que participe
+            $myAuctions = collect();    
 
+            foreach ($myBids as $i) {
+    
+                $auction = Auction::find($i->auction_id); //Recupero la subasta con los id que recupere arriba
+                $myAuctions->push($auction);  // Las guardo en myAuctions
+            }
+
+            $activeAuctions = $activeAuctions->intersect($myAuctions); //Separo las activas de entre las que participe
+            $trashedAuctions = $trashedAuctions->intersect($myAuctions); // separo las inactivas de entre las que participe
+
+         } 
         return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions);
+
     }
 
     public function listActives()

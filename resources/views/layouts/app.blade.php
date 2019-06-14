@@ -75,7 +75,7 @@
                                 </a>
                                 <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                                
-                                @if ( Auth::user()->isAdmin == null)
+                                @if (Auth::user()->isAdmin)
                                    <li class="dropdown-submenu ">
                                         <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
                                             Subastas 
@@ -85,7 +85,7 @@
                                                 <a class="dropdown-item" tabindex="-1" href="/getSearchAuction">Buscar subastas</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="">Mis subastas</a>
+                                                <a class="dropdown-item" tabindex="-1" href="/auction">Mis subastas</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -112,7 +112,7 @@
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Buscar hotsales</a>
+                                                <a class="dropdown-item" tabindex="-1" href="">Buscar hotsales</a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" tabindex="-1" href="#">Mis hotsales</a>
@@ -128,10 +128,10 @@
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Crear subasta</a>
+                                                <a class="dropdown-item" tabindex="-1" href="/auction/create">Crear subasta</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Listar subasta</a>
+                                                <a class="dropdown-item" tabindex="-1" href="/auction">Listar subasta</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -142,10 +142,10 @@
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Dar de alta residencia</a>
+                                                <a class="dropdown-item" tabindex="-1" href="/home/create">Dar de alta residencia</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Listar residencias</a>
+                                                <a class="dropdown-item" tabindex="-1" href="home">Listar residencias</a>
                                             </li>
                                         </ul>
                                     </li>
