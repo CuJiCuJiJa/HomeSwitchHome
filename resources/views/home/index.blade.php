@@ -8,7 +8,7 @@
         <div class="col-12 text-md-center full-height">
 
             @if(session('success'))
-                <div class="exito horizontal-list">   
+                <div class="exito horizontal-list">
                     {{ session('success') }}
                 </div>
             @endif
@@ -23,7 +23,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    
+
                     @foreach ($activeHomes as $home)
                         <div class="card-body">
                            <div class="descripcion">
@@ -32,7 +32,7 @@
                                 Ubicación: {{ $home->location }}
                             </div>
 
-                            <div class="links horizontal-list">    
+                            <div class="links horizontal-list">
                                 <a href="{{ route('home.show', $home->id) }}">Ver más</a>
                                 <a href="{{ route('home.edit', $home->id) }}">Editar</a>
                             </div>
@@ -41,7 +41,7 @@
                     @endforeach
                 </div>
             @endif
-            <div class="links horizontal-list"> 
+            <div class="links horizontal-list">
                 <a class="link" href="{{ route('home.create') }}">Agregar Residencia</a>
             </div>
         </div>

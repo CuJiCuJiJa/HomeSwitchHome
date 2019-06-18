@@ -17,6 +17,7 @@ class SearchController extends Controller
     public function postSearchAuction(Request $request)
     {
         //LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
+        dd($request);
     	$now = Carbon::now();
 
         $auctions = Auction::with('home')->where('active', TRUE)->where('starting_date', '<' ,$now)->get();
