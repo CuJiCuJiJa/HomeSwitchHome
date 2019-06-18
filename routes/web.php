@@ -36,9 +36,6 @@ Route::post('/bid/{id}', 'UserController@pujar')->name('user.bid'); //->middlewa
 //BUSCAR SUBASTA
 Route::get('/getSearchAuction', 'SearchController@getSearchAuction')->name('getSearch.auction');
 Route::post('/postSearchAuction', 'SearchController@postSearchAuction')->name('postSearch.auction');
-//VER MIS SUBASTA
-
-
 //BUSCAR HOTSALE
 Route::get('/getSearchHotsale', 'SearchController@getSearchHotsale')->name('getSearch.hotsale');
 Route::post('/postSearchHotsale', 'SearchController@postSearchHotsale')->name('postSearch.hotsale');

@@ -75,7 +75,7 @@
                                 </a>
                                 <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                                
-                                @if (Auth::user()->isAdmin)
+                                @if (!Auth::user()->isAdmin())
                                    <li class="dropdown-submenu ">
                                         <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
                                             Subastas 
