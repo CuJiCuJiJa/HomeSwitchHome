@@ -29,9 +29,10 @@ class ReservationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($home_id)
     {
-        return view('reservation.create');
+        $home = Home::find($home_id);
+        return view('reservation.create')->with('home', $home);
     }
 
     /**

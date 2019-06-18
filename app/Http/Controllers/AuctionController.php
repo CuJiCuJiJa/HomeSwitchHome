@@ -28,7 +28,7 @@ class AuctionController extends Controller
         $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
         $cantAuctions = $activeAuctions->count();
         
-        if (($user->isAdmin)) {        //Si el usuario NO es administrador no quiero todas las activas o eliminadas sino esas en las que participe
+        if ((!$user->isAdmin())) {        //Si el usuario NO es administrador no quiero todas las activas o eliminadas sino esas en las que participe
 
             $myBids = $user->auctions->unique(['auction_id']); //Recupero los id de las subastas en las que participe
             $myAuctions = collect();    
@@ -41,7 +41,7 @@ class AuctionController extends Controller
 
             $activeAuctions = $activeAuctions->intersect($myAuctions); //Separo las activas de entre las que participe
             $trashedAuctions = $trashedAuctions->intersect($myAuctions); // separo las inactivas de entre las que participe
-
+            $cantAuctions = $activeAuctions->count();
          } 
         return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions);
 
