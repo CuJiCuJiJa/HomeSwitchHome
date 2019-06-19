@@ -30,7 +30,7 @@ class PageController extends Controller
 
     public function testFunction()
     {
-        $auction = Auction::find(3);
-        dd($auction->biddersByLatest());
+
+        dd(Auth::user()->validUser());
     }
 }

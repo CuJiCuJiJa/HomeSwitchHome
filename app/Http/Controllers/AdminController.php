@@ -120,15 +120,22 @@ class AdminController extends Controller
         //ME TRAIGO LA SUBASTA
         $auction = Auction::find($auction_id);
         $now = Carbon::now();
+
         //ME TRAIGO LA MEJOR PUJA LA CUAL POSEE EL USUARIO GANADOR
         $bestBid = AuctionUser::where('auction_id', $auction_id)->where('best_bid', true)->first();
+
         //ME TRAIGO EL USUARIO
         $user = User::find($bestBid->user_id);
+
         //CREO UNA COLLECCION CON TODOS LOS POSIBLES GANADORES
         $orderedBidsCollection = $auction->biddersByLatest();
-        //LLAMO A CHOOSEVALIDUSER QUE SE ENCARGA DE RECORRER Y ELEGIR UN USUARIO VÁLIDO
-        $this->chooseValidUser($orderedBidsCollection);
 
+        //LLAMO A CHOOSEVALIDUSER QUE SE ENCARGA DE RECORRER Y ELEGIR UN USUARIO VÁLIDO
+        $user = $this->chooseValidUser($orderedBidsCollection);
+
+        if ($user='sin usuarios válidos') {
+            return redirect()->back()->with('error', 'No hay usuarios válidos para esta subasta, por favor elimine la subasta.');
+        }
 
         $auction->winner_id = $user->id;
         $auction->save();
@@ -147,6 +154,7 @@ class AdminController extends Controller
             if ($user->validUser()) {
                 return $user;
             }
+        return 'sin usuarios válidos';
         }
     }
 }
