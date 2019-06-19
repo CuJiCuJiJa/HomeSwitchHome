@@ -21,4 +21,8 @@ class Auction extends Model
     	return $this->hasMany('App\AuctionUser');
     }
 
+    public function scopeBiddersByLatest()
+    {
+        return $this->bids()->where('value', '>=', $this->base_price)->latest()->get()->unique('user_id');
+    }
 }

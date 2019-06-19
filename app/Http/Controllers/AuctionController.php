@@ -15,10 +15,10 @@ class AuctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
+    /* public function __construct()
     {
         $this->middleware('checkAuction')->only('show');
-    }
+    } */
 
      public function index()
     {
@@ -27,14 +27,14 @@ class AuctionController extends Controller
         $activeAuctions = Auction::all();          //Recupero subastas activas
         $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
         $cantAuctions = $activeAuctions->count();
-        
+
         if ((!$user->isAdmin())) {        //Si el usuario NO es administrador no quiero todas las activas o eliminadas sino esas en las que participe
 
             $myBids = $user->auctions->unique(['auction_id']); //Recupero los id de las subastas en las que participe
-            $myAuctions = collect();    
+            $myAuctions = collect();
 
             foreach ($myBids as $i) {
-    
+
                 $auction = Auction::find($i->auction_id); //Recupero la subasta con los id que recupere arriba
                 $myAuctions->push($auction);  // Las guardo en myAuctions
             }
@@ -42,7 +42,7 @@ class AuctionController extends Controller
             $activeAuctions = $activeAuctions->intersect($myAuctions); //Separo las activas de entre las que participe
             $trashedAuctions = $trashedAuctions->intersect($myAuctions); // separo las inactivas de entre las que participe
             $cantAuctions = $activeAuctions->count();
-         } 
+         }
         return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions);
 
     }

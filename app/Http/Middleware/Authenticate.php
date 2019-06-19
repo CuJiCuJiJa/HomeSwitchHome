@@ -3,7 +3,8 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-
+use App\Auction;
+use Carbon\Carbon;
 class Authenticate extends Middleware
 {
     /**
@@ -14,6 +15,24 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+        /////////////////////////////////////////////
+        $auctions = Auction::all();
+
+        $now = Carbon::now();
+
+        foreach ($auctions as $auction) {
+
+            if ($auction->start_date < $now) {
+                $auction->active = true;
+                $auction->save();
+            }
+            if ($auction->end_date < $now) { //SI LA SUBASTA YA CUMPLIÓ SU CICLO LA DESACTIVO
+                $auction->active = false;
+                $auction->save();
+            }
+        }
+        //////////////////////////////////////////////
+
         if (! $request->expectsJson()) {
             return route('login');
         }

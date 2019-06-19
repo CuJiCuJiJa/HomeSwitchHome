@@ -4,6 +4,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -32,9 +34,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     public function scopeHasAvailableWeek()
     {
-        return $query->where('available_weeks', '>', 0);
+        return ($this->available_weeks) > 0;
     }
     public function scopeIsAdmin()
     {
@@ -67,5 +70,14 @@ class User extends Authenticatable
     public function reservations()
     {
         return $this->hasMany('App\HomeUser');
+    }
+
+    public function validUser()
+    {
+        if ($this->hasAvailableWeek() && !$this->trashed() && $this->hasValidCard()) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }

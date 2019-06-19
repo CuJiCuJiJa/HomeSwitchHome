@@ -18,6 +18,9 @@
 
 Route::get('/', 'PageController@index');
 
+//TEST ROUTE
+Route::get('/test', 'PageController@testFunction');
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
@@ -42,8 +45,6 @@ Route::post('/postSearchHotsale', 'SearchController@postSearchHotsale')->name('p
 //ANULAR RESIDENCIA
 Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
 //ADJUDICAR
-Route::post('/adjudicate/{id}', 'AdminController@adjudicar')->name('admin.adjudicar');
-//TEST ROUTE
-Route::get('/test/{id}', 'ReservationController@show');
+Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
 //RESERVAR
 Route::get('/reservation/create/{home_id}', 'ReservationController@create')->name('reservation.create');
