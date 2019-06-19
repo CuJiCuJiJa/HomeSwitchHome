@@ -42,7 +42,9 @@
                 </div>
             @endif
             <div class="links horizontal-list">
+            @if (Auth::user()->isAdmin())
                 <a class="link" href="{{ route('home.create') }}">Agregar Residencia</a>
+            @endif
             </div>
         </div>
     </div>

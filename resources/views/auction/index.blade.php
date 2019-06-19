@@ -9,8 +9,9 @@
                     {{ session('success') }}
                 </div>
             @endif
+
             @if($cantAuctions == 0)
-                <h2>¡Oops! No existen subastas actualmente...</h2>
+                <h2>¡Oops! No tienes subastas...</h2>
             @else
                 <div class="card">
                     <div class="card-header">Subastas</div>
@@ -59,7 +60,9 @@
                 </div>
             @endif
             <div class="links horizontal-list"> 
+            @if (Auth::user()->isAdmin())
                 <a href="{{ route('auction.create') }}">Agregar Subasta</a>
+            @endif
                 <a href="{{ route('getSearch.auction') }}">Buscar Subasta</a>
             </div>
         </div>
