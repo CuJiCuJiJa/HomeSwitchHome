@@ -41,30 +41,39 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $home_id)
+    public function store(Request $request)
     {
         $user = Auth::user();
-        if ($user->isPremium() && $user->hasAvailableWeeks()) {
+        $home = Home::find($request->home_id);
+        $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek(); 
+
+        if ($user->isPremium() && $user->hasAvailableWeek() && !$home->isOccupied($carbonWeek)) {
 
             $reservation = new HomeUser;
-
-            $carbonWeek = Carbon::parse($request->week);
-            $reservation->home_id = $home_id;
+            $reservation->home_id = $home->id;
             $reservation->user_id = $user->id;
             $reservation->week = $carbonWeek;
 
             $reservation->save();
+            
+            $user->available_weeks = $user->available_weeks-1;
+            $user->save();
 
-            $user->availaible_weeks = $user->availaible_weeks + 1;
-
-            return redirect()->route('home.show')->with('reservation', $reservation);
+            return redirect()->route('home.show', $home)->with('reservation', $reservation)->with('success', 'Reserva realizada con exito');
 
         }
-        if (!$user->hasAvailableWeeks()) {
-            return redirect()->back()->with('error', 'Ustéd ya há utilizado sus semanas de reserva.');
-        }
-        if (!$user->isPremium()) {
-            return redirect()->back()->with('error', 'Ustéd no es un usuario premium, considere asociarse.');
+        else{
+            if (!$user->hasAvailableWeek()) {
+                return redirect()->back()->with('error', 'Ustéd ya há alcanzado el limite de semanas por año.');
+            }
+
+            if ($home->isOccupied($carbonWeek)) {
+                return redirect()->back()->with('error', 'La semana seleccionada no esta disponible');
+            }
+
+            if (!$user->isPremium()) {
+                return redirect()->back()->with('error', 'Ustéd no es un usuario premium, considere asociarse.');
+            }
         }
     }
 

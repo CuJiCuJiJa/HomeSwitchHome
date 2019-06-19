@@ -11,7 +11,7 @@
                 <div class="links">
                     @auth                    
                         <a href="{{ route('auction.index') }}">Subastas</a>
-                        <a href="{{ route('home.index') }}">Residencias</a>
+                        <a href="{{ route('hotsale.index') }}">HotSales</a>
                     @else
                         <a href="{{ route('register') }}">Registrarse</a>
                         <a href="{{ route('login') }}">Iniciar sesión</a>

@@ -32,9 +32,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function scopeHasAvailableWeek()
+    public function scopeHasAvailableWeek($query)
     {
-        return $query->where('available_weeks', '>', 0);
+
+        return ($this->available_weeks) > 0;
     }
     public function scopeIsAdmin()
     {

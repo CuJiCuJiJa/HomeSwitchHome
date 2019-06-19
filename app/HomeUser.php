@@ -15,4 +15,6 @@ class HomeUser extends Model
     {
         return $this->belongsTo('App\Home');
     }
+
 }
+

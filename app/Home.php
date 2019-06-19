@@ -38,13 +38,15 @@ class Home extends Model
         return $query->whereHas('reservations', function($query) use ($date)
             {
                 $query->where('week', $date);
+
             })->orWhereHas('auctions', function($query) use ($date)
             {
-                $query->where('winner_id', '=', null)->where('week', $date);
+                $query->where('winner_id', '!=', null)->where('week', $date);
+
             })->orWhereHas('hotsales', function($query) use ($date)
             {
                 $query->where('week', $date);
-            });
+            })->get()->count() != 0;
     }
 
 }
