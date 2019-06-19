@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use App\Auction;
 
 class PageController extends Controller
 {
@@ -24,5 +26,11 @@ class PageController extends Controller
     public function index()
     {
         return view('page');
+    }
+
+    public function testFunction()
+    {
+        $auction = Auction::find(3);
+        dd($auction->biddersByLatest());
     }
 }

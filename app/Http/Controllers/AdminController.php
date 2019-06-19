@@ -111,27 +111,42 @@ class AdminController extends Controller
         return redirect()->route('user.show', $user)->with('success', 'Usuario marcado como lowcost');
     }
 
-    public function adjudicar(Request $request)
+    public function adjudicar(Request $request, $auction_id)
     {
         //SOLO SE PUEDE ADJUDICAR SI LA SUBASTA YA SOBREPASÓ EL END_DATE
-        $auctionId = $request->route()->parameter('id');
-        $auction = Auction::find($auctionId);
+        //HAY QUE EVALUAR QUE EL USUARIO GANADOR DE LA SUBASTA TODAVÍA TENGA CREDITOS DISPONIBLES
+        //EN EL CADO DE QUE NO, HAY QUE ADJUDICARLE A LA SEGUNDA PUJA GANADORA SI ES QUE EXISTE
+
+        //ME TRAIGO LA SUBASTA
+        $auction = Auction::find($auction_id);
         $now = Carbon::now();
-        $user = User::find($auction->user_id);
+        //ME TRAIGO LA MEJOR PUJA LA CUAL POSEE EL USUARIO GANADOR
+        $bestBid = AuctionUser::where('auction_id', $auction_id)->where('best_bid', true)->first();
+        //ME TRAIGO EL USUARIO
+        $user = User::find($bestBid->user_id);
+        //CREO UNA COLLECCION CON TODOS LOS POSIBLES GANADORES
+        $orderedBidsCollection = $auction->biddersByLatest();
+        //LLAMO A CHOOSEVALIDUSER QUE SE ENCARGA DE RECORRER Y ELEGIR UN USUARIO VÁLIDO
+        $this->chooseValidUser($orderedBidsCollection);
 
-        if (!$user->hasAvailableWeek()) {
-            return redirect()->back()->with('error', 'El usuario no poseé creditos disponibles');
-        }
 
-        if (!($now > $auction->end_date)) {
-            return redirect()->back()->with('error', 'La subasta todavia no ha finalizado');
-        }
-
-        $bestBid = AuctionUser::where('auction_id', $auctionId)->where('best_bid', true)->first();
-
-        $auction->winner_id = $bestBid->user_id;
+        $auction->winner_id = $user->id;
         $auction->save();
 
-        return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Subasta adjudicada.');
+        $user->available_weeks = $user->available_weeks - 1;
+        $user->save();
+
+        return redirect()->route('auction.show', ['id' => $auction_id])->with('success', 'Subasta adjudicada.');
+    }
+
+    public function chooseValidUser($bids)
+    {
+        //SI POR ALGUNA RAZÓN EL USUARIO CON LA PUJA GANADORA NO ESTÁ DISPONIBLE, EVALUO LA SIGUIENTE MEJOR PUJA
+        foreach ($bids as $bid) {
+            $user = User::find($bid->user_id);
+            if ($user->validUser()) {
+                return $user;
+            }
+        }
     }
 }

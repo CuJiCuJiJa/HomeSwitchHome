@@ -15,7 +15,7 @@
             @else
                 <div class="card">
                     <div class="card-header">Subastas</div>
-                        
+
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
                                 {{ session('status') }}
@@ -32,9 +32,11 @@
                                     <br>
                                     Ubicación de la residencia: {{ $activeAuction->home->location }}
                                 </div>
-                                <div class="links horizontal-list">    
+                                <div class="links horizontal-list">
                                     <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
-                                    <a href="{{ route('auction.edit', [$activeAuction->id]) }}">Editar</a>
+                                    @if (Auth::user()->isAdmin())
+                                        <a href="{{ route('auction.edit', [$activeAuction->id]) }}">Editar</a>
+                                    @endif
                                 </div>
                                 <hr>
                             </div>
@@ -50,8 +52,9 @@
                                     <br>
                                     Ubicación de la residencia: {{ $trashedAuction->home->location }}
                                 </div>
-                                <div class="links horizontal-list">    
+                                <div class="links horizontal-list">
                                     <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
+
                                     <a href="{{ route('auction.edit', [$activeAuction->id]) }}">Editar</a>
                                 </div>
                                 <hr>
@@ -59,7 +62,7 @@
                         @endforeach
                 </div>
             @endif
-            <div class="links horizontal-list"> 
+            <div class="links horizontal-list">
             @if (Auth::user()->isAdmin())
                 <a href="{{ route('auction.create') }}">Agregar Subasta</a>
             @endif
@@ -70,4 +73,4 @@
 </div>
 @endsection
 
- 
+

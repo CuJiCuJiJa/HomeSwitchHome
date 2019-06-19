@@ -18,16 +18,21 @@ class CheckAuction
      */
     public function handle($request, Closure $next)
     {
-        $auctionId = $request->route()->parameter('auction')->id;
-        $auction = Auction::find($auctionId);
+        $auctions = Auction::all();
 
         $now = Carbon::now();
 
-        if ($auction->endDate < $now) { //SI LA SUBASTA YA CUMPLIÓ SU CICLO LA DESACTIVO
-            $auction->active = false;
-            $auction->save();
-        }
+        foreach ($auctions as $auction) {
 
+            if ($auction->start_date < $now) {
+                $auction->active = true;
+                $auction->save();
+            }
+            if ($auction->end_date < $now) { //SI LA SUBASTA YA CUMPLIÓ SU CICLO LA DESACTIVO
+                $auction->active = false;
+                $auction->save();
+            }
+        }
         return $next($request);
     }
 }

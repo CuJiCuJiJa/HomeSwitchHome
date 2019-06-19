@@ -37,20 +37,20 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                    
+
                 @if ($auction->starting_date < \Carbon\Carbon::now() && $auction->end_date > \Carbon\Carbon::now())
-                    
+
                     <form action="{{ route('user.bid', $auction->id) }}" method="POST">
                         {{ csrf_field() }}
-                    
+
                         <input type="real" class="form-control" id="bid_value" name="bid_value" placeholder="Ingrese el monto a pujar">
-                        
+
                         @if($errors->has('bid_value'))
                             <div class="fallo horizontal-list">
                                 {{ $errors->first('bid_value') }}
                             </div>
                         @endif
-                        
+
                         <div class="links horizontal-list">
                             <button type="submit" class="btn btn-primary">Pujar!</button>
                         </div>
@@ -66,9 +66,9 @@
                 @endif
 
                 @if ($auction->end_date < \Carbon\Carbon::now() && $winner == null && $auction->best_bid_value >= $auction->base_price)
-                    <form action="{{ route('admin.adjudicar', $auction->id) }}" method="POST">
+                    <form action="{{ route('admin.adjudicar', ['auction_id' => $auction->id]) }}" method="POST">
                         {{ csrf_field() }}
-                                        
+
                         <button type="submit" class="btn btn-primary">Adjudicar a ganador</button>
                     </form>
                 @endif
@@ -94,7 +94,7 @@
                 <br>
                 <br>
             </div>
-            
+
         </div>
     </div>
 </div>
