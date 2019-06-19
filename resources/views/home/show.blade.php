@@ -39,9 +39,10 @@
                         <a href="{{ route('home.edit', $home->id) }}"> Editar </a>
                     @endif
                         <a class="link" href="{{ route('home.index') }}"> Listado de Residencias </a>
-                    @if (Auth::user()->isPremium()) 
-                        <a class="link" href="{{ url('/reservation/create/'.$home->id) }}"> Reservar </a>
-                    @endif 
+                    @if (Auth::user()->isPremium())
+                        <a class="link" href="{{ route('reservation.create', ['home_id' => $home->id]
+                        ) }}"> Reservar </a>
+                    @endif
                     </div>
                 </div>
 

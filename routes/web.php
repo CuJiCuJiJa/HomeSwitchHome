@@ -46,4 +46,4 @@ Route::post('/adjudicate/{id}', 'AdminController@adjudicar')->name('admin.adjudi
 //TEST ROUTE
 Route::get('/test/{id}', 'ReservationController@show');
 //RESERVAR
-Route::get('/reservation/create/{home_id}', 'ReservationController@create');
+Route::get('/reservation/create/{home_id}', 'ReservationController@create')->name('reservation.create');
