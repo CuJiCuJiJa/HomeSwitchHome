@@ -50,4 +50,4 @@ Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
 //ADJUDICAR
 Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
 //RESERVAR
-Route::get('/reservation/create/{home_id}', 'ReservationController@create')->name('reservation.create');
+Route::get('/reservation/create/{home_id}/{week}', 'ReservationController@create')->name('reservation.create');

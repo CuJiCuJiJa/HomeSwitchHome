@@ -29,10 +29,10 @@ class ReservationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($home_id)
+    public function create($home_id, $week)
     {
         $home = Home::find($home_id);
-        return view('reservation.create')->with('home', $home);
+        return view('reservation.create')->with('home', $home)->with('week', $week);
     }
 
     /**
@@ -43,6 +43,7 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         $user = Auth::user();
         $home = Home::find($request->home_id);
         $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek(); 
