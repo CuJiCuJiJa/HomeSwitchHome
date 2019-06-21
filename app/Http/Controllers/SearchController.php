@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Home;
 use App\Auction;
 use Carbon\Carbon;
 
@@ -51,47 +51,46 @@ class SearchController extends Controller
 
     public function getSearchHome()
     {
-        return view('search.homeSearch');
+        return view('search.reservationSearch');
     }
 
     public function postSearchHome(Request $request)
     {
         //LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
+     
     	$now = Carbon::now();
         $homes = Home::all();
         $activeHomes = collect();
         $results = collect();
-
-        if ($home != null) {
-            foreach ($homes as $home) {
-                if ($home->isOcuppied($request->$week)) {
-                    $activeHomes->push();
+        
+        $currentWeek = Carbon::parse($request->fromDate)->startOfWeek();
+        $endWeek = Carbon::parse($request->toDate)->startOfWeek();;
+       
+        if ($homes != null) {            
+            if ( $currentWeek <= $endWeek){
+                foreach ($homes as $home) {
+                    if (!$home->isOccupied($currentWeek)) {
+                        $activeHomes->push($home);
+                    }
                 }
+                $currentWeek = $currentWeek->addWeek(1);
             }
         }
 
-		if ($request->has('location')) {
+        if ($request->location != null) {
     		foreach ($activeHomes as $i) {
-                if ($i->home->location == $request->location) {
+                if ($i->location == $request->location) {
                     $results->push($i);
                 }
             }
 		}
-
-		if ($request->has('week')) {
-		    foreach ($activeHomes as $i) {
-                if ($i->week == $request->week) {
-                    $results->push($i);
-                }
-            }
-		}
-
+        
 		if (!$results->count() > 0) {
-            return view('search.homeResults')->with('error', 'No hay resultados.');
+            return view('search.reservationResults')->with('error', 'No hay resultados.');
         }
 
 
-		return view('search.homeResults')->with('homes', $results);
+		return view('search.reservationResults')->with('reservations', $results)->with('request', $request);
     }
 
     public function getSearchHotsale()
