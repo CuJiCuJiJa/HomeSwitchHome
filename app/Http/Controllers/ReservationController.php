@@ -43,10 +43,10 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+
         $user = Auth::user();
         $home = Home::find($request->home_id);
-        $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek(); 
+        $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek()->toDateString(); 
 
         if ($user->isPremium() && $user->hasAvailableWeek() && !$home->isOccupied($carbonWeek)) {
 
@@ -60,7 +60,7 @@ class ReservationController extends Controller
             $user->available_weeks = $user->available_weeks-1;
             $user->save();
 
-            return redirect()->route('home.show', $home)->with('reservation', $reservation)->with('success', 'Reserva realizada con exito');
+            return view('reservation.show', $home)->with('reservation', $reservation)->with('success', 'Reserva realizada con exito');
 
         }
         else{
