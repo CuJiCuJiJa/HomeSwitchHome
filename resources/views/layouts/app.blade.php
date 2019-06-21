@@ -19,8 +19,13 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     @yield('head')
-    <script  src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="{{ asset('js/app.js') }}" ></script>
+    <link rel="stylesheet" href="{{asset('js/jquery-ui.min.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+    <script src="{{asset('js/jquery.weekpicker.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </head>
 
@@ -200,6 +205,9 @@
 </main>
 </body>
 <footer>
-    @yield('footer')          
+
+    @yield('footer')
+
 </footer>
+</body>
 </html>

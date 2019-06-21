@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 
 <div class="container mask-white">
@@ -8,21 +7,31 @@
         <div class="col-12">
             <div class="card">
 
-                <div class="card-header">Buscar Subasta</div>
+                <div class="card-header">Buscar residencias disponibles </div>
 
                 <div class="card-body">
 
-                    <form action="{{ route('postSearch.home') }}" method="POST">
+                    <form action="{{ route('postSearch.reserve') }}" method="POST">
                         {{ csrf_field() }}
                         
                         <div class="form-group">
                             <label for="fromDate">Inicio de busqueda:</label>
-                            <input type="text" class="form-control" id="fromDate"  name="fromDate" placeholder="Ingresar semana">
+                            <input type="text" class="form-control" id="fromDate"  name="fromDate" placeholder="Ingresar semana" required>
+                                @if ($errors->has('fromDate'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('fromDate') }}</strong>
+                                    </span>
+                                @endif
                         </div>
 
                         <div class="form-group">
                             <label for="toDate">Fin de busqueda:</label>
-                            <input type="text" class="form-control" id="toDate"  name="toDate"  placeholder="Ingresar semana">
+                            <input type="text" class="form-control" id="toDate"  name="toDate"  placeholder="Ingresar semana" required>
+                                @if ($errors->has('toDate'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('toDate') }}</strong>
+                                    </span>
+                                @endif
                         </div>
 
                         <div class="form-group">
@@ -47,8 +56,6 @@
 @endsection
 
 @section('footer')
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
   <script>
   $(function() {
     $( "#fromDate" ).datepicker({

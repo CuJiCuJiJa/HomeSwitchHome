@@ -34,18 +34,19 @@ class Home extends Model
 
     public function scopeIsOccupied($query, $date)
     {
+        
         //EN CASO DE QUE EXISTAN DEVUELVE RESERVA, HOTSALE O SUBASTa PARA UNA SEMANA DADA
         return $query->whereHas('reservations', function($query) use ($date)
             {
-                $query->where('week', $date);
+                $query->where('week', $date)->where('home_id', $this->id);
 
             })->orWhereHas('auctions', function($query) use ($date)
             {
-                $query->where('winner_id', '!=', null)->where('week', $date);
+                $query->where('winner_id', '!=', null)->where('week', $date)->where('home_id', $this->id);;
 
             })->orWhereHas('hotsales', function($query) use ($date)
             {
-                $query->where('week', $date);
+                $query->where('week', $date)->where('home_id', $this->id);;
             })->get()->count() != 0;
     }
 

@@ -44,7 +44,7 @@ Route::get('/getSearchHotsale', 'SearchController@getSearchHotsale')->name('getS
 Route::post('/postSearchHotsale', 'SearchController@postSearchHotsale')->name('postSearch.hotsale');
 //BUSCAR RESERVA
 Route::get('/getSearchReserve', 'SearchController@getSearchHome')->name('getSearch.reserve');
-Route::post('/postSearchReserve', 'SearchController@postSearchHome ');
+Route::post('/postSearchReserve', 'SearchController@postSearchHome')->name('postSearch.reserve');
 //ANULAR RESIDENCIA
 Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
 //ADJUDICAR
