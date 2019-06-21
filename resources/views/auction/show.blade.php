@@ -80,21 +80,24 @@
 
             <br>
 
+            @if ($auction->isTrashed)
+                <div class="links horizontal-list">
+
+                    <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+
+                        <button type="submit" onclick="return confirm('¿Desea borrar la subasta?');" class="btn btn-primary">Eliminar</button>
+                    </form>
+
+                    <a href="{{ route('auction.edit', $auction) }}">Editar</a>
+                    <br>
+                    <br>
+                </div>
+            @endif
             <div class="links horizontal-list">
-
-                <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
-                    {{ csrf_field() }}
-                    {{ method_field('DELETE') }}
-
-                    <button type="submit" onclick="return confirm('¿Desea borrar la subasta?');" class="btn btn-primary">Eliminar</button>
-                </form>
-
-                <a href="{{ route('auction.edit', $auction) }}">Editar</a>
                 <a href="{{ route('auction.index') }}">Volver</a>
-                <br>
-                <br>
             </div>
-
         </div>
     </div>
 </div>

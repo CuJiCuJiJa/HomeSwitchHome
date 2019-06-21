@@ -127,14 +127,17 @@ class AdminController extends Controller
         //ME TRAIGO EL USUARIO
         $user = User::find($bestBid->user_id);
 
-        //CREO UNA COLLECCION CON TODOS LOS POSIBLES GANADORES
-        $orderedBidsCollection = $auction->biddersByLatest();
+        //SI EL USUARIO GANADOR NO ES VÁLIDO PARA ADJUDICARLO GANADOR
+        if (!$user->validUser($auction->week)) {
+            //CREO UNA COLLECCION CON TODOS LOS POSIBLES GANADORES
+            $orderedBidsCollection = $auction->biddersByLatest();
 
-        //LLAMO A CHOOSEVALIDUSER QUE SE ENCARGA DE RECORRER Y ELEGIR UN USUARIO VÁLIDO
-        $user = $this->chooseValidUser($orderedBidsCollection);
+            //LLAMO A CHOOSEVALIDUSER QUE SE ENCARGA DE RECORRER Y ELEGIR UN USUARIO VÁLIDO
+            $user = $this->chooseValidUser($orderedBidsCollection, $auction->week);
 
-        if ($user='sin usuarios válidos') {
-            return redirect()->back()->with('error', 'No hay usuarios válidos para esta subasta, por favor elimine la subasta.');
+            if ($user == 'sin usuarios válidos') {
+                return redirect()->back()->with('error', 'No hay usuarios válidos para esta subasta, por favor elimine la subasta.');
+            }
         }
 
         $auction->winner_id = $user->id;
@@ -146,15 +149,24 @@ class AdminController extends Controller
         return redirect()->route('auction.show', ['id' => $auction_id])->with('success', 'Subasta adjudicada.');
     }
 
-    public function chooseValidUser($bids)
+    public function chooseValidUser($bids, $date)
     {
         //SI POR ALGUNA RAZÓN EL USUARIO CON LA PUJA GANADORA NO ESTÁ DISPONIBLE, EVALUO LA SIGUIENTE MEJOR PUJA
         foreach ($bids as $bid) {
             $user = User::find($bid->user_id);
-            if ($user->validUser()) {
+            if ($user->validUser($date)) {
                 return $user;
             }
-        return 'sin usuarios válidos';
         }
+        return 'sin usuarios válidos';
     }
+
+    public function testFunction()
+    {
+        $date = "2019-06-19";
+        $user = Auth::user();
+        dd($user->ValidUser($date));
+    }
+
 }
+

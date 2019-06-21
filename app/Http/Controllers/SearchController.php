@@ -22,7 +22,8 @@ class SearchController extends Controller
         //LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
     	$now = Carbon::now();
 
-        $auctions = Auction::with('home')->where('active', TRUE)->where('starting_date', '<' ,$now)->get();
+        $auctions = Auction::with('home')->where('active', TRUE)->get();
+
 
         $results = collect();
 
@@ -32,7 +33,7 @@ class SearchController extends Controller
                     $results->push($auction);
                 }
             }
-		}
+        }
 
 		if ($request->has('week')) {
 		    foreach ($auctions as $auction) {
@@ -40,7 +41,8 @@ class SearchController extends Controller
                     $results->push($auction);
                 }
             }
-		}
+        }
+        $results = $results->unique();
 
 		if (!$results->count() > 0) {
             return view('search.auctionResults')->with('error', 'No hay resultados.');

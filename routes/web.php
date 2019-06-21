@@ -19,7 +19,7 @@
 Route::get('/', 'PageController@index');
 
 //TEST ROUTE
-Route::get('/test', 'PageController@testFunction');
+Route::get('/test', 'AdminController@testFunction');
 
 Auth::routes();
 

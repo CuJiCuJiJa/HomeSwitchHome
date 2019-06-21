@@ -24,16 +24,19 @@ class AuctionController extends Controller
     {
         $user = Auth::user();
         $now = Carbon::now();
-        $activeAuctions = Auction::all();          //Recupero subastas activas
+        $indexAuctions = Auction::all()->where('active', true);
+        $activeAuctions = Auction::all()->where('active', true); //Recupero subastas activas
         $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
-        $cantAuctions = $activeAuctions->count();
+        $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
 
         if ((!$user->isAdmin())) {        //Si el usuario NO es administrador no quiero todas las activas o eliminadas sino esas en las que participe
 
-            $myBids = $user->auctions->unique(['auction_id']); //Recupero los id de las subastas en las que participe
+            $trashedAuctions = Auction::all()->where('active', false); //ACA GUARDO LAS SUBASTAS INACTIVAS, PERO LA VARIABLE SE LLAMA TRASHED PARA MATCHEAR EL DEL RETURN
+
+            $myBidsAuctionId = $user->auctions->unique(['auction_id']); //Recupero los id de las subastas en las que participe
             $myAuctions = collect();
 
-            foreach ($myBids as $i) {
+            foreach ($myBidsAuctionId as $i) {
 
                 $auction = Auction::find($i->auction_id); //Recupero la subasta con los id que recupere arriba
                 $myAuctions->push($auction);  // Las guardo en myAuctions
@@ -41,9 +44,9 @@ class AuctionController extends Controller
 
             $activeAuctions = $activeAuctions->intersect($myAuctions); //Separo las activas de entre las que participe
             $trashedAuctions = $trashedAuctions->intersect($myAuctions); // separo las inactivas de entre las que participe
-            $cantAuctions = $activeAuctions->count();
+            $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
          }
-        return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions);
+        return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions)->with('indexAuctions', $indexAuctions);
 
     }
 

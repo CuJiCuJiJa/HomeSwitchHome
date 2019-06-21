@@ -5,6 +5,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use App\AuctionUser;
+use App\HomeUser;
+use App\Hotsale;
+use App\Auction;
 
 class User extends Authenticatable
 {
@@ -53,7 +57,7 @@ class User extends Authenticatable
     }
     public function scopeHasValidCard()
     {
-        return $this->card_verification;
+        return ($this->card_verification) == 1;
     }
     public function role()
     {
@@ -72,9 +76,24 @@ class User extends Authenticatable
         return $this->hasMany('App\HomeUser');
     }
 
-    public function validUser()
+    public function hasHotsale($date)
     {
-        if ($this->hasAvailableWeek() && !$this->trashed() && $this->hasValidCard()) {
+        return Hotsale::where('user_id', $this->id)->where('week', $date);
+    }
+
+    public function hasAuction($date)
+    {
+        return Auction::where('winner_id', $this->id)->where('week', $date);
+    }
+
+    public function hasReservation($date)
+    {
+        return HomeUser::where('user_id', $this->id)->where('week', $date);
+    }
+
+    public function validUser($date)
+    {
+        if ($this->hasAvailableWeek() && !$this->trashed() && $this->hasValidCard() && $this->hasHotsale($date)->get()->count() == 0 && $this->hasAuction($date)->get()->count() == 0 && $this->hasReservation($date)->get()->count() == 0) {
             return true;
         }else{
             return false;
