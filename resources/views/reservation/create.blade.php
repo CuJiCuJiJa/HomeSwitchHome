@@ -41,7 +41,7 @@
               <div class='form-group'>
                 <label for="weekToReserve">Seleccionar semana</label>
                 <br>
-                <input type="date" name="weekToReserve" id="weekToReserve" min="{{$date}}" max="{{$maxDate}}" value="{{ old('weekAuctioned') }}"> <br>
+                <input type="date" name="weekToReserve" id="weekToReserve" min="{{$date}}" max="{{$maxDate}}" value="{{ $week }}"> <br>
                 @if($errors->has('weekToReserve'))
                   <div class="fallo horizontal-list">  
                     {{ $errors->first('weekToReserve') }}
@@ -55,6 +55,15 @@
 
                         <option value="{{ $home->id }}" selected>{{ $home->location }}</option>
                 </select>
+               
+                <div class="descripcion"> 
+               Ubicación: {{ $home->location }}
+               <br>
+               Descripción: {{  $home->descrip }}
+        
+               <br>
+               </div>
+
                 @if($errors->has('home_id'))
                   <div class="fallo horizontal-list">  
                     {{ $errors->first('home_id') }}
@@ -67,7 +76,7 @@
               <div class="links horizontal-list">
                  <button type="submit" class="btn btn-primary">Reservar</button>
               
-                 <a href="{{ URL::previous()}}">Cancelar</a>
+                 <a href="/getSearchReserve">Cancelar</a>
               </div>
 
             </form>
