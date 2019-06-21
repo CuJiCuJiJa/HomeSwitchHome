@@ -15,7 +15,7 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     <!-- Styles -->
-    <link href="{{ asset('css/stylehsh.css') }}" rel="stylesheet"> 
+    <link href="{{ asset('css/stylehsh.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     @yield('head')
@@ -42,14 +42,14 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     Inicio
                 </a>
-                    
+
 
                 <!-- Menu sanguchito mobile -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                
+
                     <!-- Menu a la izquierda -->
                     <ul class="navbar-nav mr-auto">
                     </ul>
@@ -76,11 +76,20 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                               
+
+                                {{-- <li class=" ">
+                                    <a href="{{route('user.edit', Auth::user()->id)}}" class=" dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                        Mi perfil
+                                    </a>
+                                </li> --}}
+
+
                                 @if (!Auth::user()->isAdmin())
+
+
                                    <li class="dropdown-submenu ">
-                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
-                                            Subastas 
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                            Subastas
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
@@ -91,10 +100,9 @@
                                             </li>
                                         </ul>
                                     </li>
-                                                                     
 
                                     <li class="dropdown-submenu ">
-                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
                                             Reservas
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
@@ -106,11 +114,11 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    
-                                   
+
+
                                     <li class="dropdown-submenu ">
-                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
-                                            Hotsales 
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                            Hotsales
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
@@ -120,13 +128,23 @@
                                                 <a class="dropdown-item" tabindex="-1" href="#">Mis hotsales</a>
                                             </li>
                                         </ul>
-                                    </li>    
-                                                            
+                                    </li>
+
                                 @else
+                                    <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                            Usuarios
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="/user">Listar usuarios</a>
+                                            </li>
+                                        </ul>
+                                    </li>
 
                                     <li class="dropdown-submenu ">
-                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
-                                            Subastas 
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                            Subastas
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
@@ -137,24 +155,24 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    
+
                                     <li class="dropdown-submenu ">
-                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
-                                            Residencias 
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                            Residencias
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
                                                 <a class="dropdown-item" tabindex="-1" href="/home/create">Dar de alta residencia</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="home">Listar residencias</a>
+                                                <a class="dropdown-item" tabindex="-1" href="/home">Listar residencias</a>
                                             </li>
                                         </ul>
                                     </li>
 
                                     <li class="dropdown-submenu ">
-                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#"> 
-                                            Hotsales 
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                            Hotsales
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
@@ -164,7 +182,7 @@
                                                 <a class="dropdown-item" tabindex="-1" href="#">Listar hotsales</a>
                                             </li>
                                         </ul>
-                                    </li>    
+                                    </li>
 
 
                                 @endif

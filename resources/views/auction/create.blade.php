@@ -13,12 +13,12 @@
 
             <form action="{{ route('auction.store') }}" method="POST">
               {{ csrf_field() }}
-              
-              <?php         
+
+              <?php
                 $date = \Carbon\Carbon::now()->addMonths(6);
                 if (!$date->isMonday()){
                   $date = $date->startOfWeek();
-                }                               
+                }
                 $date = $date->format('Y-m-d');
               ?>
 
@@ -27,7 +27,7 @@
                 <br>
                 <input type="date" name="weekAuctioned" id="weekAuctioned" min="{{$date}}" value="{{ old('weekAuctioned') }}"> <br>
                 @if($errors->has('weekAuctioned'))
-                  <div class="fallo horizontal-list">  
+                  <div class="fallo horizontal-list">
                     {{ $errors->first('weekAuctioned') }}
                   </div>
                 @endif
@@ -38,14 +38,14 @@
                 <br>
                 <input type="text"  class="form-control" name="starting_date" id="starting_date" value="{{ old('starting_date') }}" readonly/>
                 @if($errors->has('starting_date'))
-                  <div class="fallo horizontal-list">  
+                  <div class="fallo horizontal-list">
                     {{ $errors->first('starting_date') }}
                   </div>
                 @endif
               </div>
 
               <script>
-               
+
                 $('#weekAuctioned').change(function() {
                   var month = parseInt($(this).val().substring(5, 7));
                   var year = parseInt($(this).val().substring(0, 4));
@@ -54,18 +54,18 @@
                     month = '0' + month;
                   } else {
                     if (month < 4 ){
-                      month = '0' + (month + 6);                      
+                      month = '0' + (month + 6);
                     } else {
-                      month = (month + 6);                                          
+                      month = (month + 6);
                     }
                     year = (year - 1);
-                  }   
+                  }
 
                   var auctionDate = month + '/' + $(this).val().substring(8, 10) +'/' + year;
                   console.log(auctionDate);
                   $('#starting_date').val(auctionDate);
                   });
-                
+
               </script>
 
               <div class="form-group">
@@ -81,9 +81,9 @@
                     @endforeach
                 </select>
                 @if($errors->has('home_id'))
-                  <div class="fallo horizontal-list">  
+                  <div class="fallo horizontal-list">
                     {{ $errors->first('home_id') }}
-                </div>  
+                </div>
                 @endif
                 @if(session('sameAuction'))
                   <div class="fallo horizontal-list">
@@ -91,23 +91,23 @@
                   </div>
                 @endif
               </div>
-              
-              
+
+
               <div class="form-group">
                 <label for="base_price">Monto base</label>
                 <input type="real" class="form-control" id="base_price" name="base_price" placeholder="Ingrese el monto base en $" value="{{ old('base_price') }}">
                 @if($errors->has('base_price'))
-                  <div class="fallo horizontal-list">  
+                  <div class="fallo horizontal-list">
                     {{ $errors->first('base_price') }}
                   </div>
                 @endif
               </div>
 
               <br>
-              
+
               <div class="links horizontal-list">
                  <button type="submit" class="btn btn-primary">Crear</button>
-              
+
                  <a href="{{ route('auction.index') }}">Cancelar</a>
               </div>
 

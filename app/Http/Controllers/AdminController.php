@@ -87,28 +87,13 @@ class AdminController extends Controller
         //
     }
 
-    public function markAsAdmin(User $user)
+    public function approveCard($user_id)
     {
-        $user->role_id = 1;
+        $user = User::find($user_id);
+        $user->card_verification = true;
         $user->save();
 
-        return redirect()->route('user.show', $user)->with('success', 'Usuario administrador creado');
-    }
-
-    public function markAsPremium(User $user)
-    {
-        $user->role_id = 2;
-        $user->save();
-
-        return redirect()->route('user.show', $user)->with('success', 'Usuario marcado como premiun');
-    }
-
-    public function markAsLowcost(User $user)
-    {
-        $user->role_id = 3;
-        $user->save();
-
-        return redirect()->route('user.show', $user)->with('success', 'Usuario marcado como lowcost');
+        return redirect()->route('user.index');
     }
 
     public function adjudicar(Request $request, $auction_id)

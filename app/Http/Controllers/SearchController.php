@@ -51,22 +51,23 @@ class SearchController extends Controller
 
     public function getSearchHome()
     {
+        $homes = Home::all();
         return view('search.reservationSearch');
     }
 
     public function postSearchHome(Request $request)
     {
         //LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
-     
+
     	$now = Carbon::now();
         $homes = Home::all();
         $activeHomes = collect();
         $results = collect();
-        
+
         $currentWeek = Carbon::parse($request->fromDate)->startOfWeek();
         $endWeek = Carbon::parse($request->toDate)->startOfWeek();;
-       
-        if ($homes != null) {            
+
+        if ($homes != null) {
             if ( $currentWeek <= $endWeek){
                 foreach ($homes as $home) {
                     if (!$home->isOccupied($currentWeek)) {
@@ -84,7 +85,7 @@ class SearchController extends Controller
                 }
             }
 		}
-        
+
 		if (!$results->count() > 0) {
             return view('search.reservationResults')->with('error', 'No hay resultados.');
         }

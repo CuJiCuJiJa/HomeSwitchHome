@@ -17,8 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
-        return $user;
+        $premiumUsers = User::where('role_id', 2)->get();
+        $lowcostUsers = User::where('role_id', 3)->get();
+        $cardUsers    = User::where('card_verification', false)->where('role_id', '!=', 1)->where('card_number', '!=', null)->get();
+        return view('user.index')->with('premiumUsers', $premiumUsers)->with('lowcostUsers', $lowcostUsers)->with('cardUsers', $cardUsers);
     }
 
     /**
@@ -50,7 +52,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.show')->with('user', $user)->with('hotsales', $user->hotsales())->with('auctions', $user->auctions())->with('reservations', $user->reservations());
+        //  return view('user.show')->with('user', $user)->with('hotsales', $user->hotsales())->with('auctions', $user->auctions())->with('reservations', $user->reservations());
     }
 
     /**
@@ -61,8 +63,7 @@ class UserController extends Controller
      */
     public function edit()
     {
-        $user = Auth::user();
-        return view('user.edit')->with('user', $user);
+
     }
 
     /**
@@ -72,11 +73,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-
+        //
     }
-
     /**
      * Remove the specified resource from storage.
      *

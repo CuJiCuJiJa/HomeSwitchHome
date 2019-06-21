@@ -14,11 +14,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //$trashedHomes = Home::withTrashed();
+        $trashedHomes = Home::onlyTrashed();
         $activeHomes  = Home::where('active', true)->get();
         $cantHomes    = $activeHomes->count();
 
-        return view('home.index')->with('activeHomes', $activeHomes)->with('cantHomes', $cantHomes);
+        return view('home.index')->with('activeHomes', $activeHomes)->with('cantHomes', $cantHomes)->with('trashedHomes', $trashedHomes);
     }
 
     /**
@@ -86,7 +86,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Home $home)
-    {   
+    {
         //Validación
         $rules = [ 'location' => 'required|max:100' ];
 

@@ -13,9 +13,7 @@
                 </div>
             @endif
 
-            @if($cantHomes == 0)
-                <h2>Oops! Aún no se ha cargado ninguna residencia.</h2>
-            @else
+
                 <div class="card">
                     <div class="card-header"> Residencias </div>
                     @if (session('status'))
@@ -23,24 +21,42 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    <h1>Residencias Activas </h1>
+                    @if ($activeHomes->count() == 0)
+                        <h2>¡Oops! No tienes subastas...</h2>
+                    @else
+                        @foreach ($activeHomes as $home)
+                            <div class="card-body">
+                            <div class="descripcion">
+                                    Descripción: {{ $home->descrip }}
+                                    <br>
+                                    Ubicación: {{ $home->location }}
+                                </div>
 
-                    @foreach ($activeHomes as $home)
-                        <div class="card-body">
-                           <div class="descripcion">
-                                Descripción: {{ $home->descrip }}
-                                <br>
-                                Ubicación: {{ $home->location }}
+                                <div class="links horizontal-list">
+                                    <a href="{{ route('home.show', $home->id) }}">Ver más</a>
+                                    <a href="{{ route('home.edit', $home->id) }}">Editar</a>
+                                </div>
+                                <hr>
                             </div>
-
-                            <div class="links horizontal-list">
-                                <a href="{{ route('home.show', $home->id) }}">Ver más</a>
-                                <a href="{{ route('home.edit', $home->id) }}">Editar</a>
+                        @endforeach
+                    @endif
+                    <h1>Residencias Desactivadas </h1>
+                    @if ($trashedHomes->count() == 0)
+                        <h2>¡Oops! No tienes subastas...</h2>
+                    @else
+                        @foreach ($trashedHomes as $home)
+                            <div class="card-body">
+                            <div class="descripcion">
+                                    Descripción: {{ $home->descrip }}
+                                    <br>
+                                    Ubicación: {{ $home->location }}
+                                </div>
+                                <hr>
                             </div>
-                            <hr>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @endif
                 </div>
-            @endif
             <div class="links horizontal-list">
             @if (Auth::user()->isAdmin())
                 <a class="link" href="{{ route('home.create') }}">Agregar Residencia</a>
