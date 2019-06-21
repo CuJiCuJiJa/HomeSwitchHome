@@ -14,6 +14,7 @@
                     @endif
 
                     @if (isset($auctions))
+
                         @foreach ($auctions as $auction)
                             <div class="card-body description">
                                 Empieza el:{{ $auction->starting_date }}
