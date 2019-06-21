@@ -10,8 +10,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Home switch home</title>
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -20,11 +19,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     @yield('head')
+    <script  src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 
-    <link rel="stylesheet" href="{{asset('js/jquery-ui.min.css')}}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="{{asset('js/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('js/jquery.weekpicker.js')}}"></script>
 </head>
 
 <!--?php
@@ -97,7 +94,7 @@
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Buscar</a>
+                                                <a class="dropdown-item" tabindex="-1" href="/getSearchReserve">Buscar</a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" tabindex="-1" href="#">Mis reservas</a>
@@ -203,9 +200,6 @@
 </main>
 </body>
 <footer>
-
-    @yield('footer')
-
+    @yield('footer')          
 </footer>
-</body>
 </html>

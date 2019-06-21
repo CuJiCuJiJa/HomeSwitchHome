@@ -49,16 +49,18 @@ class SearchController extends Controller
 
     public function getSearchHome()
     {
-        return view('search.homeSearch');
+        return view('search.reservationSearch');
     }
 
     public function postSearchHome(Request $request)
     {
         //LA BÚSQUEDA SE PODRÁ FILTRAR POR LA UBICACIÓN, SEMANA EN LA QUE SE VA A OCUPAR LA RESIDENCIA
+        dd($request);
     	$now = Carbon::now();
         $homes = Home::all();
         $activeHomes = collect();
         $results = collect();
+        
 
         if ($home != null) {
             foreach ($homes as $home) {
@@ -76,20 +78,28 @@ class SearchController extends Controller
             }
 		}
 
-		if ($request->has('week')) {
+		if ($request->has('startDate')) {
 		    foreach ($activeHomes as $i) {
-                if ($i->week == $request->week) {
+                if ($i->week > $request->week) {
+                    $results->push($i);
+                }
+            }
+		}
+
+        if ($request->has('finishDate')) {
+		    foreach ($activeHomes as $i) {
+                if ($i->week < $request->week) {
                     $results->push($i);
                 }
             }
 		}
 
 		if (!$results->count() > 0) {
-            return view('search.homeResults')->with('error', 'No hay resultados.');
+            return view('search.reservationResults')->with('error', 'No hay resultados.');
         }
 
 
-		return view('search.homeResults')->with('homes', $results);
+		return view('search.reservationResults')->with('reservations', $results);
     }
 
     public function getSearchHotsale()
