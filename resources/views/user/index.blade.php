@@ -27,17 +27,15 @@
                     @else
                         @foreach ($premiumUsers as $user)
                             <div class="card-body">
-                            <div class="descripcion">
+                                <div class="descripcion">
                                     Nombre: {{ $user->name }}
                                     <br>
                                     email: {{ $user->email }}
                                     <br>
                                     número de tarjeta: {{$user->card_number}}
                                 </div>
-                                <div class="links horizontal-list">
+                            <div class="links horizontal-list">
 
-                                <hr>
-                            </div>
                         @endforeach
                     @endif
                     <h1>Usuarios Lowcost </h1>

@@ -57,3 +57,5 @@ Route::post('/decline/{id}', 'AdminController@declineCard')->name('admin.decline
 Route::get('/reservation/create/{home_id}/{week}', 'ReservationController@create')->name('reservation.create');
 //RESTAURAR RESIDENCIA BORRADA
 Route::post('/restore/{id}', 'HomeController@restore')->name('home.restore');
+//MARCAR USUARIO COMO...
+Route::post('/markAs/{user}', 'AdminController@markAs')->name('admin.markAs');
