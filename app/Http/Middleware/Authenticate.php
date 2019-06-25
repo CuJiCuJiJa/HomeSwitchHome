@@ -31,6 +31,7 @@ class Authenticate extends Middleware
                 $auction->active = false;
                 $auction->save();
             }
+
         }
         //////////////////////////////////////////////
 

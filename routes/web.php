@@ -49,5 +49,11 @@ Route::post('/postSearchReserve', 'SearchController@postSearchHome')->name('post
 Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
 //ADJUDICAR
 Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
+//APROBAR NRO DE TARJERA
+Route::post('/approbe/{id}', 'AdminController@approbeCard')->name('admin.approbe');
+//RECHAZAR NRO DE TARJERA
+Route::post('/decline/{id}', 'AdminController@declineCard')->name('admin.decline');
 //RESERVAR
 Route::get('/reservation/create/{home_id}/{week}', 'ReservationController@create')->name('reservation.create');
+//RESTAURAR RESIDENCIA BORRADA
+Route::post('/restore/{id}', 'HomeController@restore')->name('home.restore');

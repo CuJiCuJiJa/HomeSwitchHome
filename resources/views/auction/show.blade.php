@@ -77,6 +77,14 @@
                     <h2>Subasta finalizada</h2>
                 @endif
             </div>
+            @if (Auth::user()->isAdmin() && $auction->winner_id == null)
+                <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+
+                    <button type="submit" onclick="return confirm('¿Desea borrar la subasta?');" class="btn btn-primary">Eliminar</button>
+                </form>
+            @endif
 
             <br>
 
@@ -89,8 +97,6 @@
 
                         <button type="submit" onclick="return confirm('¿Desea borrar la subasta?');" class="btn btn-primary">Eliminar</button>
                     </form>
-
-                    <a href="{{ route('auction.edit', $auction) }}">Editar</a>
                     <br>
                     <br>
                 </div>

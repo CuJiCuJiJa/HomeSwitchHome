@@ -71,12 +71,16 @@
                                     número de tarjeta: {{$user->card_number}}
                                 </div>
                                 <div class="links horizontal-list">
-                                        <form action="{{ route('admin.approve', $user->id) }}" method="POST">
-                                                {{ csrf_field() }}
+                                        <form action="{{ route('admin.approbe', $user->id) }}" method="POST">
+                                            {{ csrf_field() }}
 
-
-                                                <button type="submit" class="btn btn-primary">Aprobar</button>
+                                            <button type="submit" class="btn btn-primary">Aprobar</button>
                                         </form>
+                                        <form action="{{ route('admin.decline', $user->id) }}" method="POST">
+                                            {{ csrf_field() }}
+
+                                            <button type="submit" class="btn btn-primary">Rechazar  </button>
+                                    </form>
                         @endforeach
                     @endif
                 </div>

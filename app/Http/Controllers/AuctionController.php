@@ -15,7 +15,7 @@ class AuctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    /* public function __construct()
+   /*  public function __construct()
     {
         $this->middleware('checkAuction')->only('show');
     } */
@@ -24,6 +24,7 @@ class AuctionController extends Controller
     {
         $user = Auth::user();
         $now = Carbon::now();
+        $pendingAuctions = Auction::where('active', false)->where('winner_id', null)->where('best_bid_value', '!=', 0 )->get();
         $indexAuctions = Auction::all()->where('active', true);
         $activeAuctions = Auction::all()->where('active', true); //Recupero subastas activas
         $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
@@ -46,7 +47,7 @@ class AuctionController extends Controller
             $trashedAuctions = $trashedAuctions->intersect($myAuctions); // separo las inactivas de entre las que participe
             $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
          }
-        return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions)->with('indexAuctions', $indexAuctions);
+        return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions)->with('indexAuctions', $indexAuctions)->with('pendingAuctions', $pendingAuctions);
 
     }
 
