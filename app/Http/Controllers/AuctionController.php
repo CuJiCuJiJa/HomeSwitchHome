@@ -91,7 +91,7 @@ class AuctionController extends Controller
         ];
 
         $customMessages = [
-            'weekAuctioned.required' => 'Debe ingresar una semana',
+            'weekAuctioned.required' => 'Debe seleccionar la semana a subastar',
             'weekAuctioned.after'    => 'La fecha debe ser posterior a la actual',
             'base_price.required'    => 'Debe ingresar un :attribute',
             'base_price.numeric'     => 'El :attribute debe ser un número',
@@ -121,7 +121,7 @@ class AuctionController extends Controller
         $auction->save();
 
         //Redirección
-        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', '¡Subasta creada con exito!');
+        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', '¡Subasta creada con éxito!');
     }
     /**
      * Display the specified resource.

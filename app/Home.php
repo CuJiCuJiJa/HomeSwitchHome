@@ -35,7 +35,7 @@ class Home extends Model
     public function scopeIsOccupied($query, $date)
     {
         
-        //EN CASO DE QUE EXISTAN DEVUELVE RESERVA, HOTSALE O SUBASTa PARA UNA SEMANA DADA
+        //DEVUELVE TRUE EN CASO DE QUE LA RESIDENCIA ESTÉ OCUPADA PARA ESA SEMANA, FALSE EN CASO CONTRARIO 
         return $query->whereHas('reservations', function($query) use ($date)
             {
                 $query->where('week', $date)->where('home_id', $this->id);

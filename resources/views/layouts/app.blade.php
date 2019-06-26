@@ -176,7 +176,7 @@
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Crear hotsale</a>
+                                                <a class="dropdown-item" tabindex="-1" href="/hotsale/create">Crear hotsale</a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" tabindex="-1" href="#">Listar hotsales</a>

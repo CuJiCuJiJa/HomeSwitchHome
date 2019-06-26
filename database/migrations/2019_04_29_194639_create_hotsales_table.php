@@ -19,7 +19,7 @@ class CreateHotsalesTable extends Migration
             $table->integer('home_id')->unsigned();
             $table->foreign('home_id')->references('id')->on('homes');
             $table->boolean('active')->default(true);
-            $table->integer('week');
+            $table->date('week');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

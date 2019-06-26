@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\Hotsale;
+use App\Home;
 use App\User;
 use App\HotsaleUser;
-use Auth;
 use Carbon\Carbon;
-use App\Home;
+use Auth;
 
 class HotsaleController extends Controller
 {
@@ -18,18 +19,12 @@ class HotsaleController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'week' => 'required',
-            'price' => 'required|nuerical',
-        ]);
-    }
-
     public function index()
     {
-        $hotsales = Hotsale::all();
-        return view('hotsale.show')->with('hotsales', $hotsales);
+        $activeHotsales = Hotsale::where('user_id', null)->get();
+        $reservedHotsales = Hotsale::where('user_id', '!=', null)->get();
+        $trashedHotsales = Hotsale::onlyTrashed()->get();
+        return view('hotsale.index')->with('activeHotsales', $activeHotsales)->with('reservedHotsales', $reservedHotsales)->with('trashedHotsales', $trashedHotsales);
     }
 
     /**
@@ -39,7 +34,12 @@ class HotsaleController extends Controller
      */
     public function create()
     {
-        return view('hotsale.create');
+        if(!Auth::user()->isAdmin()){
+            return redirect()->back();
+        }else{
+            $activeHomes = Home::where('active', TRUE)->get();
+            return view('hotsale.create')->with('activeHomes', $activeHomes);
+        }
     }
 
     /**
@@ -48,23 +48,39 @@ class HotsaleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Home $home)
+    public function store(Request $request)
     {
-        if ($home->isOccupied()) {
-            return redirect()->back()->with('error', 'La residencia no está disponible en esta semana');
+
+        //Validación
+        $rules = [
+            'weekOffered' => 'required',
+            'price'       => 'required|numeric',
+            'home_id'     => 'required|numeric'
+        ];
+
+        $customMessages = [
+            'weekOffered.required' => 'Debe seleccionar la semana a ofertar',
+            'price.required'       => 'Debe ingresar el precio del Hotsale',
+            'price.numeric'        => 'El precio del Hotsale debe ser un valor en $',
+            'home_id.required'     => 'Debe seleccionar la :attribute a ocupar'
+        ];
+
+        $this->validate($request, $rules, $customMessages);
+        $home = Home::find($request->home_id);
+        if($home->scopeIsOccupied($home, $request->weekOffered)){
+            Input::flash();
+            return redirect()->back()->with('isOccupied', 'La residencia seleccionada no está disponible para la semana elegida');
         }
-        $this->validator($request->all())->validate();
 
-        $hotsale = new Hotsale;
-
-        $hotsale->week = $request->week;
-        $hotsale->price = $request->price;
-        $hotsale->home_id = $home->id;
-        $hotsale->user_id = null;
-
+        //Almacenamiento
+        $hotsale          = new Hotsale;
+        $hotsale->week    = $request->weekOffered;
+        $hotsale->price   = $request->price;
+        $hotsale->home_id = $request->home_id;
         $hotsale->save();
 
-        return redirect()->route('show', $home)->with('success', 'Hotsale creado');
+        //Redirección
+        return redirect()->route('hotsale.show', ['id' => $home->id])->with('success', '¡Hotsale creado con éxito!');
     }
 
     /**
