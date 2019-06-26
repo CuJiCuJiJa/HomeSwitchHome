@@ -72,11 +72,13 @@ class HotsaleController extends Controller
             return redirect()->back()->with('isOccupied', 'La residencia seleccionada no está disponible para la semana elegida');
         }
 
+        $week = Carbon::parse($request->weekOffered);
         //Almacenamiento
         $hotsale          = new Hotsale;
-        $hotsale->week    = $request->weekOffered;
+        $hotsale->week    = $week;
         $hotsale->price   = $request->price;
         $hotsale->home_id = $request->home_id;
+
         $hotsale->save();
 
         //Redirección

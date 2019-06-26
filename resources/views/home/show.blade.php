@@ -36,10 +36,11 @@
                             {{ method_field('DELETE') }}
                             <button type="submit" onclick="return confirm('¿Desea borrar la residencia?');"  class="btn btn-primary"> Borrar </button>
                         </form>
+
                         <a href="{{ route('home.edit', $home->id) }}"> Editar </a>
                     @endif
                         <a class="link" href="{{ route('home.index') }}"> Listado de Residencias </a>
-                    
+
                     </div>
                 </div>
 

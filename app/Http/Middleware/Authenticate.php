@@ -18,7 +18,7 @@ class Authenticate extends Middleware
         /////////////////////////////////////////////
         $auctions = Auction::all();
 
-        $now = Carbon::now();
+        $now = Carbon::now()->toDateString();
 
         foreach ($auctions as $auction) {
 

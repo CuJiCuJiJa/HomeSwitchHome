@@ -38,7 +38,7 @@
                     </div>
                 @endif
 
-                @if ($auction->starting_date < \Carbon\Carbon::now() && $auction->end_date > \Carbon\Carbon::now())
+                @if ($auction->starting_date <= \Carbon\Carbon::now()->toDateString() && $auction->end_date >= \Carbon\Carbon::now()->toDateString())
 
                     <form action="{{ route('user.bid', $auction->id) }}" method="POST">
                         {{ csrf_field() }}
@@ -65,7 +65,7 @@
                     </div>
                 @endif
 
-                @if ($auction->end_date < \Carbon\Carbon::now() && $winner == null && $auction->best_bid_value >= $auction->base_price)
+                @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null && $auction->best_bid_value >= $auction->base_price)
                     <form action="{{ route('admin.adjudicar', ['auction_id' => $auction->id]) }}" method="POST">
                         {{ csrf_field() }}
 
@@ -73,7 +73,7 @@
                     </form>
                 @endif
 
-                @if ($auction->end_date < \Carbon\Carbon::now())
+                @if ($auction->end_date < \Carbon\Carbon::now()->toDateString())
                     <h2>Subasta finalizada</h2>
                 @endif
             </div>

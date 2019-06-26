@@ -41,12 +41,13 @@ class AuctionController extends Controller
 
                 $auction = Auction::find($i->auction_id); //Recupero la subasta con los id que recupere arriba
                 $myAuctions->push($auction);  // Las guardo en myAuctions
-            }
 
-            $activeAuctions = $activeAuctions->intersect($myAuctions); //Separo las activas de entre las que participe
-            $trashedAuctions = $trashedAuctions->intersect($myAuctions); // separo las inactivas de entre las que participe
+            }
+            $activeAuctions = $activeAuctions->toBase()->intersect($myAuctions); //Separo las activas de entre las que participe
+            $trashedAuctions = $trashedAuctions->toBase()->intersect($myAuctions); // separo las inactivas de entre las que participe
             $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
-         }
+        }
+
         return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions)->with('indexAuctions', $indexAuctions)->with('pendingAuctions', $pendingAuctions);
 
     }
