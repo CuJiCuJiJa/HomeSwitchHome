@@ -86,6 +86,19 @@
 
                                 @if (!Auth::user()->isAdmin())
 
+                                    <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                            Mis datos
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="{{route('user.edit', Auth::user()->id)}}" >Modificar datos</a>
+                                            </li>
+                                            {{-- <li>
+                                                <a class="dropdown-item" tabindex="-1" href="{{route('password.reset')}}">Modificar contraseña</a>
+                                            </li> --}}
+                                        </ul>
+                                    </li>
 
                                    <li class="dropdown-submenu ">
                                         <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">

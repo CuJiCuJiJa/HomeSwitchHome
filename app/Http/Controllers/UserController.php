@@ -15,6 +15,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $premiumUsers = User::where('role_id', 2)->get();
@@ -62,9 +63,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(User $user)
     {
-
+        return view('user.edit')->with('user', $user);
     }
 
     /**
@@ -76,7 +77,28 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$user->id,
+            'card' => 'required',
+            ]);
+
+        if ($request->card != $user->card) {
+            $user->card_verification = false;
+        }
+        if ($request->email != $user->email) {
+            $user->card_verification = false;
+        }
+
+        $user->name  = $request->name;
+        $user->email = $request->email;
+        $user->card_number  = $request->card;
+
+        $user->save();
+
+        return redirect()->route('user.edit', $user)->with('success', 'Cambios guardados');
+
     }
     /**
      * Remove the specified resource from storage.

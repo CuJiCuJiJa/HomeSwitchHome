@@ -29,12 +29,11 @@ class PageController extends Controller
     {
         /////////////////////////////////////////////
         $auctions = Auction::all();
-
-        $now = Carbon::now();
+        $now = Carbon::now()->toDateString();
 
         foreach ($auctions as $auction) {
 
-            if ($auction->start_date < $now) {
+            if ($auction->starting_date <= $now && $auction->end_date >= $now) {
                 $auction->active = true;
                 $auction->save();
             }
@@ -52,5 +51,9 @@ class PageController extends Controller
     {
         $date = '2019-12-16';
         dd($user->validUser($date));
+    }
+
+    public function showChangePasswordForm(){
+        return view('auth.passwords.reset');
     }
 }

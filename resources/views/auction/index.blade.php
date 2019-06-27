@@ -10,7 +10,7 @@
                 </div>
             @endif
 
-            @if($cantAuctions == 0 && $indexAuctions->count() == 0)
+            @if($cantAuctions == 0 && $indexAuctions->count() == 0 && $pendingAuctions->count() == 0)
                 <h2>¡Oops! No tienes subastas...</h2>
             @else
 
@@ -22,6 +22,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
+
                         @if (!Auth::user()->isAdmin())
                             <h1>Mis Subastas Activas </h1>
                             @if($activeAuctions->count() == 0)
@@ -82,20 +83,13 @@
                                     @if (Auth::user()->isAdmin())
                                         <a href="{{ route('auction.edit', [$indexAuction->id]) }}">Editar</a>
                                     @endif
-                                    @if (Auth::user()->isAdmin() && $indexAuction->winner_id == null)
-                                        <form method="POST" action="{{ route('auction.destroy', [$indexAuction->id]) }}">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}
-                                            <button type="submit">
-                                            Eliminar
-                                            </button>
-                                        </form>
-                                    @endif
+
                                 </div>
                                 <hr>
                             </div>
                         @endforeach
                         @if (Auth::user()->isAdmin())
+
                             <h1> Subastas con adjudicación pendiente </h1>
                             @if($pendingAuctions->count() == 0)
                             <h2>¡Oops! No tienes subastas...</h2>

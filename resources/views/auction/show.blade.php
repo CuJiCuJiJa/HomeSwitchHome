@@ -38,7 +38,7 @@
                     </div>
                 @endif
 
-                @if ($auction->starting_date <= \Carbon\Carbon::now()->toDateString() && $auction->end_date >= \Carbon\Carbon::now()->toDateString())
+                @if ($auction->starting_date <= \Carbon\Carbon::now()->toDateString() && $auction->end_date >= \Carbon\Carbon::now()->toDateString() && !Auth::user()->isAdmin())
 
                     <form action="{{ route('user.bid', $auction->id) }}" method="POST">
                         {{ csrf_field() }}

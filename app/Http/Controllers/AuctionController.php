@@ -84,7 +84,8 @@ class AuctionController extends Controller
     public function store(Request $request)
     {
         //Validación
-        $now = Carbon::now();
+        $now = Carbon::now()->toDateString();
+
         $rules = [
             'base_price'    => 'required|numeric',
             'home_id'       => 'required|numeric',
@@ -112,13 +113,20 @@ class AuctionController extends Controller
             return redirect()->back()->with('sameAuction', 'La residencia seleccionada no está disponible para la semana elegida');
         }
 
+        $end_date = Carbon::parse($request->starting_date)->addHours(72)->toDateString();
+        $starting_date = Carbon::parse($request->starting_date)->toDateString();
         //Almacenamiento
         $auction                = new Auction;
-        $auction->starting_date = Carbon::parse($request->starting_date);
-        $auction->end_date      = Carbon::parse($request->starting_date)->addHours(72);
+        $auction->starting_date = $starting_date;
+        $auction->end_date      = $end_date;
         $auction->week          = $weekAuctioned;
         $auction->base_price    = $request->base_price;
         $auction->home_id       = $request->home_id;
+
+        if ($starting_date <= $now && $end_date >= $now) {
+            $auction->active = true;
+        }
+
         $auction->save();
 
         //Redirección
