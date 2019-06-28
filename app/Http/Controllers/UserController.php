@@ -18,11 +18,12 @@ class UserController extends Controller
 
     public function index()
     {
+        $adminUsers   = User::where('role_id', 1)->get();
         $premiumUsers = User::where('role_id', 2)->get();
         $lowcostUsers = User::where('role_id', 3)->get();
         $cardUsers    = User::where('card_verification', false)->where('role_id', '!=', 1)->where('card_number', '!=', null)->get();
 
-        return view('user.index')->with('premiumUsers', $premiumUsers)->with('lowcostUsers', $lowcostUsers)->with('cardUsers', $cardUsers);
+        return view('user.index')->with('premiumUsers', $premiumUsers)->with('lowcostUsers', $lowcostUsers)->with('cardUsers', $cardUsers)->with('adminUsers', $adminUsers);
     }
 
     /**

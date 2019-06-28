@@ -27,6 +27,7 @@ class AuctionController extends Controller
         $pendingAuctions = Auction::where('active', false)->where('winner_id', null)->where('best_bid_value', '!=', 0 )->get();
         $indexAuctions = Auction::all()->where('active', true);
         $activeAuctions = Auction::all()->where('active', true); //Recupero subastas activas
+        $inactiveAuctions = Auction::where('active', false)->get();
         $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
         $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
 
@@ -48,7 +49,7 @@ class AuctionController extends Controller
             $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
         }
 
-        return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions)->with('indexAuctions', $indexAuctions)->with('pendingAuctions', $pendingAuctions);
+        return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions)->with('indexAuctions', $indexAuctions)->with('pendingAuctions', $pendingAuctions)->with('inactiveAuctions', $inactiveAuctions);
 
     }
 

@@ -155,7 +155,7 @@ class AdminController extends Controller
         return 'sin usuarios válidos';
     }
 
-    public function markAs($request, User $user)
+    public function markAs(User $user, Request $request)
     {
         $user->role_id = $request->role_id;
         $user->save();
