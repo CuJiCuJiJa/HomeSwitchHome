@@ -31,6 +31,10 @@
 
                     <div class="links horizontal-list">
                     @if (Auth::user()->isAdmin())
+                        <form action="{{ route('home.anular', $home->id) }}" method="POST">
+                            {{ csrf_field() }}
+                            <button type="submit" onclick="return confirm('¿Desea borrar la residencia?');"  class="btn btn-primary"> Anular </button>
+                        </form>
                         <form action="{{ route('home.destroy', $home->id) }}" method="POST">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}

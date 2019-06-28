@@ -11,6 +11,16 @@ class Home extends Model
 
     protected $fillable = ['location', 'descrip', 'active'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($home) {
+            foreach ($home->auctions()->get() as $auction) {
+                $auction->delete();
+            }
+        });
+    }
 
     public function hasActiveHotsales()
     {
@@ -34,8 +44,8 @@ class Home extends Model
 
     public function scopeIsOccupied($query, $date)
     {
-        
-        //DEVUELVE TRUE EN CASO DE QUE LA RESIDENCIA ESTÉ OCUPADA PARA ESA SEMANA, FALSE EN CASO CONTRARIO 
+
+        //DEVUELVE TRUE EN CASO DE QUE LA RESIDENCIA ESTÉ OCUPADA PARA ESA SEMANA, FALSE EN CASO CONTRARIO
         return $query->whereHas('reservations', function($query) use ($date)
             {
                 $query->where('week', $date)->where('home_id', $this->id);

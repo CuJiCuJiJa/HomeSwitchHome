@@ -114,6 +114,7 @@ class HomeController extends Controller
         /*if ($home->hasActiveHotsales()) {
             return redirect()->back()->with('error', 'No es posible eliminar la residencia, por que hay hotsales activos');
         }*/
+
         $home->delete();
         return redirect('home')->with('success', '¡La residencia ha sido borrada!');
     }
