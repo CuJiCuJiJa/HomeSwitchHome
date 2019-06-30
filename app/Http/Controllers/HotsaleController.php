@@ -21,10 +21,16 @@ class HotsaleController extends Controller
 
     public function index()
     {
-        $activeHotsales = Hotsale::where('user_id', null)->get();
-        $reservedHotsales = Hotsale::where('user_id', '!=', null)->get();
-        $trashedHotsales = Hotsale::onlyTrashed()->get();
-        return view('hotsale.index')->with('activeHotsales', $activeHotsales)->with('reservedHotsales', $reservedHotsales)->with('trashedHotsales', $trashedHotsales);
+        $activeHotsales   = Hotsale::where('active', 1)->get();             //Hotsales publicados (lo ven todos)
+        $inactiveHotsales = Hotsale::where('active', 0)->get();             //Hotsales no publicados (solo admin)
+        $reservedHotsales = Hotsale::where('user_id', '!=', null)->get();   //Hotsales reservados (solo admin)
+        $trashedHotsales  = Hotsale::onlyTrashed()->get();                  //Hotsales eliminados (solo admin)
+        $cantHotsales     = $activeHotsales->count() + $inactiveHotsales->count() + $reservedHotsales->count() + $trashedHotsales->count();
+        return view('hotsale.index')->with('activeHotsales', $activeHotsales)
+                                    ->with('inactiveHotsales', $inactiveHotsales)
+                                    ->with('reservedHotsales', $reservedHotsales)
+                                    ->with('trashedHotsales', $trashedHotsales)
+                                    ->with('cantHotsales', $cantHotsales);
     }
 
     public function listMyHotsales(User $user)
@@ -84,11 +90,10 @@ class HotsaleController extends Controller
         $hotsale->week    = $week;
         $hotsale->price   = $request->price;
         $hotsale->home_id = $request->home_id;
-
         $hotsale->save();
 
         //Redirección
-        return redirect()->route('hotsale.show', ['id' => $home->id])->with('success', '¡Hotsale creado con éxito!');
+        return redirect()->route('hotsale.show', ['id' => $hotsale->id])->with('success', '¡Hotsale creado con éxito!');
     }
 
     /**
@@ -136,4 +141,21 @@ class HotsaleController extends Controller
         $hotsale->delete();
         return redirect()->route('index')->with('success', 'Hotsale eliminado');
     }
+
+    public function activate($id)
+    {
+        $hotsale = Hotsale::find($id);  //Se busca el hotsale con id $id
+        $hotsale->active = 1;           //Se le cambia el estado al hotsale a activo
+        $hotsale->save();
+        return redirect()->route('hotsale.index')->with('success', 'Hotsale publicado!');
+    }
+
+    public function desactivate($id)
+    {
+        $hotsale = Hotsale::find($id);  //Se busca el hotsale con id $id
+        $hotsale->active = 0;           //Se le cambia el estado al hotsale a inactivo
+        $hotsale->save();
+        return redirect()->route('hotsale.index')->with('success', 'Hotsale retirado!');
+    }
+
 }

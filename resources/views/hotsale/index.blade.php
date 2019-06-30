@@ -13,7 +13,6 @@
             @if($reservedHotsales->count() == 0 &&  $activeHotsales->count() == 0 && $trashedHotsales->count() == 0)
                 <h2>¡Oops! No tienes hotsales...</h2>
             @else
-
                 <div class="card">
                     <div class="card-header">Hotsales</div>
 
@@ -82,14 +81,12 @@
                 </div>
             @endif
             <div class="links horizontal-list">
-            @if (Auth::user()->isAdmin())
-                <a href="{{ route('auction.create') }}">Agregar Subasta</a>
-            @endif
-                <a href="{{ route('getSearch.auction') }}">Buscar Subasta</a>
+                @if (Auth::user()->isAdmin())
+                    <a href="{{ route('hotsale.create') }}">Agregar Hotsale</a>
+                @endif
+                <a href="">Buscar Hotsale</a>
             </div>
         </div>
     </div>
 </div>
 @endsection
-
-

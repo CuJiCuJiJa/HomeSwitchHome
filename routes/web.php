@@ -59,5 +59,12 @@ Route::get('/reservation/create/{home_id}/{week}', 'ReservationController@create
 Route::post('/restore/{id}', 'HomeController@restore')->name('home.restore');
 //MARCAR USUARIO COMO...
 Route::post('/markAs/{user}', 'AdminController@markAs')->name('admin.markAs');
+<<<<<<< HEAD
 //LISTAR MIS HOTSALES
 Route::get('/myHotsales/{user}', 'HotsaleController@listMyHotsales')->name('hotsales.myHotsales');
+=======
+//PUBLICAR HOTSALE
+Route::post('/activate/{id}', 'HotsaleController@activate')->name('hotsale.activate');
+//DESPUBLICAR HOTSALE
+Route::post('/desactivate/{id}', 'HotsaleController@desactivate')->name('hotsale.desactivate');
+>>>>>>> e905935c1dc7f25f818cde43f5cb029346298248
