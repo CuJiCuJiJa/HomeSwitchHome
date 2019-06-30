@@ -172,7 +172,7 @@ class UserController extends Controller
         return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada!');
     }
 
-    public function reserveHome(Home $home, $date)
+    /* public function reserveHome(Home $home, $date)
     {
         $user = Auth::user();
 
@@ -184,6 +184,9 @@ class UserController extends Controller
         }
         if ($home->isOccupied($date)) {
             return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+        if ($user->hasReservation($date) || $user->hasHotsale($date) || $user->hasAuction($date)) {
+            return redirect()->back()->with('error', 'Usted ya poseé una reserva para la misma semana');
         }
 
         $reservation = new HomeUser;
@@ -201,32 +204,26 @@ class UserController extends Controller
         return redirect()->route('show', $home)->with('success', 'La reserva ha sido registrada');
 
         //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
-    }
+    } */
 
     public function reserveHotsale(Hotsale $hotsale, $date)
     {
         $user = Auth::user();
+        $date = Carbon::parse($date)->startOfWeek()->toDateString();
 
         if (!$user->hasAvailableWeek()) {
             return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
         }
-        if (!$user->isPremium()) {
-            return redirect()->back()->with('error', 'Ustéd no es un usuario Premium');
-        }
         if ($home->isOccupied($date)) {
             return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+        if ($user->hasReservation($date) || $user->hasHotsale($date) || $user->hasAuction($date)) {
+            return redirect()->back()->with('error', 'Usted ya poseé una reserva para la misma semana');
         }
 
         $hotsale->user_id = $user->id;
         $hotsale->save();
 
-        $user->available_weeks = $user->available_weeks - 1;
-
-        $user->save();
-
         return redirect()->route('hotsale.show', $hotsale)->with('success', 'La reserva ha sido registrada');
-
-        //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
     }
-
 }

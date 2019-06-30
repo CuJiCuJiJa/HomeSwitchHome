@@ -78,17 +78,17 @@ class User extends Authenticatable
 
     public function hasHotsale($date)
     {
-        return Hotsale::where('user_id', $this->id)->where('week', $date);
+        return Hotsale::where('user_id', $this->id)->where('week', $date)->get()->count() > 0;
     }
 
     public function hasAuction($date)
     {
-        return Auction::where('winner_id', $this->id)->where('week', $date);
+        return Auction::where('winner_id', $this->id)->where('week', $date)->get()->count() > 0;
     }
 
     public function hasReservation($date)
     {
-        return HomeUser::where('user_id', $this->id)->where('week', $date);
+        return HomeUser::where('user_id', $this->id)->where('week', $date)->get()->count() > 0;
     }
 
     public function validUser($date)

@@ -11,17 +11,6 @@ class Home extends Model
 
     protected $fillable = ['location', 'descrip', 'active'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function($home) {
-            foreach ($home->auctions()->get() as $auction) {
-                $auction->delete();
-            }
-        });
-    }
-
     public function hasActiveHotsales()
     {
     	return $this->hotsales()->where('active', true);

@@ -21,7 +21,7 @@ class ReservationController extends Controller
     {
         $trashedReservations = HomeUser::withTrashed();
         $activeReservations = HomeUser::all();
-        return view('reservation.index')->with('activeReservations', $reservations)->with('trashedReservations', $trashedReservations);
+        return view('reservation.index')->with('activeReservations', $activeReservations)->with('trashedReservations', $trashedReservations);
     }
 
     /**
@@ -41,12 +41,12 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    /* public function store(Request $request)
     {
 
         $user = Auth::user();
         $home = Home::find($request->home_id);
-        $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek()->toDateString(); 
+        $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek()->toDateString();
 
         if ($user->isPremium() && $user->hasAvailableWeek() && !$home->isOccupied($carbonWeek)) {
 
@@ -56,7 +56,7 @@ class ReservationController extends Controller
             $reservation->week = $carbonWeek;
 
             $reservation->save();
-            
+
             $user->available_weeks = $user->available_weeks-1;
             $user->save();
 
@@ -76,6 +76,39 @@ class ReservationController extends Controller
                 return redirect()->back()->with('error', 'Ustéd no es un usuario premium, considere asociarse.');
             }
         }
+    } */
+
+    public function store(Request $request)
+    {
+        $user = Auth::user();
+        $home = Home::find($request->home_id);
+        $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek()->toDateString();
+
+        if (!$user->hasAvailableWeek()) {
+            return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
+        }
+        if (!$user->isPremium()) {
+            return redirect()->back()->with('error', 'Ustéd no es un usuario Premium');
+        }
+        if ($home->isOccupied($carbonWeek)) {
+            return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+        if ($user->hasReservation($carbonWeek) || $user->hasHotsale($carbonWeek) || $user->hasAuction($carbonWeek)) {
+            return redirect()->back()->with('error', 'Usted ya poseé una reserva para la misma semana');
+        }
+
+        $reservation = new HomeUser;
+
+        $reservation->user_id = $user->id;
+        $reservation->home_id = $home->id;
+        $reservation->week = $carbonWeek;
+
+        $reservation->save();
+
+        $user->available_weeks = $user->available_weeks - 1;
+        $user->save();
+
+        return redirect()->route('home.show', $home)->with('success', 'La reserva ha sido registrada');
     }
 
     /**
