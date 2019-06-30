@@ -10,128 +10,75 @@
                 </div>
             @endif
 
-            @if($cantAuctions == 0 && $indexAuctions->count() == 0)
-                <h2>¡Oops! No tienes subastas...</h2>
+            @if($reservedHotsales->count() == 0 &&  $activeHotsales->count() == 0 && $trashedHotsales->count() == 0)
+                <h2>¡Oops! No tienes hotsales...</h2>
             @else
 
                 <div class="card">
-                    <div class="card-header">Subastas</div>
+                    <div class="card-header">Hotsales</div>
 
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
                                 {{ session('status') }}
                             </div>
                         @endif
-                        @if (!Auth::user()->isAdmin())
-                            <h1>Mis Subastas Activas </h1>
-                            @if($activeAuctions->count() == 0)
-                                <h2>¡Oops! No tienes subastas...</h2>
-                            @endif
-                            @foreach ($activeAuctions as $activeAuction)
-                                <div class="card-body">
-                                    <div class="descripcion">
-                                        La subasta abrira el {{ $activeAuction->starting_date }} y cerrara 72hs mas tarde.
-                                        <br>
-                                        La semana subastada comienza el lunes {{ $activeAuction->week }}
-                                        <br>
-                                        Ubicación de la residencia: {{ $activeAuction->home->location }}
-                                    </div>
-                                    <div class="links horizontal-list">
-                                        <a href="{{ route('auction.show', [$activeAuction->id]) }}">Ver más</a>
-                                        @if (Auth::user()->isAdmin())
-                                            <a href="{{ route('auction.edit', [$activeAuction->id]) }}">Editar</a>
-                                        @endif
-                                    </div>
-                                    <hr>
-                                </div>
-                            @endforeach
+
+                        <h1>hotsales activos</h1>
+                        @if($activeHotsales->count() == 0)
+                            <h2>¡Oops! No tienes hotsales...</h2>
                         @endif
-                        @if (!Auth::user()->isAdmin())
-                            <h1>Mis Subastas Finalizadas </h1>
-                            @if($trashedAuctions->count() == 0)
-                                <h2>¡Oops! No tienes subastas...</h2>
-                            @endif
-                            @foreach ($trashedAuctions as $trashedAuction)
-                                <div class="card-body">
-                                    <div class="descripcion">
-                                        La subasta abrira el {{ $trashedAuction->starting_date }} y cerrara 72hs mas tarde.
-                                        <br>
-                                        La semana subastada comienza el lunes {{ $trashedAuction->week }}
-                                        <br>
-                                        Ubicación de la residencia: {{ $trashedAuction->home->location }}
-                                    </div>
-                                    <hr>
-                                </div>
-                            @endforeach
-                        @endif
-                        <h1>Subastas Activas</h1>
-                        @if($indexAuctions->count() == 0)
-                            <h2>¡Oops! No tienes subastas...</h2>
-                        @endif
-                        @foreach ($indexAuctions as $indexAuction)
+                        @foreach ($activeHotsales as $activeHotsale)
                             <div class="card-body">
                                 <div class="descripcion">
-                                    La subasta abrira el {{ $indexAuction->starting_date }} y cerrara 72hs mas tarde.
+                                    Semana de reserva: {{ $activeHotsale->week }}
                                     <br>
-                                    La semana subastada comienza el lunes {{ $indexAuction->week }}
-                                    <br>
-                                    Ubicación de la residencia: {{ $indexAuction->home->location }}
+                                    Ubicación: {{ $activeHotsale->home->location }}
                                 </div>
                                 <div class="links horizontal-list">
-                                    <a href="{{ route('auction.show', [$indexAuction->id]) }}">Ver más</a>
+                                    <a href="{{ route('hotsale.show', [$activeHotsale->id]) }}">Ver más</a>
                                     @if (Auth::user()->isAdmin())
-                                        <a href="{{ route('auction.edit', [$indexAuction->id]) }}">Editar</a>
-                                    @endif
-                                    @if (Auth::user()->isAdmin() && $indexAuction->winner_id == null)
-                                        <form method="POST" action="{{ route('auction.destroy', [$indexAuction->id]) }}">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}
-                                            <button type="submit">
-                                            Eliminar
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('hotsale.edit', [$activeHotsale->id]) }}">Editar</a>
                                     @endif
                                 </div>
                                 <hr>
                             </div>
                         @endforeach
-                        @if (Auth::user()->isAdmin())
-                            <h1> Subastas con adjudicación pendiente </h1>
-                            @if($pendingAuctions->count() == 0)
-                            <h2>¡Oops! No tienes subastas...</h2>
-                            @endif
-                            @foreach ($pendingAuctions as $pendingAuction)
-                                <div class="card-body">
-                                    <div class="descripcion">
-                                        La subasta abrira el {{ $pendingAuction->starting_date }} y cerrara 72hs mas tarde.
-                                        <br>
-                                        La semana subastada comienza el lunes {{ $pendingAuction->week }}
-                                        <br>
-                                        Ubicación de la residencia: {{ $pendingAuction->home->location }}
-                                    </div>
-                                <div class="links horizontal-list">
-                                    <a href="{{ route('auction.show', $pendingAuction->id) }}">Ver más</a>
-                                </div>
-                                    <hr>
-                                </div>
-                        @endforeach
-                        <h1> Subastas eliminadas </h1>
-                        @foreach ($trashedAuctions as $trashedAuction)
+
+                        <h1>hotsales reservados</h1>
+                        @if($reservedHotsales->count() == 0)
+                            <h2>¡Oops! No tienes hotsales...</h2>
+                        @endif
+                        @foreach ($reservedHotsales as $reservedHotsale)
                             <div class="card-body">
                                 <div class="descripcion">
-                                    La subasta abrira el {{ $trashedAuction->starting_date }} y cerrara 72hs mas tarde.
+                                    Semana de reserva: {{ $reservedHotsale->week }}
                                     <br>
-                                    La semana subastada comienza el lunes {{ $trashedAuction->week }}
-                                    <br>
-                                    Ubicación de la residencia: {{ $trashedAuction->home->location }}
+                                    Ubicación: {{ $reservedHotsale->home->location }}
                                 </div>
-                                <div class="links horizontal-list">
-                                    <a href="{{ route('auction.show', $trashedAuction->id) }}">Ver más</a>
-                                </div>
-                                <hr>
+                            <div class="links horizontal-list">
+                                <a href="{{ route('hotsale.show', [$reservedHotsale->id]) }}">Ver más</a>
+
                             </div>
+                            <hr>
+                        </div>
                         @endforeach
-                    @endif
+
+
+                        <h1> hotsales eliminados </h1>
+                        @foreach ($trashedHotsales as $trashedHotsale)
+                        <div class="card-body">
+                            <div class="descripcion">
+                                Semana de reserva: {{ $trashedHotsale->week }}
+                                <br>
+                                Ubicación: {{ $trashedHotsale->home->location }}
+                            </div>
+                            <div class="links horizontal-list">
+                                <a href="{{ route('hotsale.show', [$trashedHotsale->id]) }}">Ver más</a>
+                            </div>
+                            <hr>
+                        </div>
+                        @endforeach
+
                 </div>
             @endif
             <div class="links horizontal-list">

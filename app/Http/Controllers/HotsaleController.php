@@ -27,6 +27,12 @@ class HotsaleController extends Controller
         return view('hotsale.index')->with('activeHotsales', $activeHotsales)->with('reservedHotsales', $reservedHotsales)->with('trashedHotsales', $trashedHotsales);
     }
 
+    public function listMyHotsales(User $user)
+    {
+        $myHotsales = Hotsale::where('user_id', $user->id)->get();
+        return view('hotsale.myHotsales')->with('myHotsales', $myHotsales);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

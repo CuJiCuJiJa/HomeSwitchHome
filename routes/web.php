@@ -59,3 +59,5 @@ Route::get('/reservation/create/{home_id}/{week}', 'ReservationController@create
 Route::post('/restore/{id}', 'HomeController@restore')->name('home.restore');
 //MARCAR USUARIO COMO...
 Route::post('/markAs/{user}', 'AdminController@markAs')->name('admin.markAs');
+//LISTAR MIS HOTSALES
+Route::get('/myHotsales/{user}', 'HotsaleController@listMyHotsales')->name('hotsales.myHotsales');
