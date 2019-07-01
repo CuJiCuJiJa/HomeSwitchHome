@@ -88,6 +88,13 @@
                             </div>
                         </div>
                     </form>
+
+                    <form action="{{route('user.destroy', $user->id)}}" method="post">
+                        {{method_field('DELETE')}}
+                        {{csrf_field()}}
+                        <button class="btn btn-danger" type="submit" onclick="return confirm('¿Desea dar de baja su cuenta de usuario?');">Dar de baja cuenta</button>
+                    </form>
+
                 </div>
             </div>
         </div>

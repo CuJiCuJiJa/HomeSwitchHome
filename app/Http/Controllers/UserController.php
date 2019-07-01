@@ -109,8 +109,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        Auth::logout();
         $user->delete();
-        return redirect()->route('/');
+        return redirect()->route('slash');
     }
 
     public function pujar(Request $request, $auctionId)
