@@ -16,7 +16,7 @@
     return view('welcome');
 });*/
 
-Route::get('/', 'PageController@index')->name('slash');
+Route::get('/', 'PageController@index');
 
 //TEST ROUTE
 Route::get('/test', 'AdminController@testFunction');
@@ -59,5 +59,9 @@ Route::get('/reservation/create/{home_id}/{week}', 'ReservationController@create
 Route::post('/restore/{id}', 'HomeController@restore')->name('home.restore');
 //MARCAR USUARIO COMO...
 Route::post('/markAs/{user}', 'AdminController@markAs')->name('admin.markAs');
-//LISTAR MIS HOTSALES
-Route::get('/myHotsales/{user}', 'HotsaleController@listMyHotsales')->name('hotsales.myHotsales');
+//PUBLICAR HOTSALE
+Route::post('/activate/{id}', 'HotsaleController@activate')->name('hotsale.activate');
+//DESPUBLICAR HOTSALE
+Route::post('/desactivate/{id}', 'HotsaleController@desactivate')->name('hotsale.desactivate');
+//RESERVAR HOTSALE
+Route::post('/reserve/{id}', 'HotsaleController@reserve')->name('hotsale.reserve');

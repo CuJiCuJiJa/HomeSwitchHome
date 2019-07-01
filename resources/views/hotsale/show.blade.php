@@ -26,15 +26,15 @@
                         Precio: ${{ $hotsale->price }}.
                         <br>
                         @if ($hotsale->user_id != null)
-                            <h2>Este Hotsale esta reservado por: {{ $hotsale->user->name }} (Email: {{ $hotsale->user->email}})</h2>
+                            <b>Éste Hotsale se encuentra reservado por: {{ $hotsale->user->name }} (Email: {{ $hotsale->user->email}})</b>
                         @endif
                     </div>
                 </div>
-                <!-- @if(session('error'))
+                @if(session('error'))
                     <div class="fallo horizontal-list">
                         {{ session('error') }}
                     </div>
-                @endif -->
+                @endif
             </div>
             @if (Auth::user()->isAdmin() && $hotsale->active == 0 && $hotsale->user_id == null)
                 <div class="links horizontal-list">
@@ -56,6 +56,15 @@
                         {{ csrf_field() }}
                         {{ method_field('POST') }}
                         <button type="submit" onclick="return confirm('¿Desea retirar el Hotsale?')" class="btn btn-primary">Retirar</button>
+                    </form>
+                </div>
+            @endif
+            @if (!Auth::user()->isAdmin() && $hotsale->active == 1)
+                <div class="links horizontal-list">
+                    <form action="{{ route('hotsale.reserve', $hotsale->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('POST') }}
+                        <button type="submit" onclick="return confirm('¿Desea comprar el Hotsale?')" class="btn btn-primary">Comprar</button>
                     </form>
                 </div>
             @endif
