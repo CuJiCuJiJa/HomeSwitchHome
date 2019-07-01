@@ -61,6 +61,7 @@
                                         <br>
                                         Ubicación de la residencia: {{ $trashedAuction->home->location }}
                                     </div>
+
                                     <hr>
                                 </div>
                             @endforeach

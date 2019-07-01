@@ -153,10 +153,11 @@ class ReservationController extends Controller
      */
     public function destroy(Home $home)
     {
-        $reservation = HomeUser::where('home_id', $home->id)->firstOrFail();
+        $reservation = HomeUser::where('home_id', $home->id)->first();
         $user = Auth::user();
+        $now = Carbon::now()->toDateString();
 
-        if (Carbon::now() < $reservation->week->subMonths(2)) {
+        if ($now < $reservation->week->subMonths(2)) {
 
             $user->available_weeks = $user->available_weeks + 1;
 
@@ -166,7 +167,7 @@ class ReservationController extends Controller
         }
         $reservation->delete();
 
-        return redirect()->route('home.show')->with('success','Reserva cancelada');
+        return redirect()->route('auction.index')->with('success','Reserva cancelada');
 
     }
 }

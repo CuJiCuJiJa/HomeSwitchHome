@@ -93,7 +93,7 @@ class User extends Authenticatable
 
     public function validUser($date)
     {
-        if ($this->hasAvailableWeek() && !$this->trashed() && $this->hasValidCard() && $this->hasHotsale($date)->get()->count() == 0 && $this->hasAuction($date)->get()->count() == 0 && $this->hasReservation($date)->get()->count() == 0) {
+        if ($this->hasAvailableWeek() && !$this->trashed() && $this->hasValidCard() && !$this->hasHotsale($date) && !$this->hasAuction($date) && !$this->hasReservation($date)) {
             return true;
         }else{
             return false;

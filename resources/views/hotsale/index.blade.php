@@ -78,7 +78,7 @@
                         </div>
                         @endforeach
 
-                </div>
+                    </div>
             @endif
             <div class="links horizontal-list">
                 @if (Auth::user()->isAdmin())
