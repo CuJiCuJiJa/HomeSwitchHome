@@ -138,7 +138,7 @@
                                                 <a class="dropdown-item" tabindex="-1" href="">Buscar hotsales</a>
                                             </li>
                                             <li>
-                                            <a class="dropdown-item" tabindex="-1" href="{{route('hotsale.index')}}">Listar Hotsales</a>
+                                            <a class="dropdown-item" tabindex="-1" href="{{route('hotsale.myHotsales')}}">Mis Hotsales</a>
                                             </li>
                                         </ul>
                                     </li>

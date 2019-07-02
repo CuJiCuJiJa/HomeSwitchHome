@@ -25,7 +25,7 @@
                         <br>
                         Precio: ${{ $hotsale->price }}.
                         <br>
-                        @if ($hotsale->user_id != null)
+                        @if (Auth::user()->isAdmin() && $hotsale->user_id != null)
                             <b>Éste Hotsale se encuentra reservado por: {{ $hotsale->user->name }} (Email: {{ $hotsale->user->email}})</b>
                         @endif
                     </div>
@@ -78,7 +78,7 @@
                 </div>
             @endif
             <div class="links horizontal-list">
-                <a href="{{ route('hotsale.index') }}">Volver</a>
+                <a href="{{ url()->previous() }}">Volver</a>
             </div>
         </div>
     </div>

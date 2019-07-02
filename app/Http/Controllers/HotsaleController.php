@@ -26,7 +26,6 @@ class HotsaleController extends Controller
         $reservedHotsales = Hotsale::where('user_id', '!=', null)->get();               //Hotsales reservados (solo admin)
         $trashedHotsales  = Hotsale::onlyTrashed()->get();                              //Hotsales eliminados (solo admin)
         $myHotsales       = Hotsale::where('user_id', Auth::user()->id)->get();         //Hotsales de usuario (solo usuario)
-        //dump($trashedHotsales->count());die;
         $cantHotsales     = $activeHotsales->count() + $inactiveHotsales->count() + $reservedHotsales->count() + $trashedHotsales->count();
         return view('hotsale.index')->with('activeHotsales', $activeHotsales)
                                     ->with('inactiveHotsales', $inactiveHotsales)
@@ -34,6 +33,13 @@ class HotsaleController extends Controller
                                     ->with('trashedHotsales', $trashedHotsales)
                                     ->with('myHotsales', $myHotsales)
                                     ->with('cantHotsales', $cantHotsales);
+    }
+
+    public function myHotsales()
+    {
+        $myHotsales = Hotsale::where('user_id', Auth::user()->id)->get();  //Hotsales de usuario (solo usuario)
+        //dump($myHotsales);die;
+        return view('hotsale.myHotsales')->with('myHotsales', $myHotsales);
     }
 
     /**
@@ -177,7 +183,7 @@ class HotsaleController extends Controller
         $hotsale->active = 1;                   //Se le cambia el estado al hotsale a activo
         $hotsale->user_id = null;               //Se le quita al hotsale el usuario que lo reservó
         $hotsale->save();
-        return redirect()->route('hotsale.index')->with('success', 'Haz cancelado tu compra!');
+        return redirect()->route('hotsale.myHotsales')->with('success', 'Haz cancelado tu compra!');
     }
 
 

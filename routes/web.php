@@ -67,3 +67,5 @@ Route::post('/desactivate/{id}', 'HotsaleController@desactivate')->name('hotsale
 Route::post('/reserve/{id}', 'HotsaleController@reserve')->name('hotsale.reserve');
 //CANCELAR HOTSALE
 Route::post('/cancel/{id}', 'HotsaleController@cancel')->name('hotsale.cancel');
+//MIS HOTSALES
+Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');

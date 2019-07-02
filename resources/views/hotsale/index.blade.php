@@ -96,30 +96,6 @@
                                         <br>
                                         Precio: ${{ $trashedHotsale->price }}.
                                     </div>
-                                    <div class="links horizontal-list">
-                                        <a href="{{ route('hotsale.show', $trashedHotsale->id) }}">Ver más</a>
-                                    </div>
-                                    <hr>
-                                </div>
-                            @endforeach
-                        @endif
-                    @else
-                        <h1>Mis Hotsales reservados</h1>
-                        @if($myHotsales->count() == 0)
-                            <h2>¡Oops! No tienes Hotsales reservados actualmente...</h2>
-                        @else
-                            @foreach ($myHotsales as $myHotsale)
-                                <div class="card-body">
-                                    <div class="descripcion">
-                                        La semana ofertada comienza el lunes {{ $myHotsale->week }}.
-                                        <br>
-                                        Ubicación de la residencia: {{ $myHotsale->home->location }}.
-                                        <br>
-                                        Reservado por ${{ $myHotsale->price }}.
-                                    </div>
-                                    <div class="links horizontal-list">
-                                        <a href="{{ route('hotsale.show', [$myHotsale->id]) }}">Ver más</a>
-                                    </div>
                                     <hr>
                                 </div>
                             @endforeach
