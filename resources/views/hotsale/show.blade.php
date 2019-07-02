@@ -46,7 +46,7 @@
                     <form action="{{ route('hotsale.destroy', $hotsale->id) }}" method="POST">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
-                        <button type="submit" onclick="return confirm('¿Desea borrar el Hotsale?')" class="btn btn-primary">Eliminar</button>
+                        <button type="submit" onclick="return confirm('¿Desea eliminar el Hotsale?')" class="btn btn-primary">Eliminar</button>
                     </form>
                 </div>
             @endif
@@ -65,6 +65,15 @@
                         {{ csrf_field() }}
                         {{ method_field('POST') }}
                         <button type="submit" onclick="return confirm('¿Desea comprar el Hotsale?')" class="btn btn-primary">Comprar</button>
+                    </form>
+                </div>
+            @endif
+            @if (!Auth::user()->isAdmin() && $hotsale->user_id == Auth::user()->id && $hotsale->active == 0)
+                <div class="links horizontal-list">
+                    <form action="{{ route('hotsale.cancel', $hotsale->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('POST') }}
+                        <button type="submit" onclick="return confirm('¿Desea cancelar la compra de su Hotsale?')" class="btn btn-primary">Cancelar compra</button>
                     </form>
                 </div>
             @endif
