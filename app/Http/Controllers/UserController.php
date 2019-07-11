@@ -109,6 +109,26 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->reservations()->get()->count() > 0) {
+            $reservations = $user->reservations()->get();
+            foreach ($reservations as $reservation) {
+                $reservation->delete();
+            }
+        }
+        if ($user->auctions()->get()->count() > 0) {
+            $auctions = $user->auctions()->get();
+            foreach ($auctions as $bid) {
+                $bid->auction()->first()->winner_id = null;
+                $bid->delete();
+            }
+        }
+        if ($user->hotsales()->get()->count() > 0) {
+            $hotsales = $user->hotsales()->get();
+            foreach ($hotsales as $hotsale) {
+                $hotsale->delete();
+            }
+        }
+
         Auth::logout();
         $user->delete();
         return redirect()->route('slash');
@@ -211,6 +231,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $date = Carbon::parse($date)->startOfWeek()->toDateString();
+        $home = Home::find($hotsale->home_id);
 
         if (!$user->hasAvailableWeek()) {
             return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');

@@ -16,7 +16,7 @@
     return view('welcome');
 });*/
 
-Route::get('/', 'PageController@index');
+Route::get('/', 'PageController@index')->name('slash');
 
 //TEST ROUTE
 Route::get('/test', 'AdminController@testFunction');
