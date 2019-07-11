@@ -61,6 +61,9 @@
                                         <br>
                                         Ubicación de la residencia: {{ $trashedAuction->home->location }}
                                     </div>
+                                    <div class="links horizontal-list">
+                                        <a href="{{ route('auction.show', [$trashedAuction->id]) }}">Ver más</a>
+                                    </div>
 
                                     <hr>
                                 </div>
