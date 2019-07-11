@@ -25,16 +25,16 @@
                         <br>
                         Precio: ${{ $hotsale->price }}.
                         <br>
-                        @if ($hotsale->user_id != null)
-                            <h2>Este Hotsale esta reservado por: {{ $hotsale->user->name }} (Email: {{ $hotsale->user->email}})</h2>
+                        @if (Auth::user()->isAdmin() && $hotsale->user_id != null)
+                            <b>Éste Hotsale se encuentra reservado por: {{ $hotsale->user->name }} (Email: {{ $hotsale->user->email}})</b>
                         @endif
                     </div>
                 </div>
-                <!-- @if(session('error'))
+                @if(session('error'))
                     <div class="fallo horizontal-list">
                         {{ session('error') }}
                     </div>
-                @endif -->
+                @endif
             </div>
             @if (Auth::user()->isAdmin() && $hotsale->active == 0 && $hotsale->user_id == null)
                 <div class="links horizontal-list">
@@ -46,7 +46,7 @@
                     <form action="{{ route('hotsale.destroy', $hotsale->id) }}" method="POST">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
-                        <button type="submit" onclick="return confirm('¿Desea borrar el Hotsale?')" class="btn btn-primary">Eliminar</button>
+                        <button type="submit" onclick="return confirm('¿Desea eliminar el Hotsale?')" class="btn btn-primary">Eliminar</button>
                     </form>
                 </div>
             @endif
@@ -59,8 +59,26 @@
                     </form>
                 </div>
             @endif
+            @if (!Auth::user()->isAdmin() && $hotsale->active == 1)
+                <div class="links horizontal-list">
+                    <form action="{{ route('hotsale.reserve', $hotsale->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('POST') }}
+                        <button type="submit" onclick="return confirm('¿Desea comprar el Hotsale?')" class="btn btn-primary">Comprar</button>
+                    </form>
+                </div>
+            @endif
+            @if (!Auth::user()->isAdmin() && $hotsale->user_id == Auth::user()->id && $hotsale->active == 0)
+                <div class="links horizontal-list">
+                    <form action="{{ route('hotsale.cancel', $hotsale->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('POST') }}
+                        <button type="submit" onclick="return confirm('¿Desea cancelar la compra de su Hotsale?')" class="btn btn-primary">Cancelar compra</button>
+                    </form>
+                </div>
+            @endif
             <div class="links horizontal-list">
-                <a href="{{ route('hotsale.index') }}">Volver</a>
+                <a href="{{ url()->previous() }}">Volver</a>
             </div>
         </div>
     </div>

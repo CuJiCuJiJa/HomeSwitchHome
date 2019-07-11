@@ -9,76 +9,99 @@
                     {{ session('success') }}
                 </div>
             @endif
-
-            @if($reservedHotsales->count() == 0 &&  $activeHotsales->count() == 0 && $trashedHotsales->count() == 0)
-                <h2>¡Oops! No tienes hotsales...</h2>
+            @if($cantHotsales == 0)
+                <h2>¡Oops! No exiten Hotsales actualmente...</h2>
             @else
                 <div class="card">
                     <div class="card-header">Hotsales</div>
-
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        <h1>hotsales activos</h1>
-                        @if($activeHotsales->count() == 0)
-                            <h2>¡Oops! No tienes hotsales...</h2>
-                        @endif
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    <h1>Hotsales publicados</h1>
+                    @if($activeHotsales->count() == 0)
+                        <h2>¡Oops! No existen Hotsales publicados actualmente...</h2>
+                    @else
                         @foreach ($activeHotsales as $activeHotsale)
                             <div class="card-body">
                                 <div class="descripcion">
-                                    Semana de reserva: {{ $activeHotsale->week }}
+                                    La semana ofertada comienza el lunes {{ $activeHotsale->week }}.
                                     <br>
-                                    Ubicación: {{ $activeHotsale->home->location }}
+                                    Ubicación de la residencia: {{ $activeHotsale->home->location }}.
+                                    <br>
+                                    Precio: ${{ $activeHotsale->price }}.
                                 </div>
                                 <div class="links horizontal-list">
                                     <a href="{{ route('hotsale.show', [$activeHotsale->id]) }}">Ver más</a>
-                                    @if (Auth::user()->isAdmin())
-                                        <a href="{{ route('hotsale.edit', [$activeHotsale->id]) }}">Editar</a>
-                                    @endif
                                 </div>
                                 <hr>
                             </div>
                         @endforeach
-
-                        <h1>hotsales reservados</h1>
-                        @if($reservedHotsales->count() == 0)
-                            <h2>¡Oops! No tienes hotsales...</h2>
-                        @endif
-                        @foreach ($reservedHotsales as $reservedHotsale)
-                            <div class="card-body">
-                                <div class="descripcion">
-                                    Semana de reserva: {{ $reservedHotsale->week }}
-                                    <br>
-                                    Ubicación: {{ $reservedHotsale->home->location }}
+                    @endif
+                    @if (Auth::user()->isAdmin())
+                        <h1>Hotsales no publicados</h1>
+                        @if($inactiveHotsales->count() == 0)
+                            <h2>Todos los Hotsales se encuentran publicados!</h2>
+                        @else
+                            @foreach ($inactiveHotsales as $inactiveHotsale)
+                                <div class="card-body">
+                                    <div class="descripcion">
+                                        La semana ofertada comienza el lunes {{ $inactiveHotsale->week }}.
+                                        <br>
+                                        Ubicación de la residencia: {{ $inactiveHotsale->home->location }}.
+                                        <br>
+                                        Precio: ${{ $inactiveHotsale->price }}.
+                                    </div>
+                                    <div class="links horizontal-list">
+                                        <a href="{{ route('hotsale.show', [$inactiveHotsale->id]) }}">Ver más</a>
+                                        <a href="{{ route('hotsale.edit', [$inactiveHotsale->id]) }}">Editar</a>
+                                    </div>
+                                    <hr>
                                 </div>
-                            <div class="links horizontal-list">
-                                <a href="{{ route('hotsale.show', [$reservedHotsale->id]) }}">Ver más</a>
-
-                            </div>
-                            <hr>
-                        </div>
-                        @endforeach
-
-
-                        <h1> hotsales eliminados </h1>
-                        @foreach ($trashedHotsales as $trashedHotsale)
-                        <div class="card-body">
-                            <div class="descripcion">
-                                Semana de reserva: {{ $trashedHotsale->week }}
-                                <br>
-                                Ubicación: {{ $trashedHotsale->home->location }}
-                            </div>
-                            <div class="links horizontal-list">
-                                <a href="{{ route('hotsale.show', [$trashedHotsale->id]) }}">Ver más</a>
-                            </div>
-                            <hr>
-                        </div>
-                        @endforeach
-
-                    </div>
+                            @endforeach
+                        @endif
+                        <h1>Hotsales reservados</h1>
+                        @if($reservedHotsales->count() == 0)
+                            <h2>¡Oops! No tienes Hotsales reservados actualmente...</h2>
+                        @else
+                            @foreach ($reservedHotsales as $reservedHotsale)
+                                <div class="card-body">
+                                    <div class="descripcion">
+                                        La semana ofertada comienza el lunes {{ $reservedHotsale->week }}.
+                                        <br>
+                                        Ubicación de la residencia: {{ $reservedHotsale->home->location }}.
+                                        <br>
+                                        Precio: ${{ $reservedHotsale->price }}.
+                                        <br>
+                                        Usuario propietario: {{ $reservedHotsale->user->name }} (Email: {{ $reservedHotsale->user->email }})
+                                    </div>
+                                    <div class="links horizontal-list">
+                                        <a href="{{ route('hotsale.show', [$reservedHotsale->id]) }}">Ver más</a>
+                                    </div>
+                                    <hr>
+                                </div>
+                            @endforeach
+                        @endif
+                        <h1>Hotsales eliminados</h1>
+                        @if($trashedHotsales->count() == 0)
+                            <h2>No tienes Hotsales eliminados actualmente...</h2>
+                        @else
+                            @foreach ($trashedHotsales as $trashedHotsale)
+                                <div class="card-body">
+                                    <div class="descripcion">
+                                        La semana ofertada comienza el lunes {{ $trashedHotsale->week }}.
+                                        <br>
+                                        Ubicación de la residencia: {{ $trashedHotsale->home->location }}.
+                                        <br>
+                                        Precio: ${{ $trashedHotsale->price }}.
+                                    </div>
+                                    <hr>
+                                </div>
+                            @endforeach
+                        @endif
+                    @endif
+                </div>
             @endif
             <div class="links horizontal-list">
                 @if (Auth::user()->isAdmin())
