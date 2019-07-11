@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->date('birthdate')->nullable();
             $table->string('card_number')->unique()->nullable();
             $table->boolean('card_verification')->default(false)->nullable();
             $table->integer('available_weeks')->default(2)->nullable();

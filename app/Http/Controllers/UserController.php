@@ -82,8 +82,10 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,
-            'card' => 'required',
-            ]);
+            'card' => 'nullable|numeric',
+            'birthdate' => ['required', 'date', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y-m-d')],
+        ],
+        ['birthdate.before_or_equal' => 'Ustéd debe ser mayor de 18 años']);
 
         if ($request->card != $user->card) {
             $user->card_verification = false;
@@ -94,6 +96,7 @@ class UserController extends Controller
 
         $user->name  = $request->name;
         $user->email = $request->email;
+        $user->birthdate = $request->birthdate;
         $user->card_number  = $request->card;
 
         $user->save();

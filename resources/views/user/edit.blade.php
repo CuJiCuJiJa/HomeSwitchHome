@@ -29,7 +29,7 @@
                         <div class="descripcion">
                             <div class="form-group">
                                 <label for="email">email</label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Ingresar email" value="{{ $user->email }}" >
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Ingresar email" value="{{ $user->email }}" required >
 
                                 <span>
                                     @if($errors->has('email'))
@@ -41,13 +41,24 @@
 
                             <div class="form-group">
                                     <label for="name">nombre</label>
-                                    <input type="text" class="form-control" id="name" name='name' placeholder="Ingresar un nombre" value="{{ $user->name }}">
+                                    <input type="text" class="form-control" id="name" name='name' placeholder="Ingresar un nombre" value="{{ $user->name }}" required>
                             </div>
                             <span>
                                 @if($errors->has('name'))
                                 {{ $errors->first('name') }}
                                 @endif
                             </span>
+
+                            <div class="form-group">
+                                <label for="birthdate">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="birthdate" name='birthdate' value="{{ $user->birthdate }}" required>
+                                <span>
+                                    @if($errors->has('birthdate'))
+                                    {{ $errors->first('birthdate') }}
+                                    @endif
+                                </span>
+
+                            </div>
 
                             <div class="form-group">
                                     <label for="número de tarjeta">número de tarjeta</label>
