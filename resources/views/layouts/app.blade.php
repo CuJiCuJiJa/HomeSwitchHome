@@ -71,6 +71,11 @@
                         @else
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            @if (!Auth::user()->isAdmin())
+                                <div>
+                                    Créditos disponibles: {{Auth::user()->available_weeks}}
+                                </div>
+                            @endif
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}

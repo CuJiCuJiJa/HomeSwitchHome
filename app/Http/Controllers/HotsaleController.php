@@ -65,7 +65,6 @@ class HotsaleController extends Controller
      */
     public function store(Request $request)
     {
-
         //Validación
         $rules = [
             'weekOffered' => 'required',
