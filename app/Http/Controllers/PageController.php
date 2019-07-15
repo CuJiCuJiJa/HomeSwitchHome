@@ -27,23 +27,6 @@ class PageController extends Controller
      */
     public function index()
     {
-        /////////////////////////////////////////////
-        $auctions = Auction::all();
-        $now = Carbon::now()->toDateString();
-
-        foreach ($auctions as $auction) {
-
-            if ($auction->starting_date <= $now && $auction->end_date >= $now) {
-                $auction->active = true;
-                $auction->save();
-            }
-
-            if ($auction->end_date < $now) { //SI LA SUBASTA YA CUMPLIÓ SU CICLO LA DESACTIVO
-                $auction->active = false;
-                $auction->save();
-            }
-        }
-        //////////////////////////////////////////////
         return view('page');
     }
 
