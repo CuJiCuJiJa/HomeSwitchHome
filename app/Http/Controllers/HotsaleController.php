@@ -127,9 +127,22 @@ class HotsaleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Hotsale $hotsale)
     {
-        //
+        //Validación
+        $rules = [
+            'price'       => 'required|numeric',
+        ];
+
+        $customMessages = [
+            'price.required'       => 'El precio del Hotsale no puede quedar vacío!',
+            'price.numeric'        => 'El precio del Hotsale debe ser un valor en $',
+        ];
+        $this->validate($request, $rules, $customMessages);
+
+        $hotsale->price = $request->price;
+        $hotsale->save();
+        return redirect()->route('hotsale.index')->with('success', 'Hotsale editado correctamente!');
     }
 
     /**
