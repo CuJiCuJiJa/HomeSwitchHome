@@ -65,7 +65,13 @@
                     </div>
                 @endif
 
+<<<<<<< HEAD
+                @if (Auth::user()->isAdmin())
+                
+                @if ($auction->end_date < \Carbon\Carbon::now() && $winner == null && $auction->best_bid_value >= $auction->base_price)
+=======
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null && $auction->best_bid_value >= $auction->base_price)
+>>>>>>> 0595b4900142467824b0d915da923aa6e96d6228
                     <form action="{{ route('admin.adjudicar', ['auction_id' => $auction->id]) }}" method="POST">
                         {{ csrf_field() }}
 
@@ -73,7 +79,12 @@
                     </form>
                 @endif
 
+<<<<<<< HEAD
+                @endif
+                @if ($auction->end_date < \Carbon\Carbon::now())
+=======
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString())
+>>>>>>> 0595b4900142467824b0d915da923aa6e96d6228
                     <h2>Subasta finalizada</h2>
                 @endif
             </div>
@@ -87,7 +98,8 @@
             @endif
 
             <br>
-
+            @if (Auth::user()->isAdmin())
+                
             @if ($auction->isTrashed)
                 <div class="links horizontal-list">
 
@@ -100,6 +112,7 @@
                     <br>
                     <br>
                 </div>
+            @endif
             @endif
             <div class="links horizontal-list">
                 <a href="{{ route('auction.index') }}">Volver</a>
