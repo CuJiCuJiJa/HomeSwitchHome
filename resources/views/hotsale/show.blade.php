@@ -77,9 +77,7 @@
                     </form>
                 </div>
             @endif
-            <div class="links horizontal-list">
-                <a href="{{ url()->previous() }}">Volver</a>
-            </div>
+
         </div>
     </div>
 </div>

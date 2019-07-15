@@ -140,7 +140,7 @@
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="">Buscar hotsales</a>
+                                            <a class="dropdown-item" tabindex="-1" href="{{route('getSearch.hotsale')}}">Buscar hotsales</a>
                                             </li>
                                             <li>
                                             <a class="dropdown-item" tabindex="-1" href="{{route('hotsale.myHotsales')}}">Mis Hotsales</a>

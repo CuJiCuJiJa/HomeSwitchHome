@@ -33,14 +33,16 @@ Route::group(['middleware' => 'auth'], function() {
 		'admin'			=> 'AdminController',
 	]);
 });
-
+//ADJUDICAR SUBASTA
+Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
 //PUJAR SUBASTA CON VERIFYCARD MIDDLEWARE
 Route::post('/bid/{id}', 'UserController@pujar')->name('user.bid'); //->middleware('verifyCard'); comentado para el demo1
 //BUSCAR SUBASTA
 Route::get('/getSearchAuction', 'SearchController@getSearchAuction')->name('getSearch.auction');
 Route::post('/postSearchAuction', 'SearchController@postSearchAuction')->name('postSearch.auction');
-//ADJUDICAR SUBASTA
-Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
+//BUSCAR HOTSALE
+Route::get('/getSearchHotsale', 'SearchController@getSearchHotsale')->name('getSearch.Hotsale');
+Route::post('/postSearchHotsale', 'SearchController@postSearchHotsale')->name('postSearch.Hotsale');
 //BUSCAR RESERVA
 Route::get('/getSearchReserve', 'SearchController@getSearchHome')->name('getSearch.reserve');
 Route::post('/postSearchReserve', 'SearchController@postSearchHome')->name('postSearch.reserve');

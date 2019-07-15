@@ -9,6 +9,7 @@ use Auth;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use App\Hotsale;
 
 class SearchController extends Controller
 {
@@ -23,7 +24,6 @@ class SearchController extends Controller
     	$now = Carbon::now();
 
         $auctions = Auction::with('home')->where('active', TRUE)->get();
-
 
         $results = collect();
 
@@ -47,7 +47,6 @@ class SearchController extends Controller
 		if (!$results->count() > 0) {
             return view('search.auctionResults')->with('error', 'No hay resultados.');
         }
-
 
 		return view('search.auctionResults')->with('auctions', $results);
     }
@@ -104,14 +103,14 @@ class SearchController extends Controller
         return view('search.hotsaleSearch');
     }
 
-    public function postSearchHotsale()
+    public function postSearchHotsale(Request $request)
     {
         $now = Carbon::now();
         $hotsales = Hotsale::all();
         $results = collect();
 
 		if ($request->has('location')) {
-    		foreach ($hotsalea as $i) {
+    		foreach ($hotsales as $i) {
                 if ($i->home->location == $request->location) {
                     $results->push($i);
                 }
@@ -119,7 +118,7 @@ class SearchController extends Controller
 		}
 
 		if ($request->has('week')) {
-		    foreach ($hotsalea as $i) {
+		    foreach ($hotsales as $i) {
                 if ($i->week == $request->week) {
                     $results->push($i);
                 }
