@@ -38,7 +38,7 @@
                     </div>
                 @endif
 
-                @if ($auction->starting_date < \Carbon\Carbon::now() && $auction->end_date > \Carbon\Carbon::now())
+                @if ($auction->starting_date <= \Carbon\Carbon::now()->toDateString() && $auction->end_date >= \Carbon\Carbon::now()->toDateString() && !Auth::user()->isAdmin())
 
                     <form action="{{ route('user.bid', $auction->id) }}" method="POST">
                         {{ csrf_field() }}
@@ -65,9 +65,13 @@
                     </div>
                 @endif
 
+<<<<<<< HEAD
                 @if (Auth::user()->isAdmin())
                 
                 @if ($auction->end_date < \Carbon\Carbon::now() && $winner == null && $auction->best_bid_value >= $auction->base_price)
+=======
+                @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null && $auction->best_bid_value >= $auction->base_price)
+>>>>>>> 0595b4900142467824b0d915da923aa6e96d6228
                     <form action="{{ route('admin.adjudicar', ['auction_id' => $auction->id]) }}" method="POST">
                         {{ csrf_field() }}
 
@@ -75,11 +79,23 @@
                     </form>
                 @endif
 
+<<<<<<< HEAD
                 @endif
                 @if ($auction->end_date < \Carbon\Carbon::now())
+=======
+                @if ($auction->end_date < \Carbon\Carbon::now()->toDateString())
+>>>>>>> 0595b4900142467824b0d915da923aa6e96d6228
                     <h2>Subasta finalizada</h2>
                 @endif
             </div>
+            @if (Auth::user()->isAdmin() && $auction->winner_id == null)
+                <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+
+                    <button type="submit" onclick="return confirm('¿Desea borrar la subasta?');" class="btn btn-primary">Eliminar</button>
+                </form>
+            @endif
 
             <br>
             @if (Auth::user()->isAdmin())
@@ -93,8 +109,6 @@
 
                         <button type="submit" onclick="return confirm('¿Desea borrar la subasta?');" class="btn btn-primary">Eliminar</button>
                     </form>
-
-                    <a href="{{ route('auction.edit', $auction) }}">Editar</a>
                     <br>
                     <br>
                 </div>

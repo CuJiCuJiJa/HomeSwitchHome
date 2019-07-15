@@ -15,12 +15,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
+        $adminUsers   = User::where('role_id', 1)->get();
         $premiumUsers = User::where('role_id', 2)->get();
         $lowcostUsers = User::where('role_id', 3)->get();
         $cardUsers    = User::where('card_verification', false)->where('role_id', '!=', 1)->where('card_number', '!=', null)->get();
-        return view('user.index')->with('premiumUsers', $premiumUsers)->with('lowcostUsers', $lowcostUsers)->with('cardUsers', $cardUsers);
+
+        return view('user.index')->with('premiumUsers', $premiumUsers)->with('lowcostUsers', $lowcostUsers)->with('cardUsers', $cardUsers)->with('adminUsers', $adminUsers);
     }
 
     /**
@@ -61,9 +64,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(User $user)
     {
-
+        return view('user.edit')->with('user', $user);
     }
 
     /**
@@ -75,7 +78,31 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$user->id,
+            'card' => 'nullable|numeric',
+            'birthdate' => ['required', 'date', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y-m-d')],
+        ],
+        ['birthdate.before_or_equal' => 'Ustéd debe ser mayor de 18 años']);
+
+        if ($request->card != $user->card) {
+            $user->card_verification = false;
+        }
+        if ($request->email != $user->email) {
+            $user->card_verification = false;
+        }
+
+        $user->name  = $request->name;
+        $user->email = $request->email;
+        $user->birthdate = $request->birthdate;
+        $user->card_number  = $request->card;
+
+        $user->save();
+
+        return redirect()->route('user.edit', $user)->with('success', 'Cambios guardados');
+
     }
     /**
      * Remove the specified resource from storage.
@@ -85,8 +112,29 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->reservations()->get()->count() > 0) {
+            $reservations = $user->reservations()->get();
+            foreach ($reservations as $reservation) {
+                $reservation->delete();
+            }
+        }
+        if ($user->auctions()->get()->count() > 0) {
+            $auctions = $user->auctions()->get();
+            foreach ($auctions as $bid) {
+                $bid->auction()->first()->winner_id = null;
+                $bid->delete();
+            }
+        }
+        if ($user->hotsales()->get()->count() > 0) {
+            $hotsales = $user->hotsales()->get();
+            foreach ($hotsales as $hotsale) {
+                $hotsale->delete();
+            }
+        }
+
+        Auth::logout();
         $user->delete();
-        return redirect()->route('/');
+        return redirect()->route('slash');
     }
 
     public function pujar(Request $request, $auctionId)
@@ -148,7 +196,7 @@ class UserController extends Controller
         return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Puja registrada!');
     }
 
-    public function reserveHome(Home $home, $date)
+    /* public function reserveHome(Home $home, $date)
     {
         $user = Auth::user();
 
@@ -160,6 +208,9 @@ class UserController extends Controller
         }
         if ($home->isOccupied($date)) {
             return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+        if ($user->hasReservation($date) || $user->hasHotsale($date) || $user->hasAuction($date)) {
+            return redirect()->back()->with('error', 'Usted ya poseé una reserva para la misma semana');
         }
 
         $reservation = new HomeUser;
@@ -177,32 +228,27 @@ class UserController extends Controller
         return redirect()->route('show', $home)->with('success', 'La reserva ha sido registrada');
 
         //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
-    }
+    } */
 
     public function reserveHotsale(Hotsale $hotsale, $date)
     {
         $user = Auth::user();
+        $date = Carbon::parse($date)->startOfWeek()->toDateString();
+        $home = Home::find($hotsale->home_id);
 
         if (!$user->hasAvailableWeek()) {
             return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
         }
-        if (!$user->isPremium()) {
-            return redirect()->back()->with('error', 'Ustéd no es un usuario Premium');
-        }
         if ($home->isOccupied($date)) {
             return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
+        }
+        if ($user->hasReservation($date) || $user->hasHotsale($date) || $user->hasAuction($date)) {
+            return redirect()->back()->with('error', 'Usted ya poseé una reserva para la misma semana');
         }
 
         $hotsale->user_id = $user->id;
         $hotsale->save();
 
-        $user->available_weeks = $user->available_weeks - 1;
-
-        $user->save();
-
         return redirect()->route('hotsale.show', $hotsale)->with('success', 'La reserva ha sido registrada');
-
-        //FALTARIA ELIMINAR CUALQUIER PUJA QUE EL USUARIO TENGA PARA LA SEMANA DE LA RESERVA
     }
-
 }

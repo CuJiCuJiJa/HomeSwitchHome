@@ -16,6 +16,6 @@ class Hotsale extends Model
 
     public function home()
     {
-        return $this->belongsTo('App\Home');
+        return $this->belongsTo('App\Home')->withTrashed();
     }
 }

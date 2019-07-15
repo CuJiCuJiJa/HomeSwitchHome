@@ -21,23 +21,69 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <h1>Usuarios Premium </h1>
-                    @if ($premiumUsers->count() == 0)
+                    @if ($adminUsers->count() == 0)
                         <h2>¡Oops! No tienes usuarios...</h2>
                     @else
-                        @foreach ($premiumUsers as $user)
+                        @foreach ($adminUsers as $user)
                             <div class="card-body">
-                            <div class="descripcion">
+                                <div class="descripcion">
                                     Nombre: {{ $user->name }}
                                     <br>
                                     email: {{ $user->email }}
                                     <br>
                                     número de tarjeta: {{$user->card_number}}
                                 </div>
-                                <div class="links horizontal-list">
+                            <div class="links horizontal-list">
+                                    <form action="{{route('admin.markAs', $user->id)}}" method="post">
+                                            {{ csrf_field() }}
+                                    <select name="role_id" id="role_id">
+                                        <option @if (1 == old('myselect', $user->role_id))
+                                                    selected="selected"
+                                                @endif
+                                             value="1">Administrador</option>
+                                        <option @if (2 == old('myselect', $user->role_id))
+                                                    selected="selected"
+                                                @endif value="2">Premium</option>
+                                        <option @if (3 == old('myselect', $user->role_id))
+                                                    selected="selected"
+                                                @endif value="3">Lowcost</option>
+                                    </select>
 
-                                <hr>
-                            </div>
+                                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                    </form>
+                        @endforeach
+                    @endif
+                    <h1>Usuarios Premium </h1>
+                    @if ($premiumUsers->count() == 0)
+                        <h2>¡Oops! No tienes usuarios...</h2>
+                    @else
+                        @foreach ($premiumUsers as $user)
+                            <div class="card-body">
+                                <div class="descripcion">
+                                    Nombre: {{ $user->name }}
+                                    <br>
+                                    email: {{ $user->email }}
+                                    <br>
+                                    número de tarjeta: {{$user->card_number}}
+                                </div>
+                            <div class="links horizontal-list">
+                                    <form action="{{route('admin.markAs', $user->id)}}" method="post">
+                                            {{ csrf_field() }}
+                                    <select name="role_id" id="role_id">
+                                        <option @if (1 == old('myselect', $user->role_id))
+                                                    selected="selected"
+                                                @endif
+                                             value="1">Administrador</option>
+                                        <option @if (2 == old('myselect', $user->role_id))
+                                                    selected="selected"
+                                                @endif value="2">Premium</option>
+                                        <option @if (3 == old('myselect', $user->role_id))
+                                                    selected="selected"
+                                                @endif value="3">Lowcost</option>
+                                    </select>
+
+                                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                    </form>
                         @endforeach
                     @endif
                     <h1>Usuarios Lowcost </h1>
@@ -55,6 +101,24 @@
                                         </div>
                                         <div class="links horizontal-list">
 
+                                        <form action="{{route('admin.markAs', $user->id)}}" method="post">
+                                                {{ csrf_field() }}
+                                            <select name="role_id" id="role_id">
+                                                <option @if (1 == old('myselect', $user->role_id))
+                                                            selected="selected"
+                                                        @endif
+                                                 value="1">Administrador</option>
+                                                <option @if (2 == old('myselect', $user->role_id))
+                                                        selected="selected"
+                                                        @endif value="2">Premium</option>
+                                                <option @if (3 == old('myselect', $user->role_id))
+                                                            selected="selected"
+                                                        @endif value="3">Lowcost</option>
+                                            </select>
+
+                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        </form>
+
                         @endforeach
                     @endif
                     <h1>Peticiones de verificación de tarjeta</h1>
@@ -71,12 +135,16 @@
                                     número de tarjeta: {{$user->card_number}}
                                 </div>
                                 <div class="links horizontal-list">
-                                        <form action="{{ route('admin.approve', $user->id) }}" method="POST">
-                                                {{ csrf_field() }}
+                                        <form action="{{ route('admin.approbe', $user->id) }}" method="POST">
+                                            {{ csrf_field() }}
 
-
-                                                <button type="submit" class="btn btn-primary">Aprobar</button>
+                                            <button type="submit" class="btn btn-primary">Aprobar</button>
                                         </form>
+                                        <form action="{{ route('admin.decline', $user->id) }}" method="POST">
+                                            {{ csrf_field() }}
+
+                                            <button type="submit" class="btn btn-primary">Rechazar  </button>
+                                    </form>
                         @endforeach
                     @endif
                 </div>

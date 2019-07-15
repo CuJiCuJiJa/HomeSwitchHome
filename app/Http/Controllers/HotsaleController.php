@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\Hotsale;
+use App\Home;
 use App\User;
 use App\HotsaleUser;
-use Auth;
 use Carbon\Carbon;
-use App\Home;
+use Auth;
 
 class HotsaleController extends Controller
 {
@@ -18,18 +19,27 @@ class HotsaleController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'week' => 'required',
-            'price' => 'required|nuerical',
-        ]);
-    }
-
     public function index()
     {
-        $hotsales = Hotsale::all();
-        return view('hotsale.show')->with('hotsales', $hotsales);
+        $activeHotsales   = Hotsale::where('active', 1)->get();                         //Hotsales publicados (lo ven todos)
+        $inactiveHotsales = Hotsale::where('active', 0)->where('user_id', null)->get(); //Hotsales no publicados (solo admin)
+        $reservedHotsales = Hotsale::where('user_id', '!=', null)->get();               //Hotsales reservados (solo admin)
+        $trashedHotsales  = Hotsale::onlyTrashed()->get();                              //Hotsales eliminados (solo admin)
+        $myHotsales       = Hotsale::where('user_id', Auth::user()->id)->get();         //Hotsales de usuario (solo usuario)
+        $cantHotsales     = $activeHotsales->count() + $inactiveHotsales->count() + $reservedHotsales->count() + $trashedHotsales->count();
+        return view('hotsale.index')->with('activeHotsales', $activeHotsales)
+                                    ->with('inactiveHotsales', $inactiveHotsales)
+                                    ->with('reservedHotsales', $reservedHotsales)
+                                    ->with('trashedHotsales', $trashedHotsales)
+                                    ->with('myHotsales', $myHotsales)
+                                    ->with('cantHotsales', $cantHotsales);
+    }
+
+    public function myHotsales()
+    {
+        $myHotsales = Hotsale::where('user_id', Auth::user()->id)->get();  //Hotsales de usuario (solo usuario)
+        //dump($myHotsales);die;
+        return view('hotsale.myHotsales')->with('myHotsales', $myHotsales);
     }
 
     /**
@@ -39,7 +49,12 @@ class HotsaleController extends Controller
      */
     public function create()
     {
-        return view('hotsale.create');
+        if(!Auth::user()->isAdmin()){
+            return redirect()->back();
+        }else{
+            $activeHomes = Home::where('active', TRUE)->get();
+            return view('hotsale.create')->with('activeHomes', $activeHomes);
+        }
     }
 
     /**
@@ -48,23 +63,39 @@ class HotsaleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Home $home)
+    public function store(Request $request)
     {
-        if ($home->isOccupied()) {
-            return redirect()->back()->with('error', 'La residencia no está disponible en esta semana');
+        //Validación
+        $rules = [
+            'weekOffered' => 'required',
+            'price'       => 'required|numeric',
+            'home_id'     => 'required|numeric'
+        ];
+
+        $customMessages = [
+            'weekOffered.required' => 'Debe seleccionar la semana a ofertar',
+            'price.required'       => 'Debe ingresar el precio del Hotsale',
+            'price.numeric'        => 'El precio del Hotsale debe ser un valor en $',
+            'home_id.required'     => 'Debe seleccionar la :attribute a ocupar'
+        ];
+
+        $this->validate($request, $rules, $customMessages);
+        $home = Home::find($request->home_id);
+        if($home->scopeIsOccupied($home, $request->weekOffered)){
+            Input::flash();
+            return redirect()->back()->with('isOccupied', 'La residencia seleccionada no está disponible para la semana elegida');
         }
-        $this->validator($request->all())->validate();
 
-        $hotsale = new Hotsale;
-
-        $hotsale->week = $request->week;
-        $hotsale->price = $request->price;
-        $hotsale->home_id = $home->id;
-        $hotsale->user_id = null;
-
+        $week = Carbon::parse($request->weekOffered);
+        //Almacenamiento
+        $hotsale          = new Hotsale;
+        $hotsale->week    = $week;
+        $hotsale->price   = $request->price;
+        $hotsale->home_id = $request->home_id;
         $hotsale->save();
 
-        return redirect()->route('show', $home)->with('success', 'Hotsale creado');
+        //Redirección
+        return redirect()->route('hotsale.show', ['id' => $hotsale->id])->with('success', '¡Hotsale creado con éxito!');
     }
 
     /**
@@ -96,9 +127,22 @@ class HotsaleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Hotsale $hotsale)
     {
-        //
+        //Validación
+        $rules = [
+            'price'       => 'required|numeric',
+        ];
+
+        $customMessages = [
+            'price.required'       => 'El precio del Hotsale no puede quedar vacío!',
+            'price.numeric'        => 'El precio del Hotsale debe ser un valor en $',
+        ];
+        $this->validate($request, $rules, $customMessages);
+
+        $hotsale->price = $request->price;
+        $hotsale->save();
+        return redirect()->route('hotsale.index')->with('success', 'Hotsale editado correctamente!');
     }
 
     /**
@@ -110,6 +154,49 @@ class HotsaleController extends Controller
     public function destroy(Hotsale $hotsale)
     {
         $hotsale->delete();
-        return redirect()->route('index')->with('success', 'Hotsale eliminado');
+        return redirect()->route('hotsale.index')->with('success', 'Hotsale eliminado correctamente!');
     }
+
+    public function activate($id)
+    {
+        $hotsale = Hotsale::find($id);  //Se busca el hotsale con id $id
+        $hotsale->active = 1;           //Se le cambia el estado al hotsale a activo
+        $hotsale->save();
+        return redirect()->route('hotsale.index')->with('success', 'Hotsale publicado!');
+    }
+
+    public function desactivate($id)
+    {
+        $hotsale = Hotsale::find($id);  //Se busca el hotsale con id $id
+        $hotsale->active = 0;           //Se le cambia el estado al hotsale a inactivo
+        $hotsale->save();
+        return redirect()->route('hotsale.index')->with('success', 'Hotsale retirado!');
+    }
+
+    public function reserve($id)
+    {
+        $hotsale = Hotsale::find($id);   //Se busca el hotsale con id $id
+        $user = Auth::user();
+        if (!$user->hasValidCard()) {
+            return redirect()->back()->with('error', 'Usted no poseé una número de tarjeta validado');
+        }
+        if ($user->hasHotsale($hotsale->week) || $user->hasAuction($hotsale->week) || $user->hasReservation($hotsale->week)) {
+            return redirect()->back()->with('error', 'Usted ya poseé una reserva para esta semana!');
+        }else{
+            $hotsale->active = 0;                   //Se le cambia el estado al hotsale a inactivo
+            $hotsale->user_id = Auth::user()->id;   //Se le asigna al hotsale el usuario que lo reservó
+            $hotsale->save();
+            return redirect()->route('hotsale.index')->with('success', 'Hotsale reservado!');
+        }
+    }
+
+    public function cancel($id){
+        $hotsale = Hotsale::find($id);          //Se busca el hotsale con id $id
+        $hotsale->active = 1;                   //Se le cambia el estado al hotsale a activo
+        $hotsale->user_id = null;               //Se le quita al hotsale el usuario que lo reservó
+        $hotsale->save();
+        return redirect()->route('hotsale.myHotsales')->with('success', 'Haz cancelado tu compra!');
+    }
+
+
 }

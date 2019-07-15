@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $trashedHomes = Home::onlyTrashed();
+        $trashedHomes = Home::onlyTrashed()->get();
         $activeHomes  = Home::where('active', true)->get();
         $cantHomes    = $activeHomes->count();
 
@@ -114,15 +114,23 @@ class HomeController extends Controller
         /*if ($home->hasActiveHotsales()) {
             return redirect()->back()->with('error', 'No es posible eliminar la residencia, por que hay hotsales activos');
         }*/
+
         $home->delete();
         return redirect('home')->with('success', '¡La residencia ha sido borrada!');
     }
-    public function anular($homeId)
+
+    public function restore($id)
+    {
+        $home = Home::withTrashed()->find($id)->restore();
+        return redirect()->route('home.index')->with('success', 'Residencia restaurada');
+    }
+
+    /* public function anular($homeId)
     {
         $home = Home::find($homeId);
         $home->active = false;
         //dd($home);
-        $home->update();
+        $home->save();
         return redirect()->route('home.index')->with('success', '¡La residencia ha sido borrada!');
-    }
+    } */
 }

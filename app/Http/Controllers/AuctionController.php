@@ -15,7 +15,7 @@ class AuctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    /* public function __construct()
+   /*  public function __construct()
     {
         $this->middleware('checkAuction')->only('show');
     } */
@@ -24,8 +24,10 @@ class AuctionController extends Controller
     {
         $user = Auth::user();
         $now = Carbon::now();
+        $pendingAuctions = Auction::where('active', false)->where('winner_id', null)->where('best_bid_value', '!=', 0 )->get();
         $indexAuctions = Auction::all()->where('active', true);
         $activeAuctions = Auction::all()->where('active', true); //Recupero subastas activas
+        $inactiveAuctions = Auction::where('active', false)->get();
         $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
         $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
 
@@ -40,13 +42,14 @@ class AuctionController extends Controller
 
                 $auction = Auction::find($i->auction_id); //Recupero la subasta con los id que recupere arriba
                 $myAuctions->push($auction);  // Las guardo en myAuctions
-            }
 
-            $activeAuctions = $activeAuctions->intersect($myAuctions); //Separo las activas de entre las que participe
-            $trashedAuctions = $trashedAuctions->intersect($myAuctions); // separo las inactivas de entre las que participe
+            }
+            $activeAuctions = $activeAuctions->toBase()->intersect($myAuctions); //Separo las activas de entre las que participe
+            $trashedAuctions = $trashedAuctions->toBase()->intersect($myAuctions); // separo las inactivas de entre las que participe
             $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
-         }
-        return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions)->with('indexAuctions', $indexAuctions);
+        }
+
+        return view('auction.index')->with('activeAuctions', $activeAuctions)->with('trashedAuctions', $trashedAuctions)->with('cantAuctions', $cantAuctions)->with('indexAuctions', $indexAuctions)->with('pendingAuctions', $pendingAuctions)->with('inactiveAuctions', $inactiveAuctions);
 
     }
 
@@ -82,7 +85,8 @@ class AuctionController extends Controller
     public function store(Request $request)
     {
         //Validación
-        $now = Carbon::now();
+        $now = Carbon::now()->toDateString();
+
         $rules = [
             'base_price'    => 'required|numeric',
             'home_id'       => 'required|numeric',
@@ -90,7 +94,7 @@ class AuctionController extends Controller
         ];
 
         $customMessages = [
-            'weekAuctioned.required' => 'Debe ingresar una semana',
+            'weekAuctioned.required' => 'Debe seleccionar la semana a subastar',
             'weekAuctioned.after'    => 'La fecha debe ser posterior a la actual',
             'base_price.required'    => 'Debe ingresar un :attribute',
             'base_price.numeric'     => 'El :attribute debe ser un número',
@@ -110,17 +114,24 @@ class AuctionController extends Controller
             return redirect()->back()->with('sameAuction', 'La residencia seleccionada no está disponible para la semana elegida');
         }
 
+        $end_date = Carbon::parse($request->starting_date)->addHours(72)->toDateString();
+        $starting_date = Carbon::parse($request->starting_date)->toDateString();
         //Almacenamiento
         $auction                = new Auction;
-        $auction->starting_date = Carbon::parse($request->starting_date);
-        $auction->end_date      = Carbon::parse($request->starting_date)->addHours(72);
+        $auction->starting_date = $starting_date;
+        $auction->end_date      = $end_date;
         $auction->week          = $weekAuctioned;
         $auction->base_price    = $request->base_price;
         $auction->home_id       = $request->home_id;
+
+        if ($starting_date <= $now && $end_date >= $now) {
+            $auction->active = true;
+        }
+
         $auction->save();
 
         //Redirección
-        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', '¡Subasta creada con exito!');
+        return redirect()->route('auction.show', ['id' => $auction->id])->with('success', '¡Subasta creada con éxito!');
     }
     /**
      * Display the specified resource.

@@ -16,9 +16,12 @@ class CheckAuction
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($id, Closure $next)
     {
-        $auctions = Auction::all();
+        $trashedAuction = Auction::onlyTrashed($id);
+
+
+        /* $auctions = Auction::all();
 
         $now = Carbon::now();
 
@@ -32,7 +35,7 @@ class CheckAuction
                 $auction->active = false;
                 $auction->save();
             }
-        }
-        return $next($request);
+        } */
+        return $next($id);
     }
 }

@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'birthdate',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -78,22 +78,22 @@ class User extends Authenticatable
 
     public function hasHotsale($date)
     {
-        return Hotsale::where('user_id', $this->id)->where('week', $date);
+        return Hotsale::where('user_id', $this->id)->where('week', $date)->get()->count() > 0;
     }
 
     public function hasAuction($date)
     {
-        return Auction::where('winner_id', $this->id)->where('week', $date);
+        return Auction::where('winner_id', $this->id)->where('week', $date)->get()->count() > 0;
     }
 
     public function hasReservation($date)
     {
-        return HomeUser::where('user_id', $this->id)->where('week', $date);
+        return HomeUser::where('user_id', $this->id)->where('week', $date)->get()->count() > 0;
     }
 
     public function validUser($date)
     {
-        if ($this->hasAvailableWeek() && !$this->trashed() && $this->hasValidCard() && $this->hasHotsale($date)->get()->count() == 0 && $this->hasAuction($date)->get()->count() == 0 && $this->hasReservation($date)->get()->count() == 0) {
+        if ($this->hasAvailableWeek() && !$this->trashed() && $this->hasValidCard() && !$this->hasHotsale($date) && !$this->hasAuction($date) && !$this->hasReservation($date)) {
             return true;
         }else{
             return false;

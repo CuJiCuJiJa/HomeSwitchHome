@@ -53,6 +53,11 @@
                                     Ubicación: {{ $home->location }}
                                 </div>
                                 <hr>
+                                <form action="{{ route('home.restore', $home->id) }}" method="POST">
+                                    {{ csrf_field() }}
+                                    {{ method_field('POST') }}
+                                    <button type="submit" onclick="return confirm('¿Desea restaurar la residencia?');"  class="btn btn-primary"> Restaurar </button>
+                                </form>
                             </div>
                         @endforeach
                     @endif

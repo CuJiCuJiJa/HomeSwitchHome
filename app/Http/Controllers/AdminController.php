@@ -87,13 +87,22 @@ class AdminController extends Controller
         //
     }
 
-    public function approveCard($user_id)
+    public function approbeCard($user_id)
     {
         $user = User::find($user_id);
         $user->card_verification = true;
         $user->save();
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('success', 'Número de tarjeta aprobado.');
+    }
+
+    public function declineCard($user_id)
+    {
+        $user = User::find($user_id);
+        $user->card_number = null;
+        $user->save();
+
+        return redirect()->route('user.index')->with('success', 'Número de tarjeta rechazada.');
     }
 
     public function adjudicar(Request $request, $auction_id)
@@ -144,6 +153,14 @@ class AdminController extends Controller
             }
         }
         return 'sin usuarios válidos';
+    }
+
+    public function markAs(User $user, Request $request)
+    {
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return redirect()->route('user.index')->with('success', 'Cambios guardados');
     }
 
     public function testFunction()

@@ -71,6 +71,11 @@
                         @else
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            @if (!Auth::user()->isAdmin())
+                                <div>
+                                    Créditos disponibles: {{Auth::user()->available_weeks}}
+                                </div>
+                            @endif
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -86,6 +91,19 @@
 
                                 @if (!Auth::user()->isAdmin())
 
+                                    <li class="dropdown-submenu ">
+                                        <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
+                                            Mis datos
+                                        </a>
+                                        <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="{{route('user.edit', Auth::user()->id)}}" >Modificar datos</a>
+                                            </li>
+                                            {{-- <li>
+                                                <a class="dropdown-item" tabindex="-1" href="{{route('password.reset')}}">Modificar contraseña</a>
+                                            </li> --}}
+                                        </ul>
+                                    </li>
 
                                    <li class="dropdown-submenu ">
                                         <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
@@ -125,7 +143,7 @@
                                                 <a class="dropdown-item" tabindex="-1" href="">Buscar hotsales</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Mis hotsales</a>
+                                            <a class="dropdown-item" tabindex="-1" href="{{route('hotsale.myHotsales')}}">Mis Hotsales</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -176,10 +194,10 @@
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Crear hotsale</a>
+                                                <a class="dropdown-item" tabindex="-1" href="/hotsale/create">Crear hotsale</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Listar hotsales</a>
+                                            <a class="dropdown-item" tabindex="-1" href="{{route('hotsale.index')}}">Listar hotsales</a>
                                             </li>
                                         </ul>
                                     </li>

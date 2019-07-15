@@ -18,7 +18,7 @@ class Authenticate extends Middleware
         /////////////////////////////////////////////
         $auctions = Auction::all();
 
-        $now = Carbon::now();
+        $now = Carbon::now()->toDateString();
 
         foreach ($auctions as $auction) {
 
@@ -26,11 +26,12 @@ class Authenticate extends Middleware
                 $auction->active = true;
                 $auction->save();
             }
-            dd($auction->end_date < $now);
+
             if ($auction->end_date < $now) { //SI LA SUBASTA YA CUMPLIÓ SU CICLO LA DESACTIVO
                 $auction->active = false;
                 $auction->save();
             }
+
         }
         //////////////////////////////////////////////
 
