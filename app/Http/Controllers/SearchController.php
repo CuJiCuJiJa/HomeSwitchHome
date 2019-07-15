@@ -89,18 +89,11 @@ class SearchController extends Controller
                     $locationHomes->push($i); //guardo el arreglo casa-semana en locations
                 }
             }
-<<<<<<< HEAD
-		}
-
-		if (!$results->count() > 0) {
-            return view('search.reservationResults')->with('error', 'No hay resultados.');
-=======
             $activeHomes = $locationHomes; //active es igual a location
         }
 
      	if (!$activeHomes->count() > 0) {
             return view('search.reservationResults')->with('error', 'No hay resultados.'); //si no hub resultados
->>>>>>> 20bc3dbdec540a2d52ffa7a4fa33e022aea9e66b
         }
 
 		return view('search.reservationResults')->with('reservations', $activeHomes);
