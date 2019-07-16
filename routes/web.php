@@ -23,6 +23,18 @@ Route::get('/test', 'AdminController@testFunction');
 
 Auth::routes();
 
+  Route::group(['middleware' => 'checkAuction'], function() {
+    Route::group(['middleware' => 'auth'], function() {
+		Route::resources([
+			'auction'		=> 'AuctionController',
+			'home'			=> 'HomeController',
+			'hotsale'		=> 'HotsaleController',
+			'reservation'	=> 'ReservationController',
+			'user'			=> 'UserController',
+			'admin'			=> 'AdminController',
+		]);
+	});
+
 Route::group(['middleware' => 'auth'], function() {
 	Route::resources([
 		'auction'		=> 'AuctionController',
@@ -35,6 +47,7 @@ Route::group(['middleware' => 'auth'], function() {
 });
 //ADJUDICAR SUBASTA
 Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
+
 //PUJAR SUBASTA CON VERIFYCARD MIDDLEWARE
 Route::post('/bid/{id}', 'UserController@pujar')->name('user.bid'); //->middleware('verifyCard'); comentado para el demo1
 //BUSCAR SUBASTA
@@ -75,3 +88,4 @@ Route::post('/cancel/{id}', 'HotsaleController@cancel')->name('hotsale.cancel');
 Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');
 //MI HISTORIAL
 Route::get('/myHistory', 'UserController@myHistory')->name('user.myHistory');
+});
