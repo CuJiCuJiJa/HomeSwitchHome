@@ -49,8 +49,6 @@ Route::post('/postSearchReserve', 'SearchController@postSearchHome')->name('post
 //RESERVAR
 Route::get('/reservation/create/{home_id}', 'ReservationController@create')->name('reservation.create');
 //
-//
-
 Route::get('/reservation/create/{home_id}/{week}', 'ReservationController@create')->name('reservation.create');
 //ANULAR RESIDENCIA
 Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
@@ -75,3 +73,5 @@ Route::post('/reserve/{id}', 'HotsaleController@reserve')->name('hotsale.reserve
 Route::post('/cancel/{id}', 'HotsaleController@cancel')->name('hotsale.cancel');
 //MIS HOTSALES
 Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');
+//MI HISTORIAL
+Route::get('/myHistory', 'UserController@myHistory')->name('user.myHistory');

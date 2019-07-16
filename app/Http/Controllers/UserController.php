@@ -7,6 +7,8 @@ use App\AuctionUser;
 use App\Auction;
 use App\User;
 use Auth;
+use App\Hotsale;
+use App\HomeUser;
 
 class UserController extends Controller
 {
@@ -250,5 +252,17 @@ class UserController extends Controller
         $hotsale->save();
 
         return redirect()->route('hotsale.show', $hotsale)->with('success', 'La reserva ha sido registrada');
+    }
+
+    public function myHistory(User $user)
+    {
+        $history = collect();
+        $history->put('reservations', HomeUser::where('user_id', $user->id)->get());
+        $history->put('auctions', Auction::where('winner_id', $user->id)->get());
+        $history->put('bids', AuctionUser::where('user_id', $user->id)->get());
+        $history->put('hotsales', Hotsale::where('user_id', $user->id)->get());
+        dd($history);
+
+        return view('user.myHistory')->with('history', $history);
     }
 }
