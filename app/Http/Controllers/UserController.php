@@ -7,6 +7,8 @@ use App\AuctionUser;
 use App\Auction;
 use App\User;
 use Auth;
+use App\Hotsale;
+use App\HomeUser;
 
 class UserController extends Controller
 {
@@ -159,12 +161,15 @@ class UserController extends Controller
         if (!$user->hasValidCard()) {
             return redirect()->back()->with('error', 'Usted no poseé una numero de tarjeta validado');
         }
+        if (!$user->hasAvailableWeek()) {
+            return redirect()->back()->with('error', 'Usted no poseé creditos disponibles');
+        }
 
         //ME TRAIGO TODAS LAS PUJAS DE LA SUBASTA
         $bids = AuctionUser::where('auction_id', $auctionId);
         $auction = Auction::find($auctionId);
         if($bids->count() > 0){ //ME TRAIGO LA MEJOR PUJA
-            $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->get()->first();
+            $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->first();
 
             if ($previousBid->user_id == Auth::user()->id) {//SI LA MEJOR PUJA ES DEL USUARIO NO LO DEJO PUJAR
                 return redirect()->back()->with('error', 'Usted ya tiene la puja ganadora en la subasta.');
@@ -236,9 +241,10 @@ class UserController extends Controller
         $date = Carbon::parse($date)->startOfWeek()->toDateString();
         $home = Home::find($hotsale->home_id);
 
-        if (!$user->hasAvailableWeek()) {
-            return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
+        if (!$user->hasValidCard()) {
+            return redirect()->back()->with('error', 'Usted no poseé una número de tarjeta validado');
         }
+
         if ($home->isOccupied($date)) {
             return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
         }
@@ -247,8 +253,31 @@ class UserController extends Controller
         }
 
         $hotsale->user_id = $user->id;
+        $hotsale->active = 0;
         $hotsale->save();
 
         return redirect()->route('hotsale.show', $hotsale)->with('success', 'La reserva ha sido registrada');
+    }
+
+    public function myHistory()
+    {
+        $user = Auth::user();
+        $history = collect();
+        $history->put('reservations', HomeUser::where('user_id', Auth::user()->id)->get());
+        $history->put('auctions', Auction::where('winner_id', Auth::user()->id)->get());
+        $history->put('hotsales', Hotsale::where('user_id', Auth::user()->id)->get());
+
+        $myBids = $user->auctions->unique(['auction_id']); //Recupero los id de las subastas en las que participe
+        $auctionsWithBids = collect();
+
+        foreach ($myBids as $bid) {
+            $auction = Auction::find($bid->auction_id); //Recupero la subasta con los id que recupere arriba
+            if ($auction->active == true) {
+                $auctionsWithBids->put('activeAuction', $auction) ;
+            }
+        }
+        $history->put('auctionsWithBids', $auctionsWithBids);
+
+        return view('user.myHistory')->with('history', $history);
     }
 }

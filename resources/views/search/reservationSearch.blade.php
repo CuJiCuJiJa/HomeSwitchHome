@@ -13,7 +13,7 @@
 
                     <form action="{{ route('postSearch.reserve') }}" method="POST">
                         {{ csrf_field() }}
-                        
+
                         <div class="form-group">
                             <label for="fromDate">Inicio de busqueda:</label>
                             <input type="text" class="form-control" id="fromDate"  name="fromDate" placeholder="Ingresar semana" required>
@@ -39,12 +39,12 @@
                             <input type="text" class="form-control" id="location" name='location' placeholder="Ubicación">
                         </div>
                         <div class="links horizontal-list">
-                            <button type="submit" class="btn btn-primary">Buscar</button>  
+                            <button type="submit" class="btn btn-primary">Buscar</button>
                         </div>
                     </form>
 
                     <div class="links horizontal-list">
-                        <a href="{{ route('reservation.index') }}">Cancelar</a>  
+                        <a href="{{ URL::previous() }}">Cancelar</a>
                     </div>
 
                 </div>
@@ -71,12 +71,12 @@
             max.setMonth(max.getMonth() + 2);
             $("#toDate").datepicker( "option", { minDate:min, maxDate:max});
     } });
-    
+
     $( "#toDate" ).datepicker({
-        changeMonth: true,      
-    });   
+        changeMonth: true,
+    });
   });
-  
+
   </script>
 
 @endsection

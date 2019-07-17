@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">Residencias disponibles</div>
+                <div class="card-header">Hotsale publicados</div>
 
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -13,27 +13,27 @@
                         </div>
                     @endif
 
-                    @if (isset($reservations))
-                        @foreach ($reservations as $reservation)
+                    @if (isset($hotsales))
+                        @foreach ($hotsales as $hotsale)
                             <div class="card-body description">
                             <div class="descripcion">
-                                Ubicación: {{ $reservation['home']->location }}
+                                Ubicación: {{ $hotsale['home']->location }}
                                 <br>
-                                Descripción: {{  $reservation['home']->descrip }}
+                                Descripción: {{  $hotsale['home']->descrip }}
                                 <br>
-                                La semana inicia el: {{  $reservation['week'] }}
+                                La semana inicia el: {{  $hotsale['week'] }}
                                 <br>
                             </div>
 
                                 <hr>
                             <div class="links horizontal-list">
-                                <a href="{{ route('home.show', $reservation['home']->id) }}">Ver más</a>
+                                <a href="{{ route('hotsale.show', [$hotsale->id]) }}">Ver más</a>
                                 @if (Auth::user()->isPremium())
                                     <?php
-                                        $home_id = $reservation['home']->id;
-                                        $week = $reservation['week'];
+                                        $home_id = $hotsale['home']->id;
+                                        $week = $hotsale['week'];
                                     ?>
-                                    <a class="link" href="{{ route('reservation.create', ['home_id'=>$home_id, 'week'=>$week]) }}">
+                                    <a class="link" href="{{ route('hotsale.create', ['home_id'=>$home_id, 'week'=>$week]) }}">
                                         Reservar
                                     </a>
                                 @endif

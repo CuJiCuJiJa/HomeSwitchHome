@@ -22,7 +22,7 @@ Route::get('/', 'PageController@index')->name('slash');
 Route::get('/test', 'AdminController@testFunction');
 
 Auth::routes();
-  
+
   Route::group(['middleware' => 'checkAuction'], function() {
     Route::group(['middleware' => 'auth'], function() {
 		Route::resources([
@@ -32,21 +32,36 @@ Auth::routes();
 			'reservation'	=> 'ReservationController',
 			'user'			=> 'UserController',
 			'admin'			=> 'AdminController',
-		]);		
+		]);
 	});
 
-	
+Route::group(['middleware' => 'auth'], function() {
+	Route::resources([
+		'auction'		=> 'AuctionController',
+		'home'			=> 'HomeController',
+		'hotsale'		=> 'HotsaleController',
+		'reservation'	=> 'ReservationController',
+		'user'			=> 'UserController',
+		'admin'			=> 'AdminController',
+	]);
+});
+//ADJUDICAR SUBASTA
+Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
+
 //PUJAR SUBASTA CON VERIFYCARD MIDDLEWARE
 Route::post('/bid/{id}', 'UserController@pujar')->name('user.bid'); //->middleware('verifyCard'); comentado para el demo1
 //BUSCAR SUBASTA
 Route::get('/getSearchAuction', 'SearchController@getSearchAuction')->name('getSearch.auction');
 Route::post('/postSearchAuction', 'SearchController@postSearchAuction')->name('postSearch.auction');
-//ADJUDICAR SUBASTA
-Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
+//BUSCAR HOTSALE
+Route::get('/getSearchHotsale', 'SearchController@getSearchHotsale')->name('getSearch.Hotsale');
+Route::post('/postSearchHotsale', 'SearchController@postSearchHotsale')->name('postSearch.Hotsale');
 //BUSCAR RESERVA
 Route::get('/getSearchReserve', 'SearchController@getSearchHome')->name('getSearch.reserve');
 Route::post('/postSearchReserve', 'SearchController@postSearchHome')->name('postSearch.reserve');
 //RESERVAR
+Route::get('/reservation/create/{home_id}', 'ReservationController@create')->name('reservation.create');
+//
 Route::get('/reservation/create/{home_id}/{week}', 'ReservationController@create')->name('reservation.create');
 //ANULAR RESIDENCIA
 Route::post('/anular/{id}', 'HomeController@anular')->name('home.anular');
@@ -71,4 +86,10 @@ Route::post('/reserve/{id}', 'HotsaleController@reserve')->name('hotsale.reserve
 Route::post('/cancel/{id}', 'HotsaleController@cancel')->name('hotsale.cancel');
 //MIS HOTSALES
 Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');
+//MIS SUBASTAS
+Route::get('/myAuctions', 'AuctionController@myAuctions')->name('auction.myAuctions');
+//MIS HOTSALES
+Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');
+//MI HISTORIAL
+Route::get('/myHistory', 'UserController@myHistory')->name('user.myHistory');
 });

@@ -33,7 +33,6 @@ class Home extends Model
 
     public function scopeIsOccupied($query, $date)
     {
-
         //DEVUELVE TRUE EN CASO DE QUE LA RESIDENCIA ESTÉ OCUPADA PARA ESA SEMANA, FALSE EN CASO CONTRARIO
         return $query->whereHas('reservations', function($query) use ($date)
             {
@@ -45,8 +44,7 @@ class Home extends Model
 
             })->orWhereHas('hotsales', function($query) use ($date)
             {
-                $query->where('week', $date)->where('home_id', $this->id);;
+                $query->where('week', $date)->where('home_id', $this->id);
             })->get()->count() != 0;
     }
-
 }

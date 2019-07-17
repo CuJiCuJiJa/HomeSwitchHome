@@ -93,7 +93,7 @@
 
                                     <li class="dropdown-submenu ">
                                         <a class="test dropdown-toggle dropdown-item" role="button" aria-haspopup="true" tabindex="-1" href="#">
-                                            Mis datos
+                                            Mi Cuenta
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
@@ -102,6 +102,9 @@
                                             {{-- <li>
                                                 <a class="dropdown-item" tabindex="-1" href="{{route('password.reset')}}">Modificar contraseña</a>
                                             </li> --}}
+                                            <li>
+                                                <a class="dropdown-item" tabindex="-1" href="{{route('user.myHistory')}}">Ver historial</a>
+                                            </li>
                                         </ul>
                                     </li>
 
@@ -140,7 +143,7 @@
                                         </a>
                                         <ul class="dropdown-menu second" aria-labelledby="navbarDropdown">
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="">Buscar hotsales</a>
+                                            <a class="dropdown-item" tabindex="-1" href="{{route('getSearch.hotsale')}}">Buscar hotsales</a>
                                             </li>
                                             <li>
                                             <a class="dropdown-item" tabindex="-1" href="{{route('hotsale.myHotsales')}}">Mis Hotsales</a>

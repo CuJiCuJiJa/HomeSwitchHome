@@ -11,6 +11,16 @@
             </div>
             @endif
 
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <div class="card">
 
                 <div class="card-header"> Residencia </div>
@@ -31,19 +41,18 @@
 
                     <div class="links horizontal-list">
                     @if (Auth::user()->isAdmin())
+
                         <form action="{{ route('home.anular', $home->id) }}" method="POST">
                             {{ csrf_field() }}
-                            <button type="submit" onclick="return confirm('¿Desea anular la residencia?');"  class="btn btn-primary"> Anular </button>
-                        </form>
-                        <form action="{{ route('home.destroy', $home->id) }}" method="POST">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            <button type="submit" onclick="return confirm('¿Desea borrar la residencia?');"  class="btn btn-primary"> Borrar </button>
+
+                            <button type="submit" onclick="return confirm('¿Desea anular la residencia?');"  class="btn btn-primary"> Borrar </button>
                         </form>
 
                         <a href="{{ route('home.edit', $home->id) }}"> Editar </a>
                     @endif
+                    @if (Auth::user()->isAdmin())
                         <a class="link" href="{{ route('home.index') }}"> Listado de Residencias </a>
+                    @endif
 
                     </div>
                 </div>

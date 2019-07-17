@@ -84,6 +84,9 @@ class ReservationController extends Controller
         $home = Home::find($request->home_id);
         $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek()->toDateString();
 
+        if (!$user->hasValidCard()) {
+            return redirect()->back()->with('error', 'Ustéd no no posee una tarjeta verificada');
+        }
         if (!$user->hasAvailableWeek()) {
             return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
         }
@@ -93,6 +96,7 @@ class ReservationController extends Controller
         if ($home->isOccupied($carbonWeek)) {
             return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
         }
+
         if ($user->hasReservation($carbonWeek) || $user->hasHotsale($carbonWeek) || $user->hasAuction($carbonWeek)) {
             return redirect()->back()->with('error', 'Usted ya poseé una reserva para la misma semana');
         }
@@ -108,7 +112,7 @@ class ReservationController extends Controller
         $user->available_weeks = $user->available_weeks - 1;
         $user->save();
 
-        return redirect()->route('home.show', $home)->with('success', 'La reserva ha sido registrada');
+        return redirect()->route('reservation.show', $reservation)->with('success', 'La reserva ha sido registrada');
     }
 
     /**
@@ -119,7 +123,8 @@ class ReservationController extends Controller
      */
     public function show($id)
     {
-        //
+        $reservation = HomeUser::find($id);
+        return view('reservation.show')->with('reservation', $reservation);
     }
 
     /**
@@ -151,13 +156,13 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Home $home)
+    public function destroy(HomeUser $reservation)
     {
-        $reservation = HomeUser::where('home_id', $home->id)->first();
         $user = Auth::user();
         $now = Carbon::now()->toDateString();
+        $week = Carbon::parse($reservation->week);
 
-        if ($now < $reservation->week->subMonths(2)) {
+        if ($now < $week->subMonths(2)) {
 
             $user->available_weeks = $user->available_weeks + 1;
 
@@ -167,7 +172,7 @@ class ReservationController extends Controller
         }
         $reservation->delete();
 
-        return redirect()->route('auction.index')->with('success','Reserva cancelada');
+        return redirect()->route('user.myHistory')->with('success','Reserva cancelada');
 
     }
 }
