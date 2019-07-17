@@ -9,6 +9,7 @@ use App\User;
 use Auth;
 use App\Hotsale;
 use App\HomeUser;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -280,4 +281,23 @@ class UserController extends Controller
 
         return view('user.myHistory')->with('history', $history);
     }
+
+
+
+    public function cancelAuction(Auction $auction)
+    {
+        $date=Carbon::now()->add(2, 'month')->toDateString();
+        if($date < $auction->week){
+            $user = User::find($auction->winner_id);
+            $user->available_weeks = $user->available_weeks + 1;
+            $user->save();
+            $msj = "Haz dado de baja tu reserva, recuperaste tu crédito!";
+            //dd("SE LE DEVOLVIÓ EL CREDITO AHORA TIENE ".$user->available_weeks." AVAILABLE_WEEKS");
+        }else{
+            $msj = "Haz dado de baja tu reserva! Lo sentimos pero no podemos devolver tu crédito, faltaban menos de 2 meses para tu reserva.";    
+        }
+        $auction->delete();
+        return redirect()->route('auction.index')->with('success', $msj);
+    }
+
 }

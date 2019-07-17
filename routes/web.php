@@ -92,4 +92,6 @@ Route::get('/myAuctions', 'AuctionController@myAuctions')->name('auction.myAucti
 Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');
 //MI HISTORIAL
 Route::get('/myHistory', 'UserController@myHistory')->name('user.myHistory');
+//CANCELAR SUBASTA
+Route::post('/cancelAuction/{auction}', 'UserController@cancelAuction')->name('user.cancelAuction');
 });
