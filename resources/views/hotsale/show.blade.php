@@ -73,7 +73,7 @@
                     <form action="{{ route('hotsale.cancel', $hotsale->id) }}" method="POST">
                         {{ csrf_field() }}
                         {{ method_field('POST') }}
-                        <button type="submit" onclick="return confirm('¿Desea cancelar la compra de su Hotsale?')" class="btn btn-primary">Cancelar compra</button>
+                        <button type="submit" onclick="return confirm('¿Desea cancelar la compra de su Hotsale?')" class="btn btn-danger">Cancelar compra</button>
                     </form>
                 </div>
             @endif

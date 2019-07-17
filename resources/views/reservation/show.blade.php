@@ -35,13 +35,19 @@
                         {{ session('error') }}
                     </div>
                 @endif
-
-
             <br>
 
+            <div class="links horizontal-list">
+                <form action="{{route('reservation.destroy', $reservation->id)}}" method="POST">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <input class="btn btn-danger" type="submit" value="Cancelar reserva" onclick="return confirm('¿Desea cancelar la reserva?')">
+
+                </form>
+            </div>
 
             <div class="links horizontal-list">
-            <a href="{{URL::previous()}}">Volver</a>
+                <a href="{{URL::previous()}}">Volver</a>
             </div>
         </div>
     </div>
