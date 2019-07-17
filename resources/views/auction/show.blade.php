@@ -66,25 +66,17 @@
                 @endif
 
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null && $auction->best_bid_value >= $auction->base_price)
-<<<<<<< HEAD
-                    <form action="{{ route('admin.adjudicar', ['auction_id' => $auction->id]) }}" method="POST">
-                        {{ csrf_field() }}
-=======
                         <form action="{{ route('admin.adjudicar', ['auction_id' => $auction->id]) }}" method="POST">
                             {{ csrf_field() }}
->>>>>>> a722bc50bccbc226ed7454550bfde28d035f1afe
 
                             <button type="submit" class="btn btn-primary">Adjudicar a ganador</button>
                         </form>
                 @endif
 
-<<<<<<< HEAD
-=======
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null &&  $auction->best_bid_value < $auction->base_price)
                         <h2>Ningún usuario superó el precio base</h2>
                 @endif
 
->>>>>>> a722bc50bccbc226ed7454550bfde28d035f1afe
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString())
                     <h2>Subasta finalizada</h2>
                 @endif
