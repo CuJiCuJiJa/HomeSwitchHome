@@ -161,12 +161,15 @@ class UserController extends Controller
         if (!$user->hasValidCard()) {
             return redirect()->back()->with('error', 'Usted no poseé una numero de tarjeta validado');
         }
+        if (!$user->hasAvailableWeek()) {
+            return redirect()->back()->with('error', 'Usted no poseé creditos disponibles');
+        }
 
         //ME TRAIGO TODAS LAS PUJAS DE LA SUBASTA
         $bids = AuctionUser::where('auction_id', $auctionId);
         $auction = Auction::find($auctionId);
         if($bids->count() > 0){ //ME TRAIGO LA MEJOR PUJA
-            $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->get()->first();
+            $previousBid = AuctionUser::where('auction_id', $auction->id)->where('best_bid', true)->first();
 
             if ($previousBid->user_id == Auth::user()->id) {//SI LA MEJOR PUJA ES DEL USUARIO NO LO DEJO PUJAR
                 return redirect()->back()->with('error', 'Usted ya tiene la puja ganadora en la subasta.');

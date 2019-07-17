@@ -93,23 +93,55 @@
             <br>
             @if (Auth::user()->isAdmin())
 
-            @if ($auction->isTrashed)
-                <div class="links horizontal-list">
+                @if ($auction->isTrashed)
+                    <div class="links horizontal-list">
 
-                    <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
+                        <form action="{{ route('auction.destroy', $auction->id) }}" method="POST">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
 
-                        <button type="submit" onclick="return confirm('¿Desea borrar la subasta?');" class="btn btn-primary">Eliminar</button>
-                    </form>
-                    <br>
-                    <br>
-                </div>
-            @endif
+                            <button type="submit" onclick="return confirm('¿Desea borrar la subasta?');" class="btn btn-primary">Eliminar</button>
+                        </form>
+                        <br>
+                        <br>
+                    </div>
+                @endif
             @endif
             <div class="links horizontal-list">
                 <a href="{{ route('auction.index') }}">Volver</a>
             </div>
+
+            <div class="links horizontal-list">
+                <h2>Pujas</h2>
+                @if (!$bids->count() > 0)
+                    <h3>No existen pujas</h3>
+                @else
+
+                    @foreach ($bids as $bid)
+                        <div class="descripcion">
+                            @if ($bid->best_bid)
+                                Mejor puja:
+                            @endif
+                            Nombre de usuario:{{$bid->user->name}}
+                            Email de usuario:{{$bid->user->email}}
+                            Valor de la puja:{{$bid->value}}
+                        </div>
+                            @if ($bid->user->card_verification == false)
+                                El usuario no es válido: No posee un número de tarjeta verificado.
+                            @endif
+                            @if ($bid->user->hasAvailableWeek() == false)
+                                El usuario no es válido: No posee créditos disponibles.
+                            @endif
+                            @if ($bid->user->hasHotsale($auction->week) || $bid->user->hasAuction($auction->week) || $bid->user->hasReservation($auction->week))
+                                El usuario no es válido: El usuario posee la semana ocupada.
+                            @endif
+                        <br>
+
+
+                    @endforeach
+                @endif
+            </div>
+
         </div>
     </div>
 </div>

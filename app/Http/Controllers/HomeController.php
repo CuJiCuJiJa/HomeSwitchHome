@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Home;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -109,15 +110,15 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Home $home)
+    /* public function destroy(Home $home)
     {
-        /*if ($home->hasActiveHotsales()) {
+        if ($home->hasActiveHotsales()) {
             return redirect()->back()->with('error', 'No es posible eliminar la residencia, por que hay hotsales activos');
-        }*/
+        }
 
         $home->delete();
         return redirect('home')->with('success', '¡La residencia ha sido borrada!');
-    }
+    } */
 
     public function restore($id)
     {
@@ -128,6 +129,27 @@ class HomeController extends Controller
     public function anular($homeId)
     {
         $home = Home::find($homeId);
+        $now = Carbon::now();
+        $reservations = $home->reservations;
+
+        foreach ($reservations as $reservation) {
+            $week = Carbon::parse($reservation->week);
+            if ($now > $week->subMonths(6) ) {
+                return back()->with('error', 'La residencia no puede ser eliminada ya que faltan menos de 6 meses para una reserva');
+            }
+        }
+
+        $auctions = $home->auctions;
+        foreach ($auctions as $auction) {
+            if ($auction->winner_id != null) {
+                return redirect()->back()->with('error', 'La residencia no puede ser eliminada ya que posee una subasta adjudicada');
+            }
+        }
+
+        foreach ($auctions as $auction) {
+            $auction->delete();
+        }
+
         $home->active = false;
         $home->save();
         return redirect()->route('home.index')->with('success', '¡La residencia ha sido anulada!');

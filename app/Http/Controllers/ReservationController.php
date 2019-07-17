@@ -84,6 +84,9 @@ class ReservationController extends Controller
         $home = Home::find($request->home_id);
         $carbonWeek = Carbon::parse($request->weekToReserve)->startOfWeek()->toDateString();
 
+        if (!$user->hasValidCard()) {
+            return redirect()->back()->with('error', 'Ustéd no no posee una tarjeta verificada');
+        }
         if (!$user->hasAvailableWeek()) {
             return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
         }
@@ -93,6 +96,7 @@ class ReservationController extends Controller
         if ($home->isOccupied($carbonWeek)) {
             return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
         }
+
         if ($user->hasReservation($carbonWeek) || $user->hasHotsale($carbonWeek) || $user->hasAuction($carbonWeek)) {
             return redirect()->back()->with('error', 'Usted ya poseé una reserva para la misma semana');
         }

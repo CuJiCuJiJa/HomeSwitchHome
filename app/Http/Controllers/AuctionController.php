@@ -148,7 +148,12 @@ class AuctionController extends Controller
         else{
             $winner = null;
         }
-        return view('auction.show')->with('auction', $auction)->with('winner', $winner);
+        $bids = $auction->bids;
+        $bids = $bids->sortByDesc(function($bid){
+            return $bid->value;
+        });
+
+        return view('auction.show')->with('auction', $auction)->with('winner', $winner)->with('bids', $bids);
     }
     /**
      * Show the form for editing the specified resource.
