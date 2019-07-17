@@ -23,7 +23,7 @@
                     @endif
                     <h1>Residencias Activas </h1>
                     @if ($activeHomes->count() == 0)
-                        <h2>¡Oops! No tienes subastas...</h2>
+                        <h2>¡Oops! Aun no hay residencias creadas. Crea una desde el menu de residencias.</h2>
                     @else
                         @foreach ($activeHomes as $home)
                             <div class="card-body">
@@ -41,10 +41,9 @@
                             </div>
                         @endforeach
                     @endif
-                    <h1>Residencias Desactivadas </h1>
                     @if ($trashedHomes->count() == 0)
-                        <h2>¡Oops! No tienes subastas...</h2>
                     @else
+                        <h1>Residencias Desactivadas </h1>
                         @foreach ($trashedHomes as $home)
                             <div class="card-body">
                             <div class="descripcion">

@@ -17,7 +17,7 @@
               <?php
                 $date = \Carbon\Carbon::now()->addMonths(6);
                 if (!$date->isMonday()){
-                  $date = $date->startOfWeek();
+                  $date = $date->addWeeks(1)->startOfWeek();
                 }
                 $date = $date->format('Y-m-d');
               ?>
