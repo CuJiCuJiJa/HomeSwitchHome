@@ -55,7 +55,7 @@ class AuctionController extends Controller
 
     public function listActives()
     {
-        $auctions = Auction::all();
+        $auctions = Auction::paginate(10);
         return view('auction.list')->with('auctions', $auctions);
     }
 
