@@ -113,7 +113,7 @@ class AdminController extends Controller
 
         //ME TRAIGO LA SUBASTA
         $auction = Auction::find($auction_id);
-        $now = Carbon::now();
+        $now = Carbon::now()->toDateString();
 
         //ME TRAIGO LA MEJOR PUJA LA CUAL POSEE EL USUARIO GANADOR
         $bestBid = AuctionUser::where('auction_id', $auction_id)->where('best_bid', true)->first();
@@ -121,7 +121,7 @@ class AdminController extends Controller
         //ME TRAIGO EL USUARIO
         $user = User::find($bestBid->user_id);
 
-        //SI EL USUARIO GANADOR NO ES VÁLIDO PARA ADJUDICARLO GANADOR
+        //SI EL USUARIO GANADOR NO ES VÁLIDO PARA ADJUDICARLO
         if (!$user->validUser($auction->week)) {
             //CREO UNA COLLECCION CON TODOS LOS POSIBLES GANADORES
             $orderedBidsCollection = $auction->biddersByLatest();

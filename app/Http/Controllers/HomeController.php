@@ -125,12 +125,11 @@ class HomeController extends Controller
         return redirect()->route('home.index')->with('success', 'Residencia restaurada');
     }
 
-    /* public function anular($homeId)
+    public function anular($homeId)
     {
         $home = Home::find($homeId);
         $home->active = false;
-        //dd($home);
         $home->save();
-        return redirect()->route('home.index')->with('success', '¡La residencia ha sido borrada!');
-    } */
+        return redirect()->route('home.index')->with('success', '¡La residencia ha sido anulada!');
+    }
 }

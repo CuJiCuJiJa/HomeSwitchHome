@@ -238,9 +238,10 @@ class UserController extends Controller
         $date = Carbon::parse($date)->startOfWeek()->toDateString();
         $home = Home::find($hotsale->home_id);
 
-        if (!$user->hasAvailableWeek()) {
-            return redirect()->back()->with('error', 'Ustéd no poseé creditos disponibles');
+        if (!$user->hasValidCard()) {
+            return redirect()->back()->with('error', 'Usted no poseé una número de tarjeta validado');
         }
+
         if ($home->isOccupied($date)) {
             return redirect()->back()->with('error', 'La residencia no se encuentra disponible para esta semana');
         }
@@ -249,19 +250,30 @@ class UserController extends Controller
         }
 
         $hotsale->user_id = $user->id;
+        $hotsale->active = 0;
         $hotsale->save();
 
         return redirect()->route('hotsale.show', $hotsale)->with('success', 'La reserva ha sido registrada');
     }
 
-    public function myHistory(User $user)
+    public function myHistory()
     {
+        $user = Auth::user();
         $history = collect();
-        $history->put('reservations', HomeUser::where('user_id', $user->id)->get());
-        $history->put('auctions', Auction::where('winner_id', $user->id)->get());
-        $history->put('bids', AuctionUser::where('user_id', $user->id)->get());
-        $history->put('hotsales', Hotsale::where('user_id', $user->id)->get());
-        dd($history);
+        $history->put('reservations', HomeUser::where('user_id', Auth::user()->id)->get());
+        $history->put('auctions', Auction::where('winner_id', Auth::user()->id)->get());
+        $history->put('hotsales', Hotsale::where('user_id', Auth::user()->id)->get());
+
+        $myBids = $user->auctions->unique(['auction_id']); //Recupero los id de las subastas en las que participe
+        $auctionsWithBids = collect();
+
+        foreach ($myBids as $bid) {
+            $auction = Auction::find($bid->auction_id); //Recupero la subasta con los id que recupere arriba
+            if ($auction->active == true) {
+                $auctionsWithBids->put('activeAuction', $auction) ;
+            }
+        }
+        $history->put('auctionsWithBids', $auctionsWithBids);
 
         return view('user.myHistory')->with('history', $history);
     }

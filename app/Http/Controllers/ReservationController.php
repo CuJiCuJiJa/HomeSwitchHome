@@ -108,7 +108,7 @@ class ReservationController extends Controller
         $user->available_weeks = $user->available_weeks - 1;
         $user->save();
 
-        return redirect()->route('home.show', $home)->with('success', 'La reserva ha sido registrada');
+        return redirect()->route('reservation.show', $reservation)->with('success', 'La reserva ha sido registrada');
     }
 
     /**
@@ -119,7 +119,8 @@ class ReservationController extends Controller
      */
     public function show($id)
     {
-        //
+        $reservation = HomeUser::find($id);
+        return view('reservation.show')->with('reservation', $reservation);
     }
 
     /**

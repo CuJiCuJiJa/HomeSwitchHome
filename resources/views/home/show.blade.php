@@ -43,7 +43,9 @@
 
                         <a href="{{ route('home.edit', $home->id) }}"> Editar </a>
                     @endif
+                    @if (Auth::user()->isAdmin())
                         <a class="link" href="{{ route('home.index') }}"> Listado de Residencias </a>
+                    @endif
 
                     </div>
                 </div>

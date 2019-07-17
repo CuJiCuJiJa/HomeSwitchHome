@@ -86,6 +86,10 @@ Route::post('/reserve/{id}', 'HotsaleController@reserve')->name('hotsale.reserve
 Route::post('/cancel/{id}', 'HotsaleController@cancel')->name('hotsale.cancel');
 //MIS HOTSALES
 Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');
+//MIS SUBASTAS
+Route::get('/myAuctions', 'AuctionController@myAuctions')->name('auction.myAuctions');
+//MIS HOTSALES
+Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');
 //MI HISTORIAL
 Route::get('/myHistory', 'UserController@myHistory')->name('user.myHistory');
 });

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-12">
 
-            
+
             <div class="card">
                 <div class="card-header">Reserva</div>
                 @if(session('success'))
@@ -36,12 +36,12 @@
                     </div>
                 @endif
 
-              
+
             <br>
 
-           
+
             <div class="links horizontal-list">
-                <a href="/getSearchReserve">Volver</a>
+            <a href="{{URL::previous()}}">Volver</a>
             </div>
         </div>
     </div>

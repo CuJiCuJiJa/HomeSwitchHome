@@ -227,5 +227,4 @@ class AuctionController extends Controller
         return redirect()->route('auction.index')->with('success', '¡Subasta eliminada correctamente!');
     }
 
-
 }
