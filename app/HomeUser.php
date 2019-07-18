@@ -16,5 +16,10 @@ class HomeUser extends Model
         return $this->belongsTo('App\Home');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
 }
 

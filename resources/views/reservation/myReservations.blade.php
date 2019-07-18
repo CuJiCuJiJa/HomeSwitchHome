@@ -23,14 +23,14 @@
                     @foreach ($myReservations as $myReservation)
                         <div class="card-body">
                             <div class="descripcion">
-                                La semana ofertada comienza el lunes {{ $myReservation->home_idweek }}.
+                                La semana ofertada comienza el lunes {{ $myReservation-> week }}.
                                 <br>
                                 Ubicación de la residencia: {{ $myReservation->home->location }}.
                                 <br>
-                                Reservado por ${{ $myReservation->price }}.
+                             
                             </div>
                             <div class="links horizontal-list">
-                                <a href="{{ route('hotsale.show', [$myHotsale->id]) }}">Ver más</a>
+                                <a href="{{ route('reservation.show', [$myReservation->id]) }}">Ver más</a>
                             </div>
                             <hr>
                         </div>

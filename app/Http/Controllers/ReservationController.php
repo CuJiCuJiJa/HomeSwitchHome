@@ -27,14 +27,13 @@ class ReservationController extends Controller
     public function myReservations()
     {
         $homes = collect();
-        $myReservations = HomeUser::all()->where('user_id', Auth::user()->id);  //Reservas de usuario (solo usuario)
-
+        $myReservations = HomeUser::where('user_id', Auth::user()->id)->get();  //Reservas de usuario (solo usuario)
+     
         foreach ($myReservations as $myReservation){
           $homes->push(Home::find($myReservation->home_id));
         }
+        $homes = $homes->unique();
 
-
-        dd($myReservations);
         return view('reservation.myReservations')->with('myReservations', $myReservations)->with('homes', $homes);
     }
 
