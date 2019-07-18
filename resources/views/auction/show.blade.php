@@ -119,11 +119,11 @@
             </div>
             @if (Auth::user()->isAdmin())
                 <div class="links horizontal-list">
-                    <h2>Pujas</h2>
+                    
                     @if (!$bids->count() > 0)
                         <h3>No existen pujas</h3>
                     @else
-
+                    <h2>Pujas</h2>
                         @foreach ($bids as $bid)
                             <div class="descripcion">
                                 @if ($bid->best_bid)
@@ -133,6 +133,7 @@
                                 Email de usuario:{{$bid->user->email}}
                                 Valor de la puja:{{$bid->value}}
                             </div>
+                            @if ($auction->winner_id != $bid->user_id)
                                 @if ($bid->user->card_verification == false)
                                     El usuario no es válido: No posee un número de tarjeta verificado.
                                 @endif
@@ -142,6 +143,7 @@
                                 @if ($bid->user->hasHotsale($auction->week) || $bid->user->hasAuction($auction->week) || $bid->user->hasReservation($auction->week))
                                     El usuario no es válido: El usuario posee la semana ocupada.
                                 @endif
+                            @endif
                             <br>
 
 

@@ -23,11 +23,13 @@ class AuctionController extends Controller
      public function index()
     {
         $user = Auth::user();
-        $now = Carbon::now();
+        $now = Carbon::now()->toDateString();
         $pendingAuctions = Auction::where('active', false)->where('winner_id', null)->where('best_bid_value', '!=', 0 )->get();
         $indexAuctions = Auction::all()->where('active', true);
         $activeAuctions = Auction::all()->where('active', true); //Recupero subastas activas
-        $inactiveAuctions = Auction::where('active', false)->get();
+        $a = Auction::where('active', false)->get();
+        $b = Auction::where('winner_id', '!=' , null)->orWhere('end_date','>', $now )->get();
+        $inactiveAuctions = $a->intersect($b);
         $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
         $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
 
@@ -229,7 +231,7 @@ class AuctionController extends Controller
             return redirect()->back()->with('error', 'La subasta posee pujas, por lo tanto no es posible eliminarla');
         }*/
         if ($auction->winner_id != null) {
-            return redirect()->back()->with('error', 'La subasta ya ha sido adjudicada');
+            return redirect()->route('auction.index')->with('error', 'La subasta ya ha sido adjudicada');
         }
         $auction->delete();
         return redirect()->route('auction.index')->with('success', '¡Subasta eliminada correctamente!');
