@@ -62,7 +62,7 @@
 
                             <div class="form-group">
                                     <label for="número de tarjeta">número de tarjeta</label>
-                                    <input type="text" class="form-control" id="card" name='card' placeholder="Ingresar una número de tarjeta" value="{{ $user->card_number }}">
+                                    <input type="text" class="form-control" minlength="16" maxlength="16" id="card" name='card' placeholder="Ingresar una número de tarjeta" value="{{ $user->card_number }}">
                                     <span>
                                         @if($errors->has('card'))
                                         {{ $errors->first('card') }}
