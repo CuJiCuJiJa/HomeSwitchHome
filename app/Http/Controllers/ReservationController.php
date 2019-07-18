@@ -158,21 +158,18 @@ class ReservationController extends Controller
      */
     public function destroy(HomeUser $reservation)
     {
-        $user = Auth::user();
-        $now = Carbon::now()->toDateString();
-        $week = Carbon::parse($reservation->week);
-
-        if ($now < $week->subMonths(2)) {
-
+        $date=Carbon::now()->add(2, 'month')->toDateString();
+        if($date < $reservation->week){
+            $user = User::find($reservation->user_id);
             $user->available_weeks = $user->available_weeks + 1;
-
-            if ($user->available_weeks > 2) {
-                $user->available_weeks = 2;
-            }
+            $user->save();
+            $msj = "Haz dado de baja tu reserva, recuperaste tu crédito!";
+            //dd("SE LE DEVOLVIÓ EL CREDITO AHORA TIENE ".$user->available_weeks." AVAILABLE_WEEKS");
+        }else{
+            $msj = "Haz dado de baja tu reserva! Lo sentimos pero no podemos devolver tu crédito, faltaban menos de 2 meses para tu reserva.";    
         }
         $reservation->delete();
-
-        return redirect()->route('user.myHistory')->with('success','Reserva cancelada');
+        return redirect()->route('user.myHistory')->with('success', $msj);
 
     }
 }

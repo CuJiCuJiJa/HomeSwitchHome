@@ -228,6 +228,9 @@ class AuctionController extends Controller
         /*if ($auction->bids) {
             return redirect()->back()->with('error', 'La subasta posee pujas, por lo tanto no es posible eliminarla');
         }*/
+        if ($auction->winner_id != null) {
+            return redirect()->back()->with('error', 'La subasta ya ha sido adjudicada');
+        }
         $auction->delete();
         return redirect()->route('auction.index')->with('success', '¡Subasta eliminada correctamente!');
     }

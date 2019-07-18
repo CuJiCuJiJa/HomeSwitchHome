@@ -106,6 +106,8 @@
                         <button class="btn btn-danger" type="submit" onclick="return confirm('¿Desea dar de baja su cuenta de usuario?');">Dar de baja cuenta</button>
                     </form>
 
+                    <a href="{{route('getchangePassword')}}">Cambiar contraseña</a>
+
                 </div>
             </div>
         </div>
