@@ -143,10 +143,11 @@
                                     El usuario no es válido: El usuario posee la semana ocupada.
                                 @endif
                             <br>
-            @endif
+
 
                         @endforeach
                     @endif
+                @endif
             </div>
 
         </div>
