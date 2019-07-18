@@ -24,10 +24,11 @@
                         @endif
 
                         @if (!Auth::user()->isAdmin())
-                            <h1>Mis Subastas Activas </h1>
+                            
                             @if($activeAuctions->count() == 0)
-                                <h2>¡Oops! No tienes subastas...</h2>
                             @endif
+                            @if($activeAuctions->count() != 0)
+                            <h1>Mis Subastas Activas </h1>
                             @foreach ($activeAuctions as $activeAuction)
                                 <div class="card-body">
                                     <div class="descripcion">
@@ -46,12 +47,14 @@
                                     <hr>
                                 </div>
                             @endforeach
+                            @endif    
                         @endif
                         @if (!Auth::user()->isAdmin())
-                            <h1>Mis Subastas Finalizadas </h1>
+                            
                             @if($trashedAuctions->count() == 0)
-                                <h2>¡Oops! No tienes subastas...</h2>
                             @endif
+                            @if($trashedAuctions->count() != 0)
+                            <h1>Mis Subastas Finalizadas </h1>
                             @foreach ($trashedAuctions as $trashedAuction)
                                 <div class="card-body">
                                     <div class="descripcion">
@@ -68,12 +71,15 @@
                                     <hr>
                                 </div>
                             @endforeach
+                            @endif    
                         @endif
-                        <h1>Subastas Activas</h1>
-
+                        
                         @if($indexAuctions->count() == 0)
                             <h2>¡Oops! No tienes subastas...</h2>
                         @endif
+                        @if($indexAuctions->count() != 0)
+                        <h1>Subastas Activas</h1>
+
                         @foreach ($indexAuctions as $indexAuction)
 
                             <div class="card-body">
@@ -94,6 +100,7 @@
                                 <hr>
                             </div>
                         @endforeach
+                        @endif
                         @if (Auth::user()->isAdmin())
 
                             <h1>Subastas Inactivas</h1>

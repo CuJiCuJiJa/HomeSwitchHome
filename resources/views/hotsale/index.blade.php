@@ -107,7 +107,7 @@
                 @if (Auth::user()->isAdmin())
                     <a href="{{ route('hotsale.create') }}">Agregar Hotsale</a>
                 @endif
-                <a href="">Buscar Hotsale</a>
+                <a href="/getSearchHotsale">Buscar Hotsale</a>
             </div>
         </div>
     </div>
