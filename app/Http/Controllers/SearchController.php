@@ -106,7 +106,7 @@ class SearchController extends Controller
     public function postSearchHotsale(Request $request)
     {
         $now = Carbon::now();
-        $hotsales = Hotsale::all();
+        $hotsales = Hotsale::where('active', true)->get();
         $results = collect();
 
 		if ($request->has('location')) {

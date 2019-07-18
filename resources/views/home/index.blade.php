@@ -12,11 +12,6 @@
                     {{ session('success') }}
                 </div>
             @endif
-            @if(session('error'))
-                <div class="fallo horizontal-list">
-                    {{ session('error') }}
-                </div>
-            @endif
 
 
                 <div class="card">
@@ -46,23 +41,24 @@
                             </div>
                         @endforeach
                     @endif
-                    @if ($trashedHomes->count() == 0)
-                    @else
+                    @if ($inactiveHomes->count() > 0)
                         <h1>Residencias Desactivadas </h1>
-                        @foreach ($trashedHomes as $home)
+                        @foreach ($inactiveHomes as $home)
                             <div class="card-body">
                             <div class="descripcion">
                                     Descripción: {{ $home->descrip }}
                                     <br>
                                     Ubicación: {{ $home->location }}
                                 </div>
-                                <hr>
-                                <form action="{{ route('home.restore', $home->id) }}" method="POST">
+                                <div class="links horizontal-list">
+                                    <form action="{{ route('home.restore', $home->id) }}" method="POST">
                                     {{ csrf_field() }}
                                     {{ method_field('POST') }}
                                     <button type="submit" onclick="return confirm('¿Desea restaurar la residencia?');"  class="btn btn-primary"> Restaurar </button>
                                 </form>
+                                </div>
                             </div>
+                            <hr>
                         @endforeach
                     @endif
                 </div>
