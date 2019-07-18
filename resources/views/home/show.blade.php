@@ -11,7 +11,7 @@
             </div>
             @endif
 
-            @if ($errors->any())
+          <!--   @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -19,7 +19,15 @@
                     @endforeach
                 </ul>
             </div>
+            @endif -->
+
+
+           @if(session('error'))
+            <div class="fallo horizontal-list">
+                {{ session('error') }}
+            </div>
             @endif
+
 
             <div class="card">
 
@@ -45,7 +53,7 @@
                         <form action="{{ route('home.anular', $home->id) }}" method="POST">
                             {{ csrf_field() }}
 
-                            <button type="submit" onclick="return confirm('¿Desea anular la residencia?');"  class="btn btn-primary"> Borrar </button>
+                            <button type="submit" onclick="return confirm('¿Desea anular la residencia?');"  class="btn btn-primary"> Anular </button>
                         </form>
 
                         <a href="{{ route('home.edit', $home->id) }}"> Editar </a>

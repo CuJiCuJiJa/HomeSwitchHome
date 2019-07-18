@@ -63,9 +63,9 @@
                     <div class="card-body">
                         Usuario ganador: {{ $winner->name, $winner->email }}
                     </div>
-               
+                @endif
 
-                @if($winner->id == Auth::user()->id)
+                @if(!Auth::user()->isAdmin() && $winner != null && $winner->id == Auth::user()->id)
 
                     <form action="{{ route('user.cancelAuction', ['auction_id' => $auction->id]) }}" method="POST">
                         {{ csrf_field() }}
@@ -73,14 +73,11 @@
                     </form>
                 @endif
 
-                @endif
-                @if (Auth::user()->isAdmin())
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null && $auction->best_bid_value >= $auction->base_price)
                     <form action="{{ route('admin.adjudicar', ['auction_id' => $auction->id]) }}" method="POST">
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-primary">Adjudicar a ganador</button>
                     </form>
-                @endif
                 @endif
 
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null &&  $auction->best_bid_value < $auction->base_price)
@@ -120,7 +117,6 @@
             <div class="links horizontal-list">
                 <a href="{{ route('auction.index') }}">Volver</a>
             </div>
-
             @if (Auth::user()->isAdmin())
                 <div class="links horizontal-list">
                     <h2>Pujas</h2>
@@ -133,10 +129,9 @@
                                 @if ($bid->best_bid)
                                     Mejor puja:
                                 @endif
-                                <p> <strong> Nombre de usuario:</strong>{{$bid->user->name}} </br>
-                                <strong>Email de usuario:</strong>{{$bid->user->email}} </br>
-                                <strong>Valor de la puja:</strong>{{$bid->value}} </br>
-                                </p>
+                                Nombre de usuario:{{$bid->user->name}}
+                                Email de usuario:{{$bid->user->email}}
+                                Valor de la puja:{{$bid->value}}
                             </div>
                                 @if ($bid->user->card_verification == false)
                                     El usuario no es válido: No posee un número de tarjeta verificado.
