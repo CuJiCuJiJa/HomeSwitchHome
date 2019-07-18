@@ -143,7 +143,7 @@ class HomeController extends Controller
         $auctions = $home->auctions;
         foreach ($auctions as $auction) {
             if ($auction->winner_id != null) {
-                return redirect()->back()->with('error', 'La residencia no puede ser eliminada ya que posee una subasta adjudicada');
+                return redirect()->route('home.index')->with('error', 'La residencia no puede ser eliminada ya que posee una subasta adjudicada');
             }
         }
 

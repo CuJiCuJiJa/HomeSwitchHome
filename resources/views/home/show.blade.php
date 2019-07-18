@@ -42,11 +42,11 @@
                     <div class="links horizontal-list">
                     @if (Auth::user()->isAdmin())
 
-                        <form action="{{ route('home.anular', $home->id) }}" method="POST">
-                            {{ csrf_field() }}
-
-                            <button type="submit" onclick="return confirm('¿Desea anular la residencia?');"  class="btn btn-primary"> Borrar </button>
-                        </form>
+                    <form action="{{ route('hotsale.destroy', $hotsale->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <button type="submit" onclick="return confirm('¿Desea eliminar la Residencia?')" class="btn btn-primary">Eliminar</button>
+                    </form>
 
                         <a href="{{ route('home.edit', $home->id) }}"> Editar </a>
                     @endif

@@ -12,6 +12,11 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if(session('error'))
+                <div class="error horizontal-list">
+                    {{ session('error') }}
+                </div>
+            @endif
 
 
                 <div class="card">
