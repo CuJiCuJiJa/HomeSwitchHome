@@ -122,9 +122,10 @@
                             @if ($bid->best_bid)
                                 Mejor puja:
                             @endif
-                            Nombre de usuario:{{$bid->user->name}}
-                            Email de usuario:{{$bid->user->email}}
-                            Valor de la puja:{{$bid->value}}
+                            <p> <strong> Nombre de usuario:</strong>{{$bid->user->name}} </br>
+                            <strong>Email de usuario:</strong>{{$bid->user->email}} </br>
+                            <strong>Valor de la puja:</strong>{{$bid->value}} </br>
+                            </p>
                         </div>
                             @if ($bid->user->card_verification == false)
                                 El usuario no es válido: No posee un número de tarjeta verificado.
