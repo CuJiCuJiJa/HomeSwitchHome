@@ -29,7 +29,8 @@ class AuctionController extends Controller
         $activeAuctions = Auction::all()->where('active', true); //Recupero subastas activas
         $a = Auction::where('active', false)->get();
         $b = Auction::where('winner_id', '!=' , null)->orWhere('end_date','>', $now )->get();
-        $inactiveAuctions = $a->intersect($b);
+        $c = $a->intersect(  (Auction::where('best_bid_value', '=' , 0 )->get())->intersect(Auction::where('end_date','<', $now )->get()));
+        $inactiveAuctions = ($a->intersect($b))->union($c);
         $trashedAuctions = Auction::onlyTrashed()->get();  //Recupero subastas eliminadas
         $cantAuctions = $activeAuctions->count() + $trashedAuctions->count();
 

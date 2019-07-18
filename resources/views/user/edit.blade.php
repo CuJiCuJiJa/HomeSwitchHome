@@ -11,7 +11,10 @@
             @endif
             <div class="card">
 
-
+               <?php
+                $date = \Carbon\Carbon::now()->subYears(18);
+                $date = $date->format('Y-m-d');
+              ?>
                 <div class="card-header"> Mi información </div>
 
                 <div class="card-body">
@@ -51,7 +54,7 @@
 
                             <div class="form-group">
                                 <label for="birthdate">Fecha de Nacimiento</label>
-                                <input type="date" class="form-control" id="birthdate" name='birthdate' value="{{ $user->birthdate }}" required>
+                                <input type="date" class="form-control" id="birthdate" name='birthdate' max="{{$date}}" value="{{ $user->birthdate }}" required>
                                 <span>
                                     @if($errors->has('birthdate'))
                                     {{ $errors->first('birthdate') }}

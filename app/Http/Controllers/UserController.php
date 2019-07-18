@@ -82,13 +82,16 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
+        
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,
             'card' => 'nullable|numeric',
             'birthdate' => ['required', 'date', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y-m-d')],
-        ],
-        ['birthdate.before_or_equal' => 'Ustéd debe ser mayor de 18 años']);
+        ]);
+
+        
 
         if ($request->card != $user->card) {
             $user->card_verification = false;

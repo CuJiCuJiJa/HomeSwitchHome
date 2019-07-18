@@ -53,6 +53,7 @@
                                     </form>
                         @endforeach
                     @endif
+</br></br></br>
                     <h1>Usuarios Premium </h1>
                     @if ($premiumUsers->count() == 0)
                         <h2>¡Oops! No tienes usuarios...</h2>
@@ -86,6 +87,7 @@
                                     </form>
                         @endforeach
                     @endif
+                    </br></br></br>
                     <h1>Usuarios Lowcost </h1>
                     @if ($lowcostUsers->count() == 0)
                         <h2>¡Oops! No tienes usuarios...</h2>
@@ -121,6 +123,7 @@
 
                         @endforeach
                     @endif
+                    </br></br></br>
                     <h1>Peticiones de verificación de tarjeta</h1>
                     @if ($cardUsers->count() == 0)
                         <h2>¡Oops! No tienes usuarios...</h2>

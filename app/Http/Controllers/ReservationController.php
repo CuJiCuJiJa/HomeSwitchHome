@@ -15,7 +15,7 @@ class ReservationController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+     */ 
 
      public function index()
     {
@@ -23,6 +23,21 @@ class ReservationController extends Controller
         $activeReservations = HomeUser::all();
         return view('reservation.index')->with('activeReservations', $activeReservations)->with('trashedReservations', $trashedReservations);
     }
+
+    public function myReservations()
+    {
+        $homes = collect();
+        $myReservations = HomeUser::all()->where('user_id', Auth::user()->id);  //Reservas de usuario (solo usuario)
+
+        foreach ($myReservations as $myReservation){
+          $homes->push(Home::find($myReservation->home_id));
+        }
+
+
+        dd($myReservations);
+        return view('reservation.myReservations')->with('myReservations', $myReservations)->with('homes', $homes);
+    }
+
 
     /**
      * Show the form for creating a new resource.

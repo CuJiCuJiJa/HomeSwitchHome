@@ -80,6 +80,8 @@ Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsa
 Route::get('/myAuctions', 'AuctionController@myAuctions')->name('auction.myAuctions');
 //MIS HOTSALES
 Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsales');
+//MIS RESERVAS
+Route::get('/myReservations', 'ReservationController@myReservations')->name('reservation.myReservations');
 //MI HISTORIAL
 Route::get('/myHistory', 'UserController@myHistory')->name('user.myHistory');
 //CANCELAR SUBASTA

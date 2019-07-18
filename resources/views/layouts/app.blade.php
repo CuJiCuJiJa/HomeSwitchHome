@@ -131,7 +131,7 @@
                                                 <a class="dropdown-item" tabindex="-1" href="/getSearchReserve">Buscar</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" tabindex="-1" href="#">Mis reservas</a>
+                                                <a class="dropdown-item" tabindex="-1" href="{{route('reservation.myReservations')}}">Mis reservas</a>
                                             </li>
                                         </ul>
                                     </li>
