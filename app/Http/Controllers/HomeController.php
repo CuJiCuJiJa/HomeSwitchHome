@@ -148,10 +148,10 @@ class HomeController extends Controller
         foreach ($auctions as $auction) {                       //Por cada una de las subastas...
             if ($auction->winner_id != null) {                  //Si tiene ganador...
                 $user = User::find($auction->winner_id);        //Obtengo el usuario de la subasta adjudicada
-                return redirect()->route('home.index')->with('error', 'La residencia no puede ser eliminada ya que posee una subasta adjudicada, para la cual faltan menos de 6 meses para la semana ('.$auction->week.'), perteneciente al usuario '.$user->name.' (Email: '.$user->email.')');
+                return redirect()->route('home.index')->with('error', 'La residencia no puede ser eliminada, faltan menos de 6 meses para la semana ('.$auction->week.'), perteneciente al usuario '.$user->name.' (Email: '.$user->email.')');
             }else{
                 if($now >= $auction->starting_date){
-                    return redirect()->back()->with('error', 'La residencia no puede ser eliminada ya que está asociada a una subasta activa.');
+                    return redirect()->route('home.index')->with('error', 'La residencia no puede ser eliminada ya que está asociada a una subasta activa.');
                 }
             }
         }
@@ -162,11 +162,11 @@ class HomeController extends Controller
 
        /* foreach ($auctions as $auction) {
             $auction->delete();
-        }
+        }*/
 
         $home->active = false;
         $home->save();
-        return redirect()->route('home.index')->with('success', '¡La residencia ha sido anulada!');*/
+        return redirect()->route('home.index')->with('success', '¡La residencia ha sido anulada!');
     }
 
     public function changePassword(Request $request){

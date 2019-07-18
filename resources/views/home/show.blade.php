@@ -50,19 +50,11 @@
                     <div class="links horizontal-list">
                     @if (Auth::user()->isAdmin())
 
-<<<<<<< HEAD
-                    <form action="{{ route('hotsale.destroy', $hotsale->id) }}" method="POST">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                        <button type="submit" onclick="return confirm('¿Desea eliminar la Residencia?')" class="btn btn-primary">Eliminar</button>
-                    </form>
-=======
                         <form action="{{ route('home.anular', $home->id) }}" method="POST">
                             {{ csrf_field() }}
 
                             <button type="submit" onclick="return confirm('¿Desea anular la residencia?');"  class="btn btn-primary"> Anular </button>
                         </form>
->>>>>>> eae9a92c6164a8d0c84a0ddd7bd97062fe0f3735
 
                         <a href="{{ route('home.edit', $home->id) }}"> Editar </a>
                     @endif
