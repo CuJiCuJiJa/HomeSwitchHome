@@ -33,9 +33,7 @@
                                         $home_id = $hotsale['home']->id;
                                         $week = $hotsale['week'];
                                     ?>
-                                    <a class="link" href="{{ route('hotsale.create', ['home_id'=>$home_id, 'week'=>$week]) }}">
-                                        Reservar
-                                    </a>
+
                                 @endif
                                 </div>
                             <hr>
