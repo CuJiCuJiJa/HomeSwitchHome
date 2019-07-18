@@ -33,18 +33,8 @@ Auth::routes();
 			'user'			=> 'UserController',
 			'admin'			=> 'AdminController',
 		]);
-	});
+	
 
-Route::group(['middleware' => 'auth'], function() {
-	Route::resources([
-		'auction'		=> 'AuctionController',
-		'home'			=> 'HomeController',
-		'hotsale'		=> 'HotsaleController',
-		'reservation'	=> 'ReservationController',
-		'user'			=> 'UserController',
-		'admin'			=> 'AdminController',
-	]);
-});
 //ADJUDICAR SUBASTA
 Route::post('/adjudicate/{auction_id}', 'AdminController@adjudicar')->name('admin.adjudicar');
 
@@ -94,7 +84,11 @@ Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsa
 Route::get('/myHistory', 'UserController@myHistory')->name('user.myHistory');
 //CANCELAR SUBASTA
 Route::post('/cancelAuction/{auction}', 'UserController@cancelAuction')->name('user.cancelAuction');
-});
-//
+
 Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
 Route::get('/getchangePassword','HomeController@getchangePassword')->name('getchangePassword');
+});
+});
+
+//
+

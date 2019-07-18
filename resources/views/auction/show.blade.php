@@ -63,7 +63,7 @@
                     <div class="card-body">
                         Usuario ganador: {{ $winner->name, $winner->email }}
                     </div>
-                @endif
+               
 
                 @if($winner->id == Auth::user()->id)
 
@@ -73,11 +73,14 @@
                     </form>
                 @endif
 
+                @endif
+                @if (Auth::user()->isAdmin())
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null && $auction->best_bid_value >= $auction->base_price)
                     <form action="{{ route('admin.adjudicar', ['auction_id' => $auction->id]) }}" method="POST">
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-primary">Adjudicar a ganador</button>
                     </form>
+                @endif
                 @endif
 
                 @if ($auction->end_date < \Carbon\Carbon::now()->toDateString() && $winner == null &&  $auction->best_bid_value < $auction->base_price)
