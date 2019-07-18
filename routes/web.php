@@ -93,3 +93,6 @@ Route::get('/myHotsales', 'HotsaleController@myHotsales')->name('hotsale.myHotsa
 //MI HISTORIAL
 Route::get('/myHistory', 'UserController@myHistory')->name('user.myHistory');
 });
+//
+Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
+Route::get('/getchangePassword','HomeController@getchangePassword')->name('getchangePassword');
